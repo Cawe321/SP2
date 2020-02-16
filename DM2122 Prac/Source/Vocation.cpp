@@ -1,11 +1,7 @@
 #include "Vocation.h"
 
 
-Vocation::JOBTYPE Vocation::VocationJob = SALES;
-
-Vocation::Vocation()
-{
-}
+Vocation::JOBTYPE Vocation::VocationJob = NONE;
 
 std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 {
@@ -48,6 +44,4 @@ void Vocation::setVocation(JOBTYPE job)
 	 Vocation::VocationJob = job;
 }
 
-Vocation::~Vocation()
-{
-}
+

@@ -6,7 +6,7 @@
 #include "Camera2.h"
 #include "Mesh.h"
 #include "Light.h"
-
+#include "Vocation.h"
 class StarterScene : public Scene
 {
 	enum GEOMETRY_TYPE
@@ -62,8 +62,14 @@ private:
 
 	Camera2 camera;
 	
+	// cooldown
 	float globalTime;
 	float debounceTime;
+
+	// Scenes of Scene
+	bool IntroScene;
+	bool VocationScene;
+	bool EntranceScene;
 
 	void RenderMesh(Mesh* mesh, bool enableLight);
 
@@ -71,6 +77,15 @@ private:
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void RenderObjectOnScreen(Mesh* mesh, float x, float y, float size);
 	void CalculateFrameRate();
+
+	//Background Texture
+	int background2;
+	// Vocation Stuff
+	Vocation::JOBTYPE JobSelection;
+	int SalesPersonTexture;
+	int CleanerTexture;
+	int BouncerTexture;
+	int MechanicTexture;
 
 public:
 	StarterScene();

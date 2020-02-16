@@ -11,6 +11,7 @@ public:
 		CLEANER,
 		BOUNCER,
 		MECHANIC,
+		NONE,
 	};
 	struct Quest
 	{
@@ -21,8 +22,6 @@ public:
 	static std::vector<Vocation::Quest> getMainQuest(int day);
 	static JOBTYPE getVocation();
 	static void setVocation(JOBTYPE job);
-	Vocation();
-	~Vocation();
 private:
 	static JOBTYPE VocationJob;
 };

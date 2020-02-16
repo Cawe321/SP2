@@ -106,7 +106,7 @@ void Application::Run()
 {
 	//Main Loop
 
-	Scene* scene = new SceneText();
+	Scene* scene = new StarterScene();
 
 	scene->Init();
 

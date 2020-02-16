@@ -7,6 +7,7 @@
 #include "Utility.h"
 #include "LoadTGA.h"
 
+
 #define ROT_LIMIT 45.f;
 #define SCALE_LIMIT 5.f;
 #define LSPEED 10.f
@@ -102,11 +103,26 @@ void StarterScene::Init()
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1); 
 
+
+	globalTime = 0;
+	debounceTime = 0;
+
+	// Setting the parts of this Scene in order
+	IntroScene = true;
+	VocationScene = false;
+	EntranceScene = false;
+
 	meshList[GEO_SCREEN] = MeshBuilder::GenerateQuad("Screen", Color(0, 1, 0), 1, 1);
-	meshList[GEO_SCREEN]->textureID = LoadTGA("Image//salesperson.tga");
+	SalesPersonTexture = LoadTGA("Image//salespersonlogo.tga");
+	CleanerTexture = LoadTGA("Image//cleanerlogo.tga");
+	BouncerTexture = LoadTGA("Image//bouncerlogo.tga");
+	MechanicTexture = LoadTGA("Image//mechaniclogo.tga");
+	JobSelection = Vocation::SALES;
+	meshList[GEO_SCREEN]->textureID = SalesPersonTexture;
 
 	meshList[GEO_BACKGROUND] = MeshBuilder::GenerateQuad("Background", Color(0, 1, 0), 1.6, 1.4);
 	meshList[GEO_BACKGROUND]->textureID = LoadTGA("Image//motorshowbackground.tga");
+	
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
@@ -115,6 +131,9 @@ void StarterScene::Init()
 
 void StarterScene::Update(double dt)
 {
+	globalTime += dt;
+	
+
 	if (Application::IsKeyPressed(0x31))
 	{
 		glDisable(GL_CULL_FACE);
@@ -144,21 +163,79 @@ void StarterScene::Update(double dt)
 	if (Application::IsKeyPressed('P'))
 		light[0].position.y += (float)(LSPEED * dt);
 
-	if (Application::IsKeyPressed('Q'))
+	if (IntroScene)
 	{
-		//to do: switch light type to POINT and pass the information to
-		light[0].type = Light::LIGHT_POINT;
+		if (Application::IsKeyPressed(VK_RETURN))
+		{
+			IntroScene = false;
+			VocationScene = true;
+			debounceTime = globalTime;
+		}
 	}
-	else if (Application::IsKeyPressed('W'))
+	else if (VocationScene)
 	{
-		//to do: switch light type to DIRECTIONAL and pass the
-		light[0].type = Light::LIGHT_DIRECTIONAL;
+		if (Application::IsKeyPressed(VK_RETURN) && Vocation::getVocation() == Vocation::NONE && globalTime - debounceTime > 0.2f) // enter key
+		{
+			Vocation::setVocation(JobSelection);
+		}
+		if (Vocation::getVocation() != Vocation::NONE)
+		{
+			auto lol = Vocation::getVocation();
+			std::cout << "\n" + lol;
+		}
+		if (Application::IsKeyPressed('E') && globalTime - debounceTime > 0.2f)
+		{
+			debounceTime = globalTime; // to check the time taken after this keypress to press another key
+			if (JobSelection == Vocation::SALES)
+			{
+				JobSelection = Vocation::CLEANER;
+			}
+			else if (JobSelection == Vocation::CLEANER)
+			{
+				JobSelection = Vocation::BOUNCER;
+			}
+			else if (JobSelection == Vocation::BOUNCER)
+			{
+				JobSelection = Vocation::MECHANIC;
+			}
+			else if (JobSelection == Vocation::MECHANIC)
+			{
+				JobSelection = Vocation::SALES;
+			}
+		}
+		if (Application::IsKeyPressed('Q') && globalTime - debounceTime > 0.2f)
+		{
+			debounceTime = globalTime; // to check the time taken after this keypress to press another key
+			if (JobSelection == Vocation::SALES)
+			{
+				JobSelection = Vocation::MECHANIC;
+			}
+			else if (JobSelection == Vocation::CLEANER)
+			{
+				JobSelection = Vocation::SALES;
+			}
+			else if (JobSelection == Vocation::BOUNCER)
+			{
+				JobSelection = Vocation::CLEANER;
+			}
+			else if (JobSelection == Vocation::MECHANIC)
+			{
+				JobSelection = Vocation::BOUNCER;
+			}
+		}
+		// Assign the correct texture to the chosen vocation
+		if (JobSelection == Vocation::SALES)
+			meshList[GEO_SCREEN]->textureID = SalesPersonTexture;
+		else if (JobSelection == Vocation::CLEANER)
+			meshList[GEO_SCREEN]->textureID = CleanerTexture;
+		else if (JobSelection == Vocation::BOUNCER)
+			meshList[GEO_SCREEN]->textureID = BouncerTexture;
+		else if (JobSelection == Vocation::MECHANIC)
+			meshList[GEO_SCREEN]->textureID = MechanicTexture;
 	}
-	else if (Application::IsKeyPressed('E'))
-	{
-		//to do: switch light type to SPOT and pass the information to
-		light[0].type = Light::LIGHT_SPOT;
-	}
+	
+
+
 	camera.Update(dt);
 	CalculateFrameRate();
 }
@@ -195,16 +272,27 @@ void StarterScene::Render()
 	}
 
 
+
+	
 	RenderObjectOnScreen(meshList[GEO_BACKGROUND], 0.8, 0.5, 50);
-	RenderObjectOnScreen(meshList[GEO_SCREEN], 2, 1.5, 20);
+	if (IntroScene)
+	{
 
-	modelStack.PushMatrix();
-	//scale, translate, rotate
-	RenderText(meshList[GEO_TEXT], "HAPPY DAYS", Color(0, 1, 0));
-	modelStack.PopMatrix();
+	}
+	else if (VocationScene)
+	{
+		RenderObjectOnScreen(meshList[GEO_SCREEN], 2, 1.5, 20);
 
-	//No transform needed
-	RenderTextOnScreen(meshList[GEO_TEXT], "Happy Days", Color(0, 1, 0), 2, 0, 0);
+		RenderTextOnScreen(meshList[GEO_TEXT], "CHOOSE", Color(1, 1, 0), 3, 10.5, 17.5);
+		RenderTextOnScreen(meshList[GEO_TEXT], "YOUR", Color(1, 0, 0), 3, 11.5, 16.5);
+		RenderTextOnScreen(meshList[GEO_TEXT], "VOCATION", Color(0, 1, 0), 3, 9.5, 15.25);
+
+		RenderTextOnScreen(meshList[GEO_TEXT], "<ENTER>", Color(0, 1, 1), 2.5, 12.75, 5);
+		RenderTextOnScreen(meshList[GEO_TEXT], "To", Color(0, 1, 1), 2.5, 15.25, 3.75);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Confirm", Color(0, 1, 1), 2.5, 12.66, 2.5);
+	}
+
+
 
 }
 

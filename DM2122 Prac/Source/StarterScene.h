@@ -65,6 +65,7 @@ private:
 	// cooldown
 	float globalTime;
 	float debounceTime;
+	float animationTime; // only used on Vocation Selection
 
 	// Scenes of Scene
 	bool IntroScene;
@@ -75,6 +76,7 @@ private:
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
+	void CustomRenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float angle, float angleX = 0.f, float angleY = 0.f, float angleZ = 1.f);
 	void RenderObjectOnScreen(Mesh* mesh, float x, float y, float size);
 	void CalculateFrameRate();
 

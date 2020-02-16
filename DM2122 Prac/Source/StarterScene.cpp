@@ -103,7 +103,7 @@ void StarterScene::Init()
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1); 
 
-
+	// set to 0, to track debounce time, and also get the global/elapsed time
 	globalTime = 0;
 	debounceTime = 0;
 
@@ -112,6 +112,7 @@ void StarterScene::Init()
 	VocationScene = false;
 	EntranceScene = false;
 
+	// Initializing the Scene's parts
 	meshList[GEO_SCREEN] = MeshBuilder::GenerateQuad("Screen", Color(0, 1, 0), 1, 1);
 	SalesPersonTexture = LoadTGA("Image//salespersonlogo.tga");
 	CleanerTexture = LoadTGA("Image//cleanerlogo.tga");
@@ -121,8 +122,8 @@ void StarterScene::Init()
 	meshList[GEO_SCREEN]->textureID = SalesPersonTexture;
 
 	meshList[GEO_BACKGROUND] = MeshBuilder::GenerateQuad("Background", Color(0, 1, 0), 1.6, 1.4);
-	meshList[GEO_BACKGROUND]->textureID = LoadTGA("Image//motorshowbackground.tga");
-	
+	meshList[GEO_BACKGROUND]->textureID = LoadTGA("Image//motorshowbackground2.tga");
+	background2 = LoadTGA("Image//motorshowbackground.tga");
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
@@ -170,6 +171,7 @@ void StarterScene::Update(double dt)
 			IntroScene = false;
 			VocationScene = true;
 			debounceTime = globalTime;
+			animationTime = globalTime;
 		}
 	}
 	else if (VocationScene)
@@ -274,22 +276,60 @@ void StarterScene::Render()
 
 
 	
-	RenderObjectOnScreen(meshList[GEO_BACKGROUND], 0.8, 0.5, 50);
+	
 	if (IntroScene)
 	{
+		RenderObjectOnScreen(meshList[GEO_BACKGROUND], 0.8, 0.5, 50);
+		if (globalTime < 1.f)
+		{
+			float toMove = 16.25f - globalTime*8;
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "FUTURISTIC", Color(1, 1, 0), 4.5, 4.1, toMove + 1, globalTime * 360);
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "MOTOR SHOW", Color(1, 1, 0), 4.5, 4, toMove, globalTime * 360);
 
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "<ENTER>", Color(0, 1, 1), 2.5, 12.75, 5,180 + globalTime * 180, 1.f, 0.f, 0.f);
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "To", Color(0, 1, 1), 2.5, 15.25, 3.75,180 + globalTime * 180, 1.f, 0.f, 0.f);
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "Confirm", Color(0, 1, 1), 2.5, 12.66, 2.5,180 + globalTime * 180, 1.f, 0.f, 0.f);
+		}
+		else
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "FUTURISTIC", Color(1, 1, 0), 4.5, 4.1, 9.25);
+			RenderTextOnScreen(meshList[GEO_TEXT], "MOTOR SHOW", Color(1, 1, 0), 4.5, 4, 8.25);
+
+			RenderTextOnScreen(meshList[GEO_TEXT], "<ENTER>", Color(0, 1, 1), 2.5, 12.75, 5);
+			RenderTextOnScreen(meshList[GEO_TEXT], "To", Color(0, 1, 1), 2.5, 15.25, 3.75);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Confirm", Color(0, 1, 1), 2.5, 12.66, 2.5);
+		}
+		
+
+		
 	}
 	else if (VocationScene)
 	{
+		meshList[GEO_BACKGROUND]->textureID = background2;
+		RenderObjectOnScreen(meshList[GEO_BACKGROUND], 0.8, 0.5, 50);
 		RenderObjectOnScreen(meshList[GEO_SCREEN], 2, 1.5, 20);
+		if (globalTime - animationTime < 1.f)
+		{
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "CHOOSE", Color(0, 1, 1), 3, 10.5, 17.5, 180 + (globalTime - animationTime) * 180, 0.f, 1.f, 0.f);
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "YOUR", Color(0, 1, 1), 3, 11.5, 16.5, 180 + (globalTime - animationTime) * 180, 0.f, 1.f, 0.f);
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "VOCATION", Color(0, 1, 1), 3, 9.5, 15.25, 180 + (globalTime - animationTime) * 180, 0.f, 1.f, 0.f);
 
-		RenderTextOnScreen(meshList[GEO_TEXT], "CHOOSE", Color(1, 1, 0), 3, 10.5, 17.5);
-		RenderTextOnScreen(meshList[GEO_TEXT], "YOUR", Color(1, 0, 0), 3, 11.5, 16.5);
-		RenderTextOnScreen(meshList[GEO_TEXT], "VOCATION", Color(0, 1, 0), 3, 9.5, 15.25);
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "<ENTER>", Color(0, 1, 1), 2.5, 12.75, 5, 180 + (globalTime - animationTime) * 180, 1.f, 0.f, 0.f);
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "To", Color(0, 1, 1), 2.5, 15.25, 3.75, 180 + (globalTime - animationTime) * 180, 1.f, 0.f, 0.f);
+			CustomRenderTextOnScreen(meshList[GEO_TEXT], "Confirm", Color(0, 1, 1), 2.5, 12.66, 2.5, 180 + (globalTime - animationTime) * 180, 1.f, 0.f, 0.f);
+		}
+		else
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "CHOOSE", Color(0, 1, 1), 3, 10.5, 17.5);
+			RenderTextOnScreen(meshList[GEO_TEXT], "YOUR", Color(0, 1, 1), 3, 11.5, 16.5);
+			RenderTextOnScreen(meshList[GEO_TEXT], "VOCATION", Color(0, 1, 1), 3, 9.5, 15.25);
 
-		RenderTextOnScreen(meshList[GEO_TEXT], "<ENTER>", Color(0, 1, 1), 2.5, 12.75, 5);
-		RenderTextOnScreen(meshList[GEO_TEXT], "To", Color(0, 1, 1), 2.5, 15.25, 3.75);
-		RenderTextOnScreen(meshList[GEO_TEXT], "Confirm", Color(0, 1, 1), 2.5, 12.66, 2.5);
+			RenderTextOnScreen(meshList[GEO_TEXT], "<ENTER>", Color(0, 1, 1), 2.5, 12.75, 5);
+			RenderTextOnScreen(meshList[GEO_TEXT], "To", Color(0, 1, 1), 2.5, 15.25, 3.75);
+			RenderTextOnScreen(meshList[GEO_TEXT], "Confirm", Color(0, 1, 1), 2.5, 12.66, 2.5);
+		}
+
+
 	}
 
 
@@ -424,6 +464,51 @@ void StarterScene::RenderTextOnScreen(Mesh* mesh, std::string text, Color color,
 	glEnable(GL_DEPTH_TEST);
 }
 
+
+void StarterScene::CustomRenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float angle, float angleX, float angleY, float angleZ) //default angleX = 1.f, angleY = 0.f, angleZ = 0.f
+{
+	if (!mesh || mesh->textureID <= 0) //Proper error check
+		return;
+
+	glDisable(GL_DEPTH_TEST);
+
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity(); //Reset modelStack
+	modelStack.Scale(size, size, size);
+	modelStack.Translate(x + text.length()/2, y, 0);
+	modelStack.Rotate(angle, angleX, angleY, angleZ);
+	modelStack.Translate(-(signed)(text.length()/2), 0, 0);
+
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 1);
+	glUniform3fv(m_parameters[U_TEXT_COLOR], 1, &color.r);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+	for (unsigned i = 0; i < text.length(); ++i)
+	{
+		Mtx44 characterSpacing;
+		characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
+		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+
+		mesh->Render((unsigned)text[i] * 6, 6);
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUniform1i(m_parameters[U_TEXT_ENABLED], 0);
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	glEnable(GL_DEPTH_TEST);
+}
 void StarterScene::RenderObjectOnScreen(Mesh* mesh, float x, float y, float size)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check

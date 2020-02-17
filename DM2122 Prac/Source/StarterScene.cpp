@@ -182,6 +182,7 @@ void StarterScene::Update(double dt)
 		if (Application::IsKeyPressed(VK_RETURN) && Vocation::getVocation() == Vocation::NONE && globalTime - debounceTime > 0.2f) // enter key
 		{
 			Vocation::setVocation(JobSelection);
+			SoundEngine->stopAllSounds();
 		}
 		if (Vocation::getVocation() != Vocation::NONE)
 		{

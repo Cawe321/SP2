@@ -183,6 +183,14 @@ void StarterScene::Update(double dt)
 		{
 			Vocation::setVocation(JobSelection);
 			SoundEngine->stopAllSounds();
+			std::vector<Vocation::Quest> name = Vocation::getMainQuest(1);
+			Application::Isonlevel = true;
+			/*Vocation::Quest temp = name[0];
+			temp.currentNumber = 0;
+			temp.job == Vocation::BOUNCER;*/
+			
+			//Vocation::getMainQuest(1)[JobSelection].currentNumber = 1;
+
 		}
 		if (Vocation::getVocation() != Vocation::NONE)
 		{

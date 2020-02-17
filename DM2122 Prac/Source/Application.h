@@ -7,6 +7,8 @@
 class Application
 {
 public:
+	static bool Isonlevel;
+
 	Application();
 	~Application();
 	void Init();

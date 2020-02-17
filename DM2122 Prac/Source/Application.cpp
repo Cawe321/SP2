@@ -43,6 +43,7 @@ bool Application::IsKeyPressed(unsigned short key)
     return ((GetAsyncKeyState(key) & 0x8001) != 0);
 }
 
+bool Application::Isonlevel = false;
 Application::Application()
 {
 }
@@ -105,25 +106,41 @@ void Application::Init()
 void Application::Run()
 {
 	//Main Loop
+	bool quit = false;
+	
+	Scene* scene;
+	while (quit == false) {
+		if (Isonlevel == false) {
+			scene = new StarterScene();
+		}
+		else {
+			scene = new SceneText();
+			Isonlevel = false;
+		}
+		scene->Init();
 
-	Scene* scene = new SceneText();
+		m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
+		while ((!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE)))
+		{
+			scene->Update(m_timer.getElapsedTime());
+			scene->Render();
+			//Swap buffers
+			glfwSwapBuffers(m_window);
+			//Get and organize events, like keyboard and mouse input, window resizing, etc...
+			glfwPollEvents();
+			m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.   
+			
+			if (Isonlevel == true) {
+				break;
+			}
+		} //Check if the ESC key had been pressed or if the window had been closed
+		scene->Exit();
+		delete scene;
 
-	scene->Init();
-
-	m_timer.startTimer();    // Start timer to calculate how long it takes to render this frame
-	while (!glfwWindowShouldClose(m_window) && !IsKeyPressed(VK_ESCAPE))
-	{
-		scene->Update(m_timer.getElapsedTime());
-		scene->Render();
-		//Swap buffers
-		glfwSwapBuffers(m_window);
-		//Get and organize events, like keyboard and mouse input, window resizing, etc...
-		glfwPollEvents();
-        m_timer.waitUntil(frameTime);       // Frame rate limiter. Limits each frame to a specified time in ms.   
-
-	} //Check if the ESC key had been pressed or if the window had been closed
-	scene->Exit();
-	delete scene;
+		if (IsKeyPressed(VK_ESCAPE)) {
+			quit = true;
+		}
+	}
 }
 
 void Application::Exit()

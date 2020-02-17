@@ -12,6 +12,7 @@
 #define SCALE_LIMIT 5.f;
 #define LSPEED 10.f
 
+using namespace irrklang; // audio lib
 StarterScene::StarterScene()
 {
 	for (int i = 0; i < NUM_GEOMETRY; ++i)
@@ -27,6 +28,8 @@ StarterScene::~StarterScene()
 void StarterScene::Init()
 {
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
+
+	SoundEngine->play2D("audio//creeper.mp3", true, false, true);
 
 	// Generate a default VAO for now
 	glGenVertexArrays(1, &m_vertexArrayID);
@@ -134,7 +137,7 @@ void StarterScene::Update(double dt)
 {
 	globalTime += dt;
 	
-
+	
 	if (Application::IsKeyPressed(0x31))
 	{
 		glDisable(GL_CULL_FACE);

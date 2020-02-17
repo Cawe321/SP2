@@ -7,6 +7,7 @@
 #include "Mesh.h"
 #include "Light.h"
 #include "Vocation.h"
+
 class StarterScene : public Scene
 {
 	enum GEOMETRY_TYPE
@@ -62,6 +63,8 @@ private:
 
 	Camera2 camera;
 	
+	irrklang::ISoundEngine* SoundEngine = irrklang::createIrrKlangDevice();
+
 	// cooldown
 	float globalTime;
 	float debounceTime;

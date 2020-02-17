@@ -1,6 +1,7 @@
 #ifndef SCENE_H
 #define SCENE_H
-
+// Include Audio Library all Scenes
+#include "irrklang.h"
 class Scene
 {
 public:

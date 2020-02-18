@@ -216,7 +216,7 @@ void StarterScene::Update(double dt)
 			animationTime = globalTime;
 		
 			Vocation::setVocation(JobSelection);
-			std::vector<Vocation::Quest> name = Vocation::getMainQuest(2);
+			//std::vector<Vocation::Quest> name = Vocation::getMainQuest(2);
 			/*Vocation::Quest temp = name[0];
 			temp.currentNumber = 0;
 			temp.job == Vocation::BOUNCER;*/
@@ -313,7 +313,7 @@ void StarterScene::Update(double dt)
 			camera.position.y = 2.5f;
 			camera.target = { 0, 2.f, 45 };
 			SoundEngine->stopAllSounds();
-		//	Application::Isonlevel = true;
+			Application::Isonlevel = true;
 		}
 	}
 

@@ -6,6 +6,10 @@
 #include "MeshBuilder.h"
 #include "Utility.h"
 #include "LoadTGA.h"
+#include "Cleanertask.h"
+#include "Salesmantask.h"
+#include "Bouncertask.h"
+#include "Mechanictask.h"
 
 #define ROT_LIMIT 45.f;
 #define SCALE_LIMIT 5.f;
@@ -225,6 +229,12 @@ void SceneText::Render()
 	//modelStack.Translate(0, -3, 0);
 	//RenderMesh(meshList[GEO_DICE], true);
 	//modelStack.PopMatrix();
+	
+	std::string TrackedTask;
+	Tasklist* Task = new Bouncertask(Day1);
+	TrackedTask = Task->Taskstatus(Day1);
+
+	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
 
 	modelStack.PushMatrix();
 	//scale, translate, rotate
@@ -232,7 +242,7 @@ void SceneText::Render()
 	modelStack.PopMatrix();
 
 	//No transform needed
-	RenderTextOnScreen(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0), 2, 0, 0);
+	//RenderTextOnScreen(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0), 2, 0, 0);
 
 }
 

@@ -237,13 +237,12 @@ void SceneText::Render()
 	
 	
 	*/
-	//std::string TrackedTask;
-	//Tasklist* Task = new Bouncertask(Day1);
-	//TrackedTask = Task->Taskstatus(Day1);
-	//RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
-
-
-
+	std::vector<Vocation::Quest> Day1 = Vocation::getMainQuest(1);
+	std::string TrackedTask;
+	Vocation::getVocation();
+	Tasklist* Task = new Salesmantask(Day1);
+	TrackedTask = Task->Taskstatus(Day1);
+	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
 
 	modelStack.PushMatrix();
 	//scale, translate, rotate

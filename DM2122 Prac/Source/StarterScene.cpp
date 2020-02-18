@@ -224,7 +224,7 @@ void StarterScene::Update(double dt)
 			animationTime = globalTime;
 		
 			Vocation::setVocation(JobSelection);
-			std::vector<Vocation::Quest> name = Vocation::getMainQuest(2);
+			//std::vector<Vocation::Quest> name = Vocation::getMainQuest(2);
 			/*Vocation::Quest temp = name[0];
 			temp.currentNumber = 0;
 			temp.job == Vocation::BOUNCER;*/

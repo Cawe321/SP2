@@ -7,6 +7,7 @@
 #include "Mesh.h"
 #include "Light.h"
 #include "Vocation.h"
+//#include "StarterScene.h"
 
 class SceneText : public Scene
 {
@@ -69,9 +70,6 @@ private:
 	Light light[1];
 
 	Camera2 camera;
-
-	std::vector<Vocation::Quest> Day1 = Vocation::getMainQuest(1);
-	Vocation::JOBTYPE JobSelection;
 	
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();

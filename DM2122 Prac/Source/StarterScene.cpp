@@ -30,7 +30,7 @@ void StarterScene::Init()
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
 	SoundEngine->play2D("audio//creeper.mp3", true, false, true);
-
+	zoomPlaying = false;
 	// Generate a default VAO for now
 	glGenVertexArrays(1, &m_vertexArrayID);
 	glBindVertexArray(m_vertexArrayID);
@@ -83,9 +83,9 @@ void StarterScene::Init()
 	glEnable(GL_DEPTH_TEST);
 
 	light[0].type = Light::LIGHT_POINT;
-	light[0].position.Set(0, 5, 0);
-	light[0].color.Set(0.5f, 0.5f, 0.5f);
-	light[0].power = 1;
+	light[0].position.Set(0, 35, 25);
+	light[0].color.Set(1.f, 1.f, 1.f);
+	light[0].power = 10;
 	light[0].kC = 1.f;
 	light[0].kL = 0.01f;
 	light[0].kQ = 0.001f;
@@ -115,6 +115,27 @@ void StarterScene::Init()
 	VocationScene = false;
 	EntranceScene = false;
 
+
+	// Skybox
+	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.f, 1.f);
+	meshList[GEO_LEFT]->textureID = LoadTGA("Image//StarterSceneLeft.tga");
+
+	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1.f, 1.f);
+	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//StarterSceneRight.tga");
+
+	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1.f, 1.f);
+	meshList[GEO_TOP]->textureID = LoadTGA("Image//StarterSceneTop.tga");
+
+	meshList[GEO_BOTTOM] = MeshBuilder::GenerateQuad("bottom", Color(1, 1, 1), 1.f, 1.f);
+	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//StarterSceneBottom.tga");
+
+	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1.f, 1.f);
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//StarterSceneFront.tga");
+
+	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1.f, 1.f);
+	meshList[GEO_BACK]->textureID = LoadTGA("Image//StarterSceneBack.tga");
+
+
 	// Initializing the Scene's parts
 	meshList[GEO_SCREEN] = MeshBuilder::GenerateQuad("Screen", Color(0, 1, 0), 1, 1);
 	SalesPersonTexture = LoadTGA("Image//salespersonlogo.tga");
@@ -127,6 +148,13 @@ void StarterScene::Init()
 	meshList[GEO_BACKGROUND] = MeshBuilder::GenerateQuad("Background", Color(0, 1, 0), 1.6, 1.4);
 	meshList[GEO_BACKGROUND]->textureID = LoadTGA("Image//motorshowbackground2.tga");
 	background2 = LoadTGA("Image//motorshowbackground.tga");
+
+	meshList[GEO_ENTRANCE] = MeshBuilder::GenerateOBJ("Entrance", "OBJ//carshowentrance.obj");
+	meshList[GEO_ENTRANCE]->textureID = LoadTGA("Image//carshowentrance.tga");
+
+	meshList[GEO_ENTRANCELEFT] = MeshBuilder::GenerateOBJ("EntranceLeft", "OBJ//carshowentranceleftdoor.obj");
+	meshList[GEO_ENTRANCERIGHT] = MeshBuilder::GenerateOBJ("EntranceRight", "OBJ//carshowentrancerightdoor.obj");
+	meshList[GEO_ENTRANCELEFT]->textureID = meshList[GEO_ENTRANCERIGHT]->textureID = LoadTGA("Image//slidingdoor.tga");
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
@@ -181,10 +209,14 @@ void StarterScene::Update(double dt)
 	{
 		if (Application::IsKeyPressed(VK_RETURN) && Vocation::getVocation() == Vocation::NONE && globalTime - debounceTime > 0.2f) // enter key
 		{
+			camera.cameraLock = false;
+			VocationScene = false;
+			EntranceScene = true;
+			camera.position = { 0, 30, -50 };
+			animationTime = globalTime;
+		
 			Vocation::setVocation(JobSelection);
-			SoundEngine->stopAllSounds();
-			std::vector<Vocation::Quest> name = Vocation::getMainQuest(1);
-			Application::Isonlevel = true;
+			std::vector<Vocation::Quest> name = Vocation::getMainQuest(2);
 			/*Vocation::Quest temp = name[0];
 			temp.currentNumber = 0;
 			temp.job == Vocation::BOUNCER;*/
@@ -247,7 +279,43 @@ void StarterScene::Update(double dt)
 		else if (JobSelection == Vocation::MECHANIC)
 			meshList[GEO_SCREEN]->textureID = MechanicTexture;
 	}
-	
+	else if (EntranceScene)
+	{
+		if (globalTime - animationTime <= 1)
+		{
+			camera.position.z = -(50 - (globalTime - animationTime) * 60);
+			camera.position.y = 30 - (globalTime - animationTime) * 27.5;
+			camera.target = { 0, 10, 45 };
+		}
+		else if (globalTime- animationTime <= 2)
+		{
+			camera.position.z = 10; // camera must be locked for this to work
+			camera.position.y = 5;
+		}
+		else if (globalTime - animationTime <= 3)
+		{
+			camera.target = { 0, 10 - (globalTime - animationTime - 2.f) * 7.5f, 45 };
+		}
+		else if (globalTime - animationTime <= 4)
+		{
+			if (!zoomPlaying)
+			{
+				zoomPlaying = true;
+				SoundEngine->play2D("audio//soniczoom.mp3", false);
+			}
+			camera.position.z = 10 + (globalTime - animationTime - 3) * 28;
+			camera.position.y = 5 - (globalTime - animationTime - 3) * 2.5f;
+			camera.target = { 0, 2.f, 45 };
+		}
+		else
+		{
+			camera.position.z = 38;
+			camera.position.y = 2.5f;
+			camera.target = { 0, 2.f, 45 };
+			SoundEngine->stopAllSounds();
+		//	Application::Isonlevel = true;
+		}
+	}
 
 
 	camera.Update(dt);
@@ -343,6 +411,49 @@ void StarterScene::Render()
 
 
 	}
+	else if (EntranceScene)
+	{
+		RenderSkybox();
+		modelStack.PushMatrix();
+			modelStack.Translate(0, 0, 40);
+			modelStack.Rotate(90, 0, 1, 0);
+			RenderMesh(meshList[GEO_ENTRANCE], true);
+			if (globalTime - animationTime < 1)
+			{
+				RenderMesh(meshList[GEO_ENTRANCELEFT], false);
+				RenderMesh(meshList[GEO_ENTRANCERIGHT], false);
+			}
+			else if (globalTime - animationTime > 1 && globalTime - animationTime <= 2)
+			{
+				modelStack.PushMatrix();
+					modelStack.Translate(0, 0, globalTime - animationTime - 1);
+					RenderMesh(meshList[GEO_ENTRANCELEFT], false);
+				modelStack.PopMatrix();
+
+				modelStack.PushMatrix();
+					modelStack.Translate(0, 0, -(globalTime - animationTime - 1));
+					RenderMesh(meshList[GEO_ENTRANCERIGHT], false);
+				modelStack.PopMatrix();
+
+			}
+			else if (globalTime - animationTime > 2)
+			{
+				modelStack.PushMatrix();
+					modelStack.Translate(0, 0, 1);
+					RenderMesh(meshList[GEO_ENTRANCELEFT], false);
+				modelStack.PopMatrix();
+				
+				modelStack.PushMatrix();
+					modelStack.Translate(0, 0, -1);
+					RenderMesh(meshList[GEO_ENTRANCERIGHT], false);
+				modelStack.PopMatrix();
+				
+			}
+			
+			
+		modelStack.PopMatrix();
+
+	}
 
 
 
@@ -401,6 +512,62 @@ void StarterScene::RenderMesh(Mesh* mesh, bool enableLight)
 	mesh->Render(); //this line should only be called once in the whole function
 
 	if(mesh->textureID > 0) glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void StarterScene::RenderSkybox()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 3.75, 0);
+
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(19.9f, 0.f, 0.f);
+	modelStack.Scale(40.f, 60.f, 82.f);
+	modelStack.Rotate(-90.f, 0.f, 1.f, 0.f);
+	RenderMesh(meshList[GEO_LEFT], false);
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(-19.9f, 0.f, 0.f);
+	modelStack.Scale(80.f, 60.f, 82.f);
+	modelStack.Rotate(90.f, 0.f, 1.f, 0.f);
+	RenderMesh(meshList[GEO_RIGHT], false);
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(0.0f, 29.9f, 1.f);
+	modelStack.Scale(40.f, 60.f, 80.9f);
+	modelStack.Rotate(90.f, 1.f, 0.f, 0.f);
+	modelStack.PushMatrix();
+	modelStack.Rotate(180.f, 0.f, 0.f, 1.f);
+	RenderMesh(meshList[GEO_TOP], false);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(0.f, -29.9f, 0.f);
+	modelStack.Scale(40.f, 60.f, 82.f);
+	modelStack.Rotate(-90.f, 1.f, 0.f, 0.f);
+	modelStack.PushMatrix();
+	modelStack.Rotate(180.f, 0.f, 0.f, 1.f);
+	RenderMesh(meshList[GEO_BOTTOM], false);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(0.f, 0.f, -39.9f);
+	modelStack.Scale(40.f, 60.f, 40.f);
+	RenderMesh(meshList[GEO_FRONT], false);
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(0.f, 0.f, 40.9f);
+	modelStack.Scale(40.f, 60.f, 40.f);
+	modelStack.Rotate(180.f, 0.f, 1.f, 0.f);
+	RenderMesh(meshList[GEO_BACK], false);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
 }
 
 

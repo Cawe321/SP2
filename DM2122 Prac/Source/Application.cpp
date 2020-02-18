@@ -109,7 +109,7 @@ void Application::Run()
 	bool quit = false;
 	
 	Scene* scene;
-	while (quit == false) {
+	while (quit == false && !glfwWindowShouldClose(m_window)) {
 		if (Isonlevel == false) {
 			scene = new StarterScene();
 		}

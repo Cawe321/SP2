@@ -16,6 +16,16 @@ class StarterScene : public Scene
 		GEO_TEXT,
 		GEO_BACKGROUND,
 		GEO_SCREEN,
+		GEO_ENTRANCE,
+		GEO_ENTRANCELEFT,
+		GEO_ENTRANCERIGHT,
+
+		GEO_LEFT,
+		GEO_RIGHT,
+		GEO_TOP,
+		GEO_BOTTOM,
+		GEO_FRONT,
+		GEO_BACK,
 		NUM_GEOMETRY,
 	};
 
@@ -64,11 +74,12 @@ private:
 	Camera2 camera;
 	
 	irrklang::ISoundEngine* SoundEngine = irrklang::createIrrKlangDevice();
+	bool zoomPlaying;
 
 	// cooldown
 	float globalTime;
 	float debounceTime;
-	float animationTime; // only used on Vocation Selection
+	float animationTime; // only used on Vocation Selection or Entrance Anim
 
 	// Scenes of Scene
 	bool IntroScene;
@@ -76,6 +87,7 @@ private:
 	bool EntranceScene;
 
 	void RenderMesh(Mesh* mesh, bool enableLight);
+	void RenderSkybox();
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);

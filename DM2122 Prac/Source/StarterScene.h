@@ -91,11 +91,11 @@ private:
 	int CleanerTexture;
 	int BouncerTexture;
 	int MechanicTexture;
-
 public:
+	//std::vector<Vocation::Quest> Day1 = Vocation::getMainQuest(1);
+
 	StarterScene();
 	~StarterScene();
-
 	virtual void Init();
 	virtual void Update(double dt);
 	virtual void Render();

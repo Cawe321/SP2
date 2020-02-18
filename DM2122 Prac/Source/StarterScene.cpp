@@ -6,6 +6,7 @@
 #include "MeshBuilder.h"
 #include "Utility.h"
 #include "LoadTGA.h"
+#include "Cleanertask.h"
 
 
 #define ROT_LIMIT 45.f;
@@ -183,8 +184,10 @@ void StarterScene::Update(double dt)
 		{
 			Vocation::setVocation(JobSelection);
 			SoundEngine->stopAllSounds();
-			std::vector<Vocation::Quest> name = Vocation::getMainQuest(1);
+			
+			//std::vector<Vocation::Quest> Day1 = Vocation::getMainQuest(1);
 			Application::Isonlevel = true;
+			
 			/*Vocation::Quest temp = name[0];
 			temp.currentNumber = 0;
 			temp.job == Vocation::BOUNCER;*/

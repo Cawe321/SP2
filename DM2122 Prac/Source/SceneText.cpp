@@ -230,11 +230,20 @@ void SceneText::Render()
 	//RenderMesh(meshList[GEO_DICE], true);
 	//modelStack.PopMatrix();
 	
-	std::string TrackedTask;
-	Tasklist* Task = new Bouncertask(Day1);
-	TrackedTask = Task->Taskstatus(Day1);
 
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
+	/*
+	
+		Sorry to whoever did this code. I had to comment it out for the program to work
+	
+	
+	*/
+	//std::string TrackedTask;
+	//Tasklist* Task = new Bouncertask(Day1);
+	//TrackedTask = Task->Taskstatus(Day1);
+	//RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
+
+
+
 
 	modelStack.PushMatrix();
 	//scale, translate, rotate

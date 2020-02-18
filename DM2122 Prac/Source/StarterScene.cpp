@@ -29,8 +29,9 @@ void StarterScene::Init()
 {
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
-	SoundEngine->play2D("audio//creeper.mp3", true, false, true);
+	SoundEngine->play2D("audio//IntroBackground.mp3", true, false, true);
 	zoomPlaying = false;
+	vroomPlaying = false;
 	// Generate a default VAO for now
 	glGenVertexArrays(1, &m_vertexArrayID);
 	glBindVertexArray(m_vertexArrayID);
@@ -109,6 +110,7 @@ void StarterScene::Init()
 	// set to 0, to track debounce time, and also get the global/elapsed time
 	globalTime = 0;
 	debounceTime = 0;
+	animationTime = 0;
 
 	// Setting the parts of this Scene in order
 	IntroScene = true;
@@ -135,7 +137,7 @@ void StarterScene::Init()
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_BACK]->textureID = LoadTGA("Image//StarterSceneBack.tga");
 
-
+	
 	// Initializing the Scene's parts
 	meshList[GEO_SCREEN] = MeshBuilder::GenerateQuad("Screen", Color(0, 1, 0), 1, 1);
 	SalesPersonTexture = LoadTGA("Image//salespersonlogo.tga");
@@ -155,6 +157,9 @@ void StarterScene::Init()
 	meshList[GEO_ENTRANCELEFT] = MeshBuilder::GenerateOBJ("EntranceLeft", "OBJ//carshowentranceleftdoor.obj");
 	meshList[GEO_ENTRANCERIGHT] = MeshBuilder::GenerateOBJ("EntranceRight", "OBJ//carshowentrancerightdoor.obj");
 	meshList[GEO_ENTRANCELEFT]->textureID = meshList[GEO_ENTRANCERIGHT]->textureID = LoadTGA("Image//slidingdoor.tga");
+
+	meshList[GEO_CARLOGO] = MeshBuilder::GenerateQuad("Background", Color(0, 1, 0), 1, 1);
+	meshList[GEO_CARLOGO]->textureID = LoadTGA("Image//carlogo.tga");
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
@@ -197,8 +202,10 @@ void StarterScene::Update(double dt)
 
 	if (IntroScene)
 	{
+		animationTime += dt;
 		if (Application::IsKeyPressed(VK_RETURN))
 		{
+			SoundEngine->play2D("audio//bleep.wav", false);
 			IntroScene = false;
 			VocationScene = true;
 			debounceTime = globalTime;
@@ -209,7 +216,8 @@ void StarterScene::Update(double dt)
 	{
 		if (Application::IsKeyPressed(VK_RETURN) && Vocation::getVocation() == Vocation::NONE && globalTime - debounceTime > 0.2f) // enter key
 		{
-			camera.cameraLock = false;
+			SoundEngine->play2D("audio//bleep.wav", false);
+			camera.cameraLock = true; // lock the camera from player interaction
 			VocationScene = false;
 			EntranceScene = true;
 			camera.position = { 0, 30, -50 };
@@ -231,6 +239,7 @@ void StarterScene::Update(double dt)
 		}
 		if (Application::IsKeyPressed('E') && globalTime - debounceTime > 0.2f)
 		{
+			SoundEngine->play2D("audio//bleep.mp3", false);
 			debounceTime = globalTime; // to check the time taken after this keypress to press another key
 			if (JobSelection == Vocation::SALES)
 			{
@@ -251,6 +260,7 @@ void StarterScene::Update(double dt)
 		}
 		if (Application::IsKeyPressed('Q') && globalTime - debounceTime > 0.2f)
 		{
+			SoundEngine->play2D("audio//bleep.mp3", false);
 			debounceTime = globalTime; // to check the time taken after this keypress to press another key
 			if (JobSelection == Vocation::SALES)
 			{
@@ -313,7 +323,7 @@ void StarterScene::Update(double dt)
 			camera.position.y = 2.5f;
 			camera.target = { 0, 2.f, 45 };
 			SoundEngine->stopAllSounds();
-		//	Application::Isonlevel = true;
+			Application::Isonlevel = true;
 		}
 	}
 
@@ -360,6 +370,24 @@ void StarterScene::Render()
 	if (IntroScene)
 	{
 		RenderObjectOnScreen(meshList[GEO_BACKGROUND], 0.8, 0.5, 50);
+
+		// simple movement animation
+		if (animationTime > 3)
+		{
+			if (vroomPlaying == false)
+			{
+				vroomPlaying = true;
+				SoundEngine->play2D("audio//vroom.mp3", false);
+			}
+		
+			RenderObjectOnScreen(meshList[GEO_CARLOGO], -1 + (animationTime-3) * 4, 1.5, 15);
+		}
+		if (animationTime > 7)
+		{
+			vroomPlaying = false;
+			animationTime = 0;
+		}
+
 		if (globalTime < 1.f)
 		{
 			float toMove = 16.25f - globalTime*8;
@@ -387,9 +415,10 @@ void StarterScene::Render()
 	{
 		meshList[GEO_BACKGROUND]->textureID = background2;
 		RenderObjectOnScreen(meshList[GEO_BACKGROUND], 0.8, 0.5, 50);
-		RenderObjectOnScreen(meshList[GEO_SCREEN], 2, 1.5, 20);
+		
 		if (globalTime - animationTime < 1.f)
 		{
+			CustomRenderObjectOnScreen(meshList[GEO_SCREEN], 2, 1.5, 20, 180 + (globalTime-animationTime) * 180, 1.f, 1.f, 1.f);
 			CustomRenderTextOnScreen(meshList[GEO_TEXT], "CHOOSE", Color(0, 1, 1), 3, 10.5, 17.5, 180 + (globalTime - animationTime) * 180, 0.f, 1.f, 0.f);
 			CustomRenderTextOnScreen(meshList[GEO_TEXT], "YOUR", Color(0, 1, 1), 3, 11.5, 16.5, 180 + (globalTime - animationTime) * 180, 0.f, 1.f, 0.f);
 			CustomRenderTextOnScreen(meshList[GEO_TEXT], "VOCATION", Color(0, 1, 1), 3, 9.5, 15.25, 180 + (globalTime - animationTime) * 180, 0.f, 1.f, 0.f);
@@ -400,6 +429,7 @@ void StarterScene::Render()
 		}
 		else
 		{
+			RenderObjectOnScreen(meshList[GEO_SCREEN], 2, 1.5, 20);
 			RenderTextOnScreen(meshList[GEO_TEXT], "CHOOSE", Color(0, 1, 1), 3, 10.5, 17.5);
 			RenderTextOnScreen(meshList[GEO_TEXT], "YOUR", Color(0, 1, 1), 3, 11.5, 16.5);
 			RenderTextOnScreen(meshList[GEO_TEXT], "VOCATION", Color(0, 1, 1), 3, 9.5, 15.25);
@@ -705,6 +735,42 @@ void StarterScene::RenderObjectOnScreen(Mesh* mesh, float x, float y, float size
 	modelStack.LoadIdentity(); //Reset modelStack
 	modelStack.Scale(size, size, size);
 	modelStack.Translate(x, y, 0);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+
+	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	mesh->Render();
+	glBindTexture(GL_TEXTURE_2D, 0);
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+
+
+	glEnable(GL_DEPTH_TEST);
+}
+
+void StarterScene::CustomRenderObjectOnScreen(Mesh* mesh, float x, float y, float size, float angle, float angleX, float angleY, float angleZ)
+{
+	if (!mesh || mesh->textureID <= 0) //Proper error check
+		return;
+
+	glDisable(GL_DEPTH_TEST);
+
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity(); //Reset modelStack
+	modelStack.Scale(size, size, size);
+	modelStack.Translate(x, y, 0);
+	modelStack.Rotate(angle, angleX, angleY, angleZ);
 	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
 	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
 	glActiveTexture(GL_TEXTURE0);

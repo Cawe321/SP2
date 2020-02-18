@@ -19,6 +19,7 @@ class StarterScene : public Scene
 		GEO_ENTRANCE,
 		GEO_ENTRANCELEFT,
 		GEO_ENTRANCERIGHT,
+		GEO_CARLOGO,
 
 		GEO_LEFT,
 		GEO_RIGHT,
@@ -75,6 +76,7 @@ private:
 	
 	irrklang::ISoundEngine* SoundEngine = irrklang::createIrrKlangDevice();
 	bool zoomPlaying;
+	bool vroomPlaying;
 
 	// cooldown
 	float globalTime;
@@ -93,6 +95,7 @@ private:
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void CustomRenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float angle, float angleX = 0.f, float angleY = 0.f, float angleZ = 1.f);
 	void RenderObjectOnScreen(Mesh* mesh, float x, float y, float size);
+	void CustomRenderObjectOnScreen(Mesh* mesh, float x, float y, float size, float angle, float angleX = 0.f, float angleY = 0.f, float angleZ = 1.f);
 	void CalculateFrameRate();
 
 	//Background Texture

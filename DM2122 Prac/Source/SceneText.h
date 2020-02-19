@@ -81,6 +81,10 @@ private:
 	Light light[1];
 
 	Camera2 camera;
+
+	std::vector<Vocation::Quest> Day1;
+	std::vector<Vocation::Quest> Day2;
+	std::vector<Vocation::Quest> Day3;
 	
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();

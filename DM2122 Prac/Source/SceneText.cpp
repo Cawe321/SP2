@@ -21,6 +21,10 @@ SceneText::SceneText()
 	{
 		meshList[i] = NULL;
 	}
+	Day1 = Vocation::getMainQuest(1);
+	Day2 = Vocation::getMainQuest(2);
+	Day3 = Vocation::getMainQuest(3);
+
 }
 
 SceneText::~SceneText()
@@ -230,27 +234,19 @@ void SceneText::Render()
 	//RenderMesh(meshList[GEO_DICE], true);
 	//modelStack.PopMatrix();
 	
-
-	/*
 	
-		Sorry to whoever did this code. I had to comment it out for the program to work
-	
-	
-	*/
-	std::vector<Vocation::Quest> Day1 = Vocation::getMainQuest(1);
 	std::string TrackedTask;
 	Vocation::getVocation();
 	Tasklist* Task = new Salesmantask(Day1);
 	TrackedTask = Task->Taskstatus(Day1);
 	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
 	
-		Tasklist* BouncerTask = new Bouncertask(Day1);
+	Tasklist* BouncerTask = new Bouncertask(Day1);
 	TrackedTask = BouncerTask->Taskstatus(Day1);
 	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2); //this one is okay, nothing changes
 
 
-	//Day2
-	std::vector<Vocation::Quest> Day2 = Vocation::getMainQuest(2); 
+	//Day2 
 	std::string TrackedTask2;
 	Vocation::getVocation();
 	Tasklist* BouncerTask2 = new Bouncertask(Day2);
@@ -259,7 +255,6 @@ void SceneText::Render()
 
 
 	//Day3
-	std::vector<Vocation::Quest> Day3 = Vocation::getMainQuest(3);
 	std::string TrackedTask3;
 	Vocation::getVocation();
 	Tasklist* BouncerTask3 = new Bouncertask(Day3);

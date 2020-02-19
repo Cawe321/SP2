@@ -7,6 +7,7 @@
 #include "Mesh.h"
 #include "Light.h"
 #include "Vocation.h"
+#include "VocationJob.h"
 
 class StarterScene : public Scene
 {
@@ -101,7 +102,7 @@ private:
 	//Background Texture
 	int background2;
 	// Vocation Stuff
-	Vocation::JOBTYPE JobSelection;
+	VocationJob* JobSelection;
 	int SalesPersonTexture;
 	int CleanerTexture;
 	int BouncerTexture;

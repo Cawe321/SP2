@@ -1,28 +1,29 @@
 #ifndef VOCATION_H
 #define VOCATION_H
 #include <vector>
+#include "VocationJob.h"
 class Vocation
 {
-
+private:
+	static VocationJob* Sales;
+	static VocationJob* Cleaner;
+	static VocationJob* Bouncer;
+	static VocationJob* Mechanic;
+	static VocationJob* None;
 public:
-	enum JOBTYPE
-	{
-		SALES,
-		CLEANER,
-		BOUNCER,
-		MECHANIC,
-		NONE,
-	};
+	static VocationJob* getVocationJobClass(VocationJob::JOBTYPE theType);
 	struct Quest
 	{
-		JOBTYPE job; // job type
+		VocationJob::JOBTYPE job; // job type
 		int maxNumber; // if currentNumber == maxNumber, player finished the quest.
 		int currentNumber; // use it when job is finished, to count the number of times the player finished this job.
 	};
 	static std::vector<Vocation::Quest> getMainQuest(int day);
-	static JOBTYPE getVocation();
-	static void setVocation(JOBTYPE job);
+	static VocationJob::JOBTYPE getVocation();
+	static void setVocation(VocationJob* work);
+	static void InitializeJob();
+	static void ClearJob(bool programEnd);
 private:
-	static JOBTYPE VocationJob;
+	static VocationJob* VocationWork;
 };
 #endif

@@ -19,7 +19,10 @@ std::string Salesmantask::Taskstatus(std::vector<Vocation::Quest> data)
 	return output;
 }
 
-void Salesmantask::Addscore(std::vector<Vocation::Quest> data)
+std::vector<Vocation::Quest> Salesmantask::Addscore(std::vector<Vocation::Quest> data)
 {
 	data[0].currentNumber++;
+	return data;
 }
+
+

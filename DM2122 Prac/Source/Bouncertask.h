@@ -7,5 +7,5 @@ protected:
 public:
 	Bouncertask(std::vector<Vocation::Quest>) : task() {};
 	std::string Taskstatus(std::vector<Vocation::Quest>);
-	void Addscore(std::vector<Vocation::Quest>);
+	std::vector<Vocation::Quest> Addscore(std::vector<Vocation::Quest>);
 };

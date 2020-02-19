@@ -23,6 +23,7 @@ class SceneText : public Scene
 		GEO_CHAR,
 		GEO_DICE,
 		GEO_LIGHTSPHERE,
+		GEO_ACHIEVEMENTS,
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};
@@ -63,6 +64,16 @@ private:
 	unsigned m_programID;
 	/*unsigned m_indexBuffer;*/
 	Mesh* meshList[NUM_GEOMETRY];
+	
+        int TotalBouncerTask;
+	int CurrentBouncerTask;
+
+	int CurrentSalespersonTask;
+
+	int CheapestPrice;
+	int ExpensivePrice;
+	int MiddlePrice;
+
 
 	unsigned m_parameters[U_TOTAL];
 

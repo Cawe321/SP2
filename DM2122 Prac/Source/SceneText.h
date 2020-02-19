@@ -24,6 +24,7 @@ class SceneText : public Scene
 		GEO_DICE,
 		GEO_LIGHTSPHERE,
 		GEO_ACHIEVEMENTS,
+		GEO_ACHIEVEMENTSBG,
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};

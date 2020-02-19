@@ -24,6 +24,10 @@ SceneText::SceneText()
 	Day1 = Vocation::getMainQuest(1);
 	Day2 = Vocation::getMainQuest(2);
 	Day3 = Vocation::getMainQuest(3);
+	
+	CheapestPrice = 15000; //for me to render out the achievements
+	MiddlePrice = 90000;
+	ExpensivePrice = 225000;
 
 }
 
@@ -141,6 +145,9 @@ void SceneText::Init()
 	
 	meshList[GEO_ACHIEVEMENTS] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_ACHIEVEMENTS]->textureID = LoadTGA("Image//calibri.tga");
+	
+	meshList[GEO_ACHIEVEMENTSBG] = MeshBuilder::GenerateQuad("Achievementsbg", Color(1, 1, 1), 1.f, 1.f);
+	meshList[GEO_ACHIEVEMENTSBG]->textureID = LoadTGA("Image//AchievementScreen");
 
 }
 
@@ -246,7 +253,7 @@ void SceneText::Render()
 	
 	Tasklist* BouncerTask = new Bouncertask(Day1);
 	TrackedTask = BouncerTask->Taskstatus(Day1);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2); //this one is okay, nothing changes
+	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2); 
 
 
 	//Day2 
@@ -254,7 +261,7 @@ void SceneText::Render()
 	Vocation::getVocation();
 	Tasklist* BouncerTask2 = new Bouncertask(Day2);
 	TrackedTask2 = BouncerTask2->Taskstatus(Day2);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3); //the maxnumber keeps changing?? is it cos of the rand updating?
+	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3); 
 
 
 	//Day3
@@ -262,44 +269,44 @@ void SceneText::Render()
 	Vocation::getVocation();
 	Tasklist* BouncerTask3 = new Bouncertask(Day3);
 	TrackedTask3 = BouncerTask3->Taskstatus(Day3);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4); //maxnumber keeps changing here as well for some reason
+	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4); 
 
-	CheapestPrice = 15000; //for me to render out the achievements
-	MiddlePrice = 90000;
-	ExpensivePrice = 225000;
-
+	
 	//Achievements. Side note, these will only appear at the end of day 3. 
 	TotalBouncerTask = Day1[2].maxNumber + Day2[2].maxNumber + Day3[2].maxNumber; //algo for this needs working on based on the vocation.cpp
 	CurrentBouncerTask = Day1[2].currentNumber + Day2[2].currentNumber + Day3[2].currentNumber;
 
 	CurrentSalespersonTask = Day1[0].currentNumber;
 
-	if (CurrentBouncerTask == TotalBouncerTask)
+if (AchievementScene == true)
 	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Doing the Right Thing Achieved!", Color(0, 1, 0), 2, 0, 10);
-	} 
-	if (CurrentSalespersonTask == 0) //will have an additional condition of && GameOverScene
-	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "No, I Quit! Achieved", Color(0, 1, 0), 2, 0, 11);
+	
+		if (CurrentBouncerTask == TotalBouncerTask)
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Doing the Right Thing Achieved!", Color(0, 1, 0), 2, 0, 10);
+		}
+		if (CurrentSalespersonTask == 0) //will have an additional condition of && GameOverScene
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "No, I Quit! Achieved", Color(0, 1, 0), 2, 0, 11);
+		}
+		//numbers are to be replaced with the relevant function
+		if (CheapestPrice == 15000)
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Cheapskate Achieved!", Color(0, 1, 0), 2, 20, 14);
+		}
+		if (MiddlePrice == 90000)
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Playing It Safe Achieved!", Color(0, 1, 0), 2, 15, 15);
+		}
+		if (ExpensivePrice == 225000)
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Crazy Rich Achieved!", Color(0, 1, 0), 2, 20, 16);
+		}
+		else  //supposed to be an else if statement, condition being that no car is bought, so no car stored inside the relevant data
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "I Rather Walk", Color(0, 1, 0), 2, 20, 18);
+		}
 	}
-	//numbers are to be replaced with the relevant function
-	if (CheapestPrice == 15000)
-	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Cheapskate Achieved!", Color(0, 1, 0), 2, 20, 14);
-	}
-	else if (MiddlePrice == 90000)
-	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Playing It Safe Achieved!", Color(0, 1, 0), 2, 15, 15);
-	}
-	else if (ExpensivePrice == 225000)
-	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Crazy Rich Achieved!", Color(0, 1, 0), 2, 20, 16);
-	}
-	else  //suposed to be an else if statement, condition being that no car is bought, so no car stored inside the relevant data
-	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "I Rather Walk", Color(0, 1, 0), 2, 20, 18);
-	}
-
 	modelStack.PushMatrix();
 	//scale, translate, rotate
 	RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));

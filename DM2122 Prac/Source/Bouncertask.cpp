@@ -19,7 +19,10 @@ std::string Bouncertask::Taskstatus(std::vector<Vocation::Quest> data)
 	return output;
 }
 
-void Bouncertask::Addscore(std::vector<Vocation::Quest> data)
+std::vector<Vocation::Quest> Bouncertask::Addscore(std::vector<Vocation::Quest> data)
 {
 	data[2].currentNumber++;
+	return data;
 }
+
+

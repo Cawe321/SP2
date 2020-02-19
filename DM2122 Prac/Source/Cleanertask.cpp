@@ -19,7 +19,10 @@ std::string Cleanertask::Taskstatus(std::vector<Vocation::Quest> data)
 	return output;
 }
 
-void Cleanertask::Addscore(std::vector<Vocation::Quest> data)
+std::vector<Vocation::Quest> Cleanertask::Addscore(std::vector<Vocation::Quest> data)
 {
 	data[1].currentNumber++;
+	return data;
 }
+
+

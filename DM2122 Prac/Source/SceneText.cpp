@@ -138,6 +138,9 @@ void SceneText::Init()
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+	
+	meshList[GEO_ACHIEVEMENTS] = MeshBuilder::GenerateText("text", 16, 16);
+	meshList[GEO_ACHIEVEMENTS]->textureID = LoadTGA("Image//calibri.tga");
 
 }
 

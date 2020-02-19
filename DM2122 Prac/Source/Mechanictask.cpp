@@ -18,3 +18,8 @@ std::string Mechanictask::Taskstatus(std::vector<Vocation::Quest> data)
 	}
 	return output;
 }
+
+void Mechanictask::Addscore(std::vector<Vocation::Quest> data)
+{
+	data[3].currentNumber++;
+}

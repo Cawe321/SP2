@@ -7,5 +7,6 @@ protected:
 public:
 	Mechanictask(std::vector<Vocation::Quest>) : task() {};
 	std::string Taskstatus(std::vector<Vocation::Quest>);
+	void Addscore(std::vector<Vocation::Quest>);
 };
 

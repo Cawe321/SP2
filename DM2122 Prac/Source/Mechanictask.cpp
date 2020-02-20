@@ -1,5 +1,15 @@
 #include "Mechanictask.h"
 
+Mechanictask::Mechanictask()
+{
+	Points = 0;
+	Strikes = 0;
+}
+
+Mechanictask::~Mechanictask()
+{
+}
+
 std::string Mechanictask::Taskstatus(std::vector<Vocation::Quest> data)
 {
 	std::string output = "";
@@ -23,6 +33,26 @@ std::vector<Vocation::Quest> Mechanictask::Addscore(std::vector<Vocation::Quest>
 {
 	data[3].currentNumber++;
 	return data;
+}
+
+void Mechanictask::AddStrike()
+{
+	Strikes = Strikes + 1;
+}
+
+void Mechanictask::AddPoints()
+{
+	Points = Points + 1;
+}
+
+int Mechanictask::GetStrike()
+{
+	return Strikes;
+}
+
+int Mechanictask::GetPoints()
+{
+	return Points;
 }
 
 

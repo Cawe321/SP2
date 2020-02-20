@@ -7,8 +7,11 @@
 #include "Mesh.h"
 #include "Light.h"
 #include "Vocation.h"
+#include "Mechanictask.h"
 //#include "StarterScene.h"
 
+const int MECHANIC_GAME_MAX_SCORE = 10;
+const int MECHANIC_GAME_MAX_LIVES = 3;
 class SceneText : public Scene
 {
 	enum GEOMETRY_TYPE
@@ -65,7 +68,7 @@ private:
 	/*unsigned m_indexBuffer;*/
 	Mesh* meshList[NUM_GEOMETRY];
 	
-        int TotalBouncerTask;
+    int TotalBouncerTask;
 	int CurrentBouncerTask;
 
 	int CurrentSalespersonTask;
@@ -85,7 +88,18 @@ private:
 	std::vector<Vocation::Quest> Day1;
 	std::vector<Vocation::Quest> Day2;
 	std::vector<Vocation::Quest> Day3;
+	Mechanictask* MechanicGameScore;
 	
+	char game[10];
+
+	float debounce;
+	float elapsed;
+	int count;
+	int random;
+
+	bool MechanicGame;
+	bool FreezeMovement;
+
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();
 

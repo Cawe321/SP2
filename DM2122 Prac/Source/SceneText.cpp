@@ -9,7 +9,7 @@
 #include "Cleanertask.h"
 #include "Salesmantask.h"
 #include "Bouncertask.h"
-#include "Mechanictask.h"
+
 
 #define ROT_LIMIT 45.f;
 #define SCALE_LIMIT 5.f;
@@ -24,7 +24,12 @@ SceneText::SceneText()
 	Day1 = Vocation::getMainQuest(1);
 	Day2 = Vocation::getMainQuest(2);
 	Day3 = Vocation::getMainQuest(3);
-
+	MechanicGameScore = new Mechanictask();
+	MechanicGame = false;
+	FreezeMovement = false;
+	for (int i = 0; i < 10; i++) {
+		game[i] = '-';
+	}
 }
 
 SceneText::~SceneText()
@@ -146,6 +151,61 @@ void SceneText::Init()
 
 void SceneText::Update(double dt)
 {
+	if (MechanicGame == true) {
+		// to make the keypress game
+		elapsed += dt;
+		if (Application::IsKeyPressed('W') && game[2] == 'W')
+		{
+			game[2] = '-';
+			MechanicGameScore->AddPoints();
+		}
+		else if (Application::IsKeyPressed('A') && game[2] == 'A')
+		{
+			game[2] = '-';
+			MechanicGameScore->AddPoints();
+		}
+		else if (Application::IsKeyPressed('S') && game[2] == 'S')
+		{
+			game[2] = '-';
+			MechanicGameScore->AddPoints();
+		}
+		else if (Application::IsKeyPressed('D') && game[2] == 'D')
+		{
+			game[2] = '-';
+			MechanicGameScore->AddPoints();
+		}
+
+		if (elapsed - debounce > 0.5f)
+		{
+			count++;
+
+			random = rand() % 6 + 1;
+			debounce = elapsed;
+			for (int i = 1; i < 10; i++)
+			{
+				//Moves characters forward
+				game[i - 1] = game[i];
+				if (game[1] != '-') {
+					MechanicGameScore->AddStrike();
+				}
+			}
+			game[9] = '-';
+			if (count >= random)
+			{
+				count = 0;
+				int random2 = rand() % 4;
+				if (random2 == 0)
+					game[9] = 'W';
+				else if (random2 == 1)
+					game[9] = 'A';
+				else if (random2 == 2)
+					game[9] = 'S';
+				else game[9] = 'D';
+			}
+		}
+	}
+	// end for keypress game
+
 	if (Application::IsKeyPressed(0x31))
 	{
 		glDisable(GL_CULL_FACE);
@@ -190,7 +250,9 @@ void SceneText::Update(double dt)
 		//to do: switch light type to SPOT and pass the information to
 		light[0].type = Light::LIGHT_SPOT;
 	}
-	camera.Update(dt);
+	if (FreezeMovement == false) {
+		camera.Update(dt);
+	}
 	CalculateFrameRate();
 }
 
@@ -240,13 +302,13 @@ void SceneText::Render()
 	
 	std::string TrackedTask;
 	Vocation::getVocation();
-	Tasklist* Task = new Salesmantask(Day1);
+	Tasklist* Task = new Mechanictask(Day1);
 	TrackedTask = Task->Taskstatus(Day1);
 	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
 	
 	Tasklist* BouncerTask = new Bouncertask(Day1);
 	TrackedTask = BouncerTask->Taskstatus(Day1);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2); //this one is okay, nothing changes
+	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
 
 
 	//Day2 
@@ -254,7 +316,7 @@ void SceneText::Render()
 	Vocation::getVocation();
 	Tasklist* BouncerTask2 = new Bouncertask(Day2);
 	TrackedTask2 = BouncerTask2->Taskstatus(Day2);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3); //the maxnumber keeps changing?? is it cos of the rand updating?
+	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
 
 
 	//Day3
@@ -262,7 +324,7 @@ void SceneText::Render()
 	Vocation::getVocation();
 	Tasklist* BouncerTask3 = new Bouncertask(Day3);
 	TrackedTask3 = BouncerTask3->Taskstatus(Day3);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4); //maxnumber keeps changing here as well for some reason
+	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4);
 
 	CheapestPrice = 15000; //for me to render out the achievements
 	MiddlePrice = 90000;
@@ -308,6 +370,53 @@ void SceneText::Render()
 	//No transform needed
 	//RenderTextOnScreen(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0), 2, 0, 0);
 
+	std::string print = "";
+	if (MechanicGame == true) {
+		for (int i = 0; i < 10; i++)
+		{
+			if (i != 2)
+			{
+				print.push_back(game[i]);
+			}
+			else
+			{
+				print.push_back(' ');
+			}
+		}
+		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(0, 1, 0), 5, 2, 1);
+		print = "  ";
+		print = "Points: ";
+		print.append(std::to_string(MechanicGameScore->GetPoints()));
+		print.append("/");
+		print.append(std::to_string(MECHANIC_GAME_MAX_SCORE));
+		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 3);
+		print = "  ";
+		print = "Strikes ";
+		print.append(std::to_string(MechanicGameScore->GetStrike()));
+		print.append("/");
+		print.append(std::to_string(MECHANIC_GAME_MAX_LIVES));
+		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 2);
+		print = "  ";
+		print.push_back(game[2]);
+		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 5, 3.9, 0);
+
+
+		if (MechanicGameScore->GetStrike() == MECHANIC_GAME_MAX_LIVES) {
+			//You Lose
+			FreezeMovement = false;
+			MechanicGame = false;
+		}
+
+		if (MechanicGameScore->GetPoints() == MECHANIC_GAME_MAX_SCORE) {
+			Tasklist* Temp;
+			Temp = new Mechanictask();
+			Day1 = Temp->Addscore(Day1);
+			delete Temp;
+			FreezeMovement = false;
+			MechanicGame = false;
+		}
+	}
 }
 
 void SceneText::Exit()

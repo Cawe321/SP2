@@ -28,6 +28,7 @@ class SceneText : public Scene
 		GEO_LIGHTSPHERE,
 		GEO_ACHIEVEMENTS,
 		GEO_ACHIEVEMENTSBG,
+		GEO_MECHANIC_GAME,
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};
@@ -100,6 +101,7 @@ private:
 
 	bool MechanicGame;
 	bool FreezeMovement;
+	bool hasmissed;
 
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();

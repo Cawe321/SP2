@@ -27,6 +27,7 @@ SceneText::SceneText()
 	MechanicGameScore = new Mechanictask();
 	MechanicGame = false;
 	FreezeMovement = false;
+	hasmissed = false;
 	for (int i = 0; i < 10; i++) {
 		game[i] = '-';
 	}
@@ -153,6 +154,9 @@ void SceneText::Init()
 	meshList[GEO_ACHIEVEMENTSBG] = MeshBuilder::GenerateQuad("Achievementsbg", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_ACHIEVEMENTSBG]->textureID = LoadTGA("Image//AchievementScreen");
 
+	meshList[GEO_MECHANIC_GAME] = MeshBuilder::GenerateQuad("Mechanic_Game", Color(0.5f, 1, 1), 1.f, 1.f);
+
+
 }
 
 void SceneText::Update(double dt)
@@ -191,10 +195,14 @@ void SceneText::Update(double dt)
 			{
 				//Moves characters forward
 				game[i - 1] = game[i];
-				if (game[1] != '-') {
-					MechanicGameScore->AddStrike();
-				}
+				
 			}
+			if (game[1] != '-' && hasmissed == false) {
+				MechanicGameScore->AddStrike();
+				hasmissed = true;
+
+			}
+			hasmissed = false;
 			game[9] = '-';
 			if (count >= random)
 			{
@@ -350,6 +358,55 @@ void SceneText::Render()
 			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "I Rather Walk Achieved!", Color(0.93, 1.f, 0.26f), 2.5f, 5, 17);
 		}
 	}
+	else if (MechanicGame == true) {
+		std::string print = "";
+		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
+		//RenderObjectOnScreen(meshList[GEO_MECHANIC_GAME], 50, 0.8, 0.5);
+		for (int i = 0; i < 10; i++)
+		{
+			if (i != 2)
+			{
+				print.push_back(game[i]);
+			}
+			else
+			{
+				print.push_back(' ');
+			}
+		}
+		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(0, 1, 0), 5, 2, 1);
+		print = "  ";
+		print = "Points: ";
+		print.append(std::to_string(MechanicGameScore->GetPoints()));
+		print.append("/");
+		print.append(std::to_string(MECHANIC_GAME_MAX_SCORE));
+		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 3);
+		print = "  ";
+		print = "Strikes ";
+		print.append(std::to_string(MechanicGameScore->GetStrike()));
+		print.append("/");
+		print.append(std::to_string(MECHANIC_GAME_MAX_LIVES));
+		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 2);
+		print = "  ";
+		print.push_back(game[2]);
+		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 1);
+		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 5, 3.9, 0);
+
+
+		if (MechanicGameScore->GetStrike() > MECHANIC_GAME_MAX_LIVES) {
+			//You Lose
+			FreezeMovement = false;
+			MechanicGame = false;
+		}
+
+		if (MechanicGameScore->GetPoints() == MECHANIC_GAME_MAX_SCORE) {
+			Tasklist* Temp;
+			Temp = new Mechanictask();
+			Day1 = Temp->Addscore(Day1);
+			delete Temp;
+			FreezeMovement = false;
+			MechanicGame = false;
+		}
+	}
 	else
 	{
 		RenderSkybox();
@@ -402,53 +459,8 @@ void SceneText::Render()
 	//No transform needed
 	//RenderTextOnScreen(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0), 2, 0, 0);
 
-	std::string print = "";
-	if (MechanicGame == true) {
-		for (int i = 0; i < 10; i++)
-		{
-			if (i != 2)
-			{
-				print.push_back(game[i]);
-			}
-			else
-			{
-				print.push_back(' ');
-			}
-		}
-		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(0, 1, 0), 5, 2, 1);
-		print = "  ";
-		print = "Points: ";
-		print.append(std::to_string(MechanicGameScore->GetPoints()));
-		print.append("/");
-		print.append(std::to_string(MECHANIC_GAME_MAX_SCORE));
-		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 3);
-		print = "  ";
-		print = "Strikes ";
-		print.append(std::to_string(MechanicGameScore->GetStrike()));
-		print.append("/");
-		print.append(std::to_string(MECHANIC_GAME_MAX_LIVES));
-		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 2);
-		print = "  ";
-		print.push_back(game[2]);
-		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 1);
-		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 5, 3.9, 0);
-
-
-		if (MechanicGameScore->GetStrike() == MECHANIC_GAME_MAX_LIVES) {
-			//You Lose
-			FreezeMovement = false;
-			MechanicGame = false;
-		}
-
-		if (MechanicGameScore->GetPoints() == MECHANIC_GAME_MAX_SCORE) {
-			Tasklist* Temp;
-			Temp = new Mechanictask();
-			Day1 = Temp->Addscore(Day1);
-			delete Temp;
-			FreezeMovement = false;
-			MechanicGame = false;
-		}
-	}
+	
+	
 }
 
 void SceneText::Exit()

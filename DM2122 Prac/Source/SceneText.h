@@ -71,9 +71,9 @@ private:
 
 	int CurrentSalespersonTask;
 
-	int CheapestPrice;
-	int ExpensivePrice;
-	int MiddlePrice;
+	int Price;
+	
+	bool AchievementScene;
 
 
 	unsigned m_parameters[U_TOTAL];

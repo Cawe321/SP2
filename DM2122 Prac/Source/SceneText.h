@@ -27,6 +27,7 @@ class SceneText : public Scene
 		GEO_DICE,
 		GEO_LIGHTSPHERE,
 		GEO_ACHIEVEMENTS,
+		GEO_ACHIEVEMENTSBG,
 		GEO_TEXT,
 		NUM_GEOMETRY,
 	};
@@ -73,9 +74,9 @@ private:
 
 	int CurrentSalespersonTask;
 
-	int CheapestPrice;
-	int ExpensivePrice;
-	int MiddlePrice;
+	int Price;
+	
+	bool AchievementScene;
 
 
 	unsigned m_parameters[U_TOTAL];
@@ -105,6 +106,7 @@ private:
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
+	void RenderObjectOnScreen(Mesh* mesh, float size, float x, float y);
 	void CalculateFrameRate();
 
 public:

@@ -29,9 +29,17 @@ void StarterScene::Init()
 {
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
+
+	// Initialize Pointer
+	Vocation::InitializeJob();
+
+	// Playing bgm
 	SoundEngine->play2D("audio//IntroBackground.mp3", true, false, true);
+
+	// Initialize Sound Values
 	zoomPlaying = false;
 	vroomPlaying = false;
+
 	// Generate a default VAO for now
 	glGenVertexArrays(1, &m_vertexArrayID);
 	glBindVertexArray(m_vertexArrayID);
@@ -144,7 +152,7 @@ void StarterScene::Init()
 	CleanerTexture = LoadTGA("Image//cleanerlogo.tga");
 	BouncerTexture = LoadTGA("Image//bouncerlogo.tga");
 	MechanicTexture = LoadTGA("Image//mechaniclogo.tga");
-	JobSelection = Vocation::SALES;
+	JobSelection = Vocation::getVocationJobClass(VocationJob::SALES);
 	meshList[GEO_SCREEN]->textureID = SalesPersonTexture;
 
 	meshList[GEO_BACKGROUND] = MeshBuilder::GenerateQuad("Background", Color(0, 1, 0), 1.6, 1.4);
@@ -214,7 +222,7 @@ void StarterScene::Update(double dt)
 	}
 	else if (VocationScene)
 	{
-		if (Application::IsKeyPressed(VK_RETURN) && Vocation::getVocation() == Vocation::NONE && globalTime - debounceTime > 0.2f) // enter key
+		if (Application::IsKeyPressed(VK_RETURN) && Vocation::getVocation() == VocationJob::NONE && globalTime - debounceTime > 0.2f) // enter key
 		{
 			SoundEngine->play2D("audio//bleep.wav", false);
 			camera.cameraLock = true; // lock the camera from player interaction
@@ -224,6 +232,7 @@ void StarterScene::Update(double dt)
 			animationTime = globalTime;
 		
 			Vocation::setVocation(JobSelection);
+			Vocation::ClearJob(false); //prevent memory leaks by deleting all other pointers except the chosen vocation
 			//std::vector<Vocation::Quest> name = Vocation::getMainQuest(2);
 			/*Vocation::Quest temp = name[0];
 			temp.currentNumber = 0;
@@ -232,61 +241,27 @@ void StarterScene::Update(double dt)
 			//Vocation::getMainQuest(1)[JobSelection].currentNumber = 1;
 
 		}
-		if (Vocation::getVocation() != Vocation::NONE)
-		{
-			auto lol = Vocation::getVocation();
-			std::cout << "\n" + lol;
-		}
+
 		if (Application::IsKeyPressed('E') && globalTime - debounceTime > 0.2f)
 		{
 			SoundEngine->play2D("audio//bleep.mp3", false);
 			debounceTime = globalTime; // to check the time taken after this keypress to press another key
-			if (JobSelection == Vocation::SALES)
-			{
-				JobSelection = Vocation::CLEANER;
-			}
-			else if (JobSelection == Vocation::CLEANER)
-			{
-				JobSelection = Vocation::BOUNCER;
-			}
-			else if (JobSelection == Vocation::BOUNCER)
-			{
-				JobSelection = Vocation::MECHANIC;
-			}
-			else if (JobSelection == Vocation::MECHANIC)
-			{
-				JobSelection = Vocation::SALES;
-			}
+			JobSelection = JobSelection->getNext();
 		}
 		if (Application::IsKeyPressed('Q') && globalTime - debounceTime > 0.2f)
 		{
 			SoundEngine->play2D("audio//bleep.mp3", false);
 			debounceTime = globalTime; // to check the time taken after this keypress to press another key
-			if (JobSelection == Vocation::SALES)
-			{
-				JobSelection = Vocation::MECHANIC;
-			}
-			else if (JobSelection == Vocation::CLEANER)
-			{
-				JobSelection = Vocation::SALES;
-			}
-			else if (JobSelection == Vocation::BOUNCER)
-			{
-				JobSelection = Vocation::CLEANER;
-			}
-			else if (JobSelection == Vocation::MECHANIC)
-			{
-				JobSelection = Vocation::BOUNCER;
-			}
+			JobSelection = JobSelection->getPrevious();
 		}
 		// Assign the correct texture to the chosen vocation
-		if (JobSelection == Vocation::SALES)
+		if (JobSelection->getJob() == VocationJob::SALES)
 			meshList[GEO_SCREEN]->textureID = SalesPersonTexture;
-		else if (JobSelection == Vocation::CLEANER)
+		else if (JobSelection->getJob() == VocationJob::CLEANER)
 			meshList[GEO_SCREEN]->textureID = CleanerTexture;
-		else if (JobSelection == Vocation::BOUNCER)
+		else if (JobSelection->getJob() == VocationJob::BOUNCER)
 			meshList[GEO_SCREEN]->textureID = BouncerTexture;
-		else if (JobSelection == Vocation::MECHANIC)
+		else if (JobSelection->getJob() == VocationJob::MECHANIC)
 			meshList[GEO_SCREEN]->textureID = MechanicTexture;
 	}
 	else if (EntranceScene)

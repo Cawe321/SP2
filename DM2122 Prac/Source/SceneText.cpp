@@ -30,6 +30,9 @@ SceneText::SceneText()
 	for (int i = 0; i < 10; i++) {
 		game[i] = '-';
 	}
+	
+	Price = 15000; //for me to render out the achievements
+	
 }
 
 SceneText::~SceneText()
@@ -146,6 +149,9 @@ void SceneText::Init()
 	
 	meshList[GEO_ACHIEVEMENTS] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_ACHIEVEMENTS]->textureID = LoadTGA("Image//calibri.tga");
+	
+	meshList[GEO_ACHIEVEMENTSBG] = MeshBuilder::GenerateQuad("Achievementsbg", Color(1, 1, 1), 1.f, 1.f);
+	meshList[GEO_ACHIEVEMENTSBG]->textureID = LoadTGA("Image//AchievementScreen");
 
 }
 
@@ -250,6 +256,21 @@ void SceneText::Update(double dt)
 		//to do: switch light type to SPOT and pass the information to
 		light[0].type = Light::LIGHT_SPOT;
 	}
+	if (Application::IsKeyPressed(VK_RETURN))
+	{
+		if (AchievementScene == false)
+		{
+			AchievementScene = true;
+		}
+		
+	}
+	if (Application::IsKeyPressed(VK_DELETE))
+	{
+	 if (AchievementScene == true)
+	 {
+		AchievementScene = false;
+	 }
+	}
 	if (FreezeMovement == false) {
 		camera.Update(dt);
 	}
@@ -287,85 +308,96 @@ void SceneText::Render()
 		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
 	}
 
-	RenderSkybox();
+	 
+	TotalBouncerTask = Day1[2].maxNumber ; //algo for this needs to be tested once the minigame is done
+	CurrentBouncerTask = Day1[2].currentNumber ;
 
-	modelStack.PushMatrix();
-	modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
-	RenderMesh(meshList[GEO_LIGHTSPHERE], false);
-	modelStack.PopMatrix();
+	CurrentSalespersonTask = Day1[0].currentNumber; //just leave like this for now, same reason as bouncer
 
 	//modelStack.PushMatrix();
 	//modelStack.Translate(0, -3, 0);
 	//RenderMesh(meshList[GEO_DICE], true);
 	//modelStack.PopMatrix();
 	
-	
-	std::string TrackedTask;
-	Vocation::getVocation();
-	Tasklist* Task = new Mechanictask(Day1);
-	TrackedTask = Task->Taskstatus(Day1);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
-	
-	Tasklist* BouncerTask = new Bouncertask(Day1);
-	TrackedTask = BouncerTask->Taskstatus(Day1);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
-
-
-	//Day2 
-	std::string TrackedTask2;
-	Vocation::getVocation();
-	Tasklist* BouncerTask2 = new Bouncertask(Day2);
-	TrackedTask2 = BouncerTask2->Taskstatus(Day2);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
-
-
-	//Day3
-	std::string TrackedTask3;
-	Vocation::getVocation();
-	Tasklist* BouncerTask3 = new Bouncertask(Day3);
-	TrackedTask3 = BouncerTask3->Taskstatus(Day3);
-	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4);
-
-	CheapestPrice = 15000; //for me to render out the achievements
-	MiddlePrice = 90000;
-	ExpensivePrice = 225000;
-
-	//Achievements. Side note, these will only appear at the end of day 3. 
-	TotalBouncerTask = Day1[2].maxNumber + Day2[2].maxNumber + Day3[2].maxNumber; //algo for this needs working on based on the vocation.cpp
-	CurrentBouncerTask = Day1[2].currentNumber + Day2[2].currentNumber + Day3[2].currentNumber;
-
-	CurrentSalespersonTask = Day1[0].currentNumber;
-
-	if (CurrentBouncerTask == TotalBouncerTask)
+	if (AchievementScene == true)
 	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Doing the Right Thing Achieved!", Color(0, 1, 0), 2, 0, 10);
-	} 
-	if (CurrentSalespersonTask == 0) //will have an additional condition of && GameOverScene
-	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "No, I Quit! Achieved", Color(0, 1, 0), 2, 0, 11);
+
+		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
+
+		if (CurrentBouncerTask == 0) //placeholder until bouncer minigame is done
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Doing the Right Thing Achieved!", Color(0.93f, 1.f, 0.26f), 2.5f, 0.5f, 12);
+		}
+		if (CurrentSalespersonTask == 0) 
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "No, I Quit! Achieved", Color(0.93f, 1.f, 0.26f), 2.5f, 5, 13);
+		}
+		//numbers are to be replaced with the relevant function
+		if (Price == 15000)
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Cheapskate Achieved!", Color(0.93f, 1.f, 0.26f), 2.5f, 5, 14);
+		}
+		else if (Price == 90000)
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Playing It Safe Achieved!", Color(0.93f, 1.f, 0.26f), 2.5f, 5, 15);
+		}
+		else if (Price == 225000)
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Crazy Rich Achieved!", Color(0.93f, 1.f, 0.26f), 2.5f, 5, 16);
+		}
+		else  //supposed to be an else if statement, condition being that no car is bought, so no car stored inside the relevant data
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "I Rather Walk Achieved!", Color(0.93, 1.f, 0.26f), 2.5f, 5, 17);
+		}
 	}
-	//numbers are to be replaced with the relevant function
-	if (CheapestPrice == 15000)
+	else
 	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Cheapskate Achieved!", Color(0, 1, 0), 2, 20, 14);
-	}
-	else if (MiddlePrice == 90000)
-	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Playing It Safe Achieved!", Color(0, 1, 0), 2, 15, 15);
-	}
-	else if (ExpensivePrice == 225000)
-	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Crazy Rich Achieved!", Color(0, 1, 0), 2, 20, 16);
-	}
-	else  //suposed to be an else if statement, condition being that no car is bought, so no car stored inside the relevant data
-	{
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "I Rather Walk", Color(0, 1, 0), 2, 20, 18);
-	}
+		RenderSkybox();
 
-	modelStack.PushMatrix();
-	//scale, translate, rotate
-	RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));
-	modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
+		RenderMesh(meshList[GEO_LIGHTSPHERE], false);
+		modelStack.PopMatrix();
+
+		//modelStack.PushMatrix();
+		//modelStack.Translate(0, -3, 0);
+		//RenderMesh(meshList[GEO_DICE], true);
+		//modelStack.PopMatrix();
+
+
+
+		std::string TrackedTask;
+		Vocation::getVocation();
+		Tasklist* Task = new Salesmantask(Day1);
+		TrackedTask = Task->Taskstatus(Day1);
+		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
+
+
+		Tasklist* BouncerTask = new Bouncertask(Day1);
+		TrackedTask = BouncerTask->Taskstatus(Day1);
+		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
+
+
+		//Day2 
+		std::string TrackedTask2;
+		Vocation::getVocation();
+		Tasklist* BouncerTask2 = new Bouncertask(Day2);
+		TrackedTask2 = BouncerTask2->Taskstatus(Day2);
+		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
+
+
+		//Day3
+		std::string TrackedTask3;
+		Vocation::getVocation();
+		Tasklist* BouncerTask3 = new Bouncertask(Day3);
+		TrackedTask3 = BouncerTask3->Taskstatus(Day3);
+		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4);
+
+		modelStack.PushMatrix();
+		//scale, translate, rotate
+		RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));
+		modelStack.PopMatrix();
+	}
 
 	//No transform needed
 	//RenderTextOnScreen(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0), 2, 0, 0);
@@ -592,6 +624,41 @@ void SceneText::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 	projectionStack.PopMatrix();
 	viewStack.PopMatrix();
 	modelStack.PopMatrix();
+
+	glEnable(GL_DEPTH_TEST);
+}
+
+void SceneText::RenderObjectOnScreen(Mesh* mesh, float size, float x, float y)
+{
+	if (!mesh || mesh->textureID <= 0) //Proper error check
+		return;
+
+	glDisable(GL_DEPTH_TEST);
+
+	Mtx44 ortho;
+	ortho.SetToOrtho(0, 80, 0, 60, -10, 10); //size of screen UI
+	projectionStack.PushMatrix();
+	projectionStack.LoadMatrix(ortho);
+	viewStack.PushMatrix();
+	viewStack.LoadIdentity(); //No need camera for ortho mode
+	modelStack.PushMatrix();
+	modelStack.LoadIdentity(); //Reset modelStack
+	modelStack.Scale(size, size, size);
+	modelStack.Translate(x, y, 0);
+	glUniform1i(m_parameters[U_LIGHTENABLED], 0);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE_ENABLED], 1);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mesh->textureID);
+	glUniform1i(m_parameters[U_COLOR_TEXTURE], 0);
+
+	Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top();
+	glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
+	mesh->Render();
+	glBindTexture(GL_TEXTURE_2D, 0);
+	projectionStack.PopMatrix();
+	viewStack.PopMatrix();
+	modelStack.PopMatrix();
+
 
 	glEnable(GL_DEPTH_TEST);
 }

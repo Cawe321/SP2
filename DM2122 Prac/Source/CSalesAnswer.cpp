@@ -98,7 +98,6 @@ void CSalesNeutralAnswer::answerEffect(CSalesCustomer * customer)
 	customer->count = 0;
 	customer->setPlaceHolderText("Um... okay?");
 	customer->answered = true;
-	// do something
 }
 
 CSalesLeaveAnswer::CSalesLeaveAnswer(std::string Text)
@@ -112,6 +111,7 @@ CSalesLeaveAnswer::~CSalesLeaveAnswer()
 
 void CSalesLeaveAnswer::answerEffect(CSalesCustomer * customer)
 {
-	delete customer;
-	// leave the customer
+	customer->setPlaceHolderText("You are useless!");
+	customer->setAppeaseRate(customer->getSatisfactionRate() - 4); 
+	customer->answered = true;
 }

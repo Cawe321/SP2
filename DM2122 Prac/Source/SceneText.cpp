@@ -556,11 +556,12 @@ void SceneText::Render()
 	{
 		if (salesCustomer->count <= salesCustomer->getQuestion().length())
 			salesCustomer->count++;
-		std::string toPrint = salesCustomer->getQuestion().substr(0, salesCustomer->count);
+		std::string toPrint = (salesCustomer->getQuestion()).substr(0, salesCustomer->count);
 
 		RenderObjectOnScreen(meshList[GEO_FRAME], 10, 4, 3.5);
 		RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], toPrint, Color(0, 0, 0), 3, 4, 12.5, 28, false);
-
+		RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "[Q: Up | E: Down | Enter: Select]", Color(0, 0, 0), 2, 8.5, 15, 50, false);
+		
 		RenderObjectOnScreen(meshList[GEO_FRAME3], 10, 4, 5.1);
 		RenderObjectOnScreen(meshList[GEO_CUSTOMERLOGO], 15, 1, 3.4);
 		RenderTextOnScreen(meshList[GEO_TEXT], salesCustomer->getName(), Color(0,0,1), 3, 8, 18.25);
@@ -569,9 +570,6 @@ void SceneText::Render()
 		RenderObjectOnScreen(meshList[GEO_FRAME2], 10, 4, 1.3);
 		if (salesCustomer->count > salesCustomer->getQuestion().length())
 		{
-			RenderTextOnScreen(meshList[GEO_TEXT], "Q", Color(5, 5, 5), 5, 2.7, 3.15);
-			RenderTextOnScreen(meshList[GEO_TEXT], "E", Color(5, 5, 5), 5, 2.8, 1.3);
-
 			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 5, 10, 40, true);
 			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 3.5, 8, 40, true);
 			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getText(), Color(0,0,0), 2.25, 2.2, 6, 40, true);

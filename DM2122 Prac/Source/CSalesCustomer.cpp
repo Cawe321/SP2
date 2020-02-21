@@ -66,8 +66,11 @@ void CSalesCustomer::CustomerUpdate(float dt)
 		debounceTime = elapsedTime;
 		playerChoice = playerChoice->getNext();
 	}
-	if (Application::IsKeyPressed('I') && answered == false)
+	if (Application::IsKeyPressed(VK_RETURN) && answered == false)
+	{
+		soundEngine->play2D("audio\\bleep2.mp3", false);
 		playerChoice->answerEffect(this);
+	}
 
 }
 
@@ -92,7 +95,7 @@ void CSalesCustomer::isAppeased()
 	else if (appeaseRate <= (satisfactionRate - 4))
 	{
 		// do something to show customer is disatisfied  and lostthe minigame
-		soundEngine->play2D("audio\\negativebeep.mp3", false);
+		soundEngine->play2D("audio\\fail.mp3", false);
 		delete this;
 	}
 	else
@@ -121,35 +124,35 @@ void CSalesCustomer::InitializeQuestions()
 	QuestionList[0].BadAnswer1 = new CSalesBadAnswer("I am too busy for you, you won't be buying anyways.");
 	QuestionList[0].BadAnswer2 = new CSalesBadAnswer("I would like to help but you have no money");
 	QuestionList[0].NeutralAnswer = new CSalesNeutralAnswer("I am not sure what you mean.");
-	QuestionList[0].LeaveAnswer = new CSalesLeaveAnswer("Sorry! I am currently busy. I will get someone else to help");
+	QuestionList[0].LeaveAnswer = new CSalesLeaveAnswer("What is a car?");
 
 	QuestionList[1].Question = "I have questions about this fine car...";
 	QuestionList[1].GoodAnswer = new CSalesGoodAnswer("I am willing to assist you in any way.");
 	QuestionList[1].BadAnswer1 = new CSalesBadAnswer("Sureeeeeeee");
 	QuestionList[1].BadAnswer2 = new CSalesBadAnswer("Noted with thanks!");
 	QuestionList[1].NeutralAnswer = new CSalesNeutralAnswer("Hmm...");
-	QuestionList[1].LeaveAnswer = new CSalesLeaveAnswer("Sorry! I am currently busy. I will get someone else to help!");
+	QuestionList[1].LeaveAnswer = new CSalesLeaveAnswer("What is a question?");
 
 	QuestionList[2].Question = "I would like to know more about this car.";
 	QuestionList[2].GoodAnswer = new CSalesGoodAnswer("What would you like to know?");
 	QuestionList[2].BadAnswer1 = new CSalesBadAnswer("Just read the description...");
 	QuestionList[2].BadAnswer2 = new CSalesBadAnswer("This car is a car.");
 	QuestionList[2].NeutralAnswer = new CSalesNeutralAnswer("This car has 4 wheels, not 4 legs.");
-	QuestionList[2].LeaveAnswer = new CSalesLeaveAnswer("Sorry, I am not sure. Bye!");
+	QuestionList[2].LeaveAnswer = new CSalesLeaveAnswer("It's not a car!");
 
 	QuestionList[3].Question = "Is this car worth the money?";
 	QuestionList[3].GoodAnswer = new CSalesGoodAnswer("I would highly recommend it!");
 	QuestionList[3].BadAnswer1 = new CSalesBadAnswer("It's worth the money which you don't have.");
 	QuestionList[3].BadAnswer2 = new CSalesBadAnswer("Find me only if you have the money...");
 	QuestionList[3].NeutralAnswer = new CSalesNeutralAnswer("I am not sure what you mean.");
-	QuestionList[3].LeaveAnswer = new CSalesLeaveAnswer("Sorry! I am currently busy.");
+	QuestionList[3].LeaveAnswer = new CSalesLeaveAnswer("This is a car?");
 
 	QuestionList[4].Question = "What do you think of this car?";
 	QuestionList[4].GoodAnswer = new CSalesGoodAnswer("It's an awesome car worth it's money.");
 	QuestionList[4].BadAnswer1 = new CSalesBadAnswer("Not worth your time.");
 	QuestionList[4].BadAnswer2 = new CSalesBadAnswer("Ask me only if you have the money");
 	QuestionList[4].NeutralAnswer = new CSalesNeutralAnswer("I don't I can answer that question.");
-	QuestionList[4].LeaveAnswer = new CSalesLeaveAnswer("Sorry! I am currently busy. I will get someone else to help");
+	QuestionList[4].LeaveAnswer = new CSalesLeaveAnswer("I don't know what is this.");
 }
 
 bool CSalesCustomer::satisfactionCheck()

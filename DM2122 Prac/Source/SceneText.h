@@ -171,6 +171,7 @@ private:
 	void RenderSkybox();
 	void RenderCleanerRobot();
 	void RenderCustomer();
+	void RenderSuspect();
 	void RenderGuardBot();
 	void RenderSaleBot();
 	void Renderlevel();

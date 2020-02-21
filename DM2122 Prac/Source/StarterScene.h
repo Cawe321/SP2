@@ -23,32 +23,6 @@ class StarterScene : public Scene
 		GEO_ENTRANCERIGHT,
 		GEO_CARLOGO,
 		
-		CLEANER_TOP,
-		CLEANER_BOTTOM,
-		CLEANER_WHEEL,
-		CLEANER_WHEELJOINT,
-
-		CUSTOMER_BODY,
-		CUSTOMER_HEAD,
-		CUSTOMER_SHOULDER,
-		CUSTOMER_ARM,
-		CUSTOMER_HAND,
-		CUSTOMER_LEG,
-
-		GUARD_BODY,
-		GUARD_HEAD,
-		GUARD_LEFTARM,
-		GUARD_RIGHTARM,
-		GUARD_LEG,
-
-		SALE_BOTTOM,
-		SALE_TOP,
-		SALE_NECK,
-		SALE_HEAD,
-		SALE_LEFTARM,
-		SALE_RIGHTARM,
-		SALE_WHEEL,
-		
 		GEO_LEFT,
 		GEO_RIGHT,
 		GEO_TOP,
@@ -111,17 +85,6 @@ private:
 	float debounceTime;
 	float animationTime; // only used on Vocation Selection or Entrance Anim
 	
-	float RSPEED = 45.f;
-	float rotateCleanerTop = 0.0f;
-	float rotateCleanerWheels = 0.0f;
-	float rotateCustomerHead = 0.0f;
-	float rotateCustomerLeftArm = 0.0f;
-	float rotateCustomerRightArm = 0.0f;
-	float rotateCustomerLeftLeg = 0.0f;
-	float rotateCustomerRightLeg = 0.0f;
-	float LeftArmY = -1.8f;
-	float LeftArmZ = 0.0f;
-	
 	// Scenes of Scene
 	bool IntroScene;
 	bool VocationScene;
@@ -129,11 +92,7 @@ private:
 
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();
-	void RenderCleanerRobot();
-	void RenderCustomer();
-	void RenderGuardBot();
-	void RenderSaleBot();
-
+	
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
 	void CustomRenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y, float angle, float angleX = 0.f, float angleY = 0.f, float angleZ = 1.f);

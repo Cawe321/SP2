@@ -110,7 +110,18 @@ private:
 	float globalTime;
 	float debounceTime;
 	float animationTime; // only used on Vocation Selection or Entrance Anim
-
+	
+	float RSPEED = 45.f;
+	float rotateCleanerTop = 0.0f;
+	float rotateCleanerWheels = 0.0f;
+	float rotateCustomerHead = 0.0f;
+	float rotateCustomerLeftArm = 0.0f;
+	float rotateCustomerRightArm = 0.0f;
+	float rotateCustomerLeftLeg = 0.0f;
+	float rotateCustomerRightLeg = 0.0f;
+	float LeftArmY = -1.8f;
+	float LeftArmZ = 0.0f;
+	
 	// Scenes of Scene
 	bool IntroScene;
 	bool VocationScene;

@@ -36,6 +36,7 @@ class SceneText : public Scene
 		GEO_FRAME3,
 		GEO_CUSTOMERLOGO,
 		GEO_TEXT,
+		GEO_TEXTBOX
 
 		CLEANER_TOP,
 		CLEANER_BOTTOM,

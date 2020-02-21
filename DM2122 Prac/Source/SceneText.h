@@ -127,6 +127,14 @@ private:
 	float rotateCustomerRightLeg = 0.0f;
 	float LeftArmY = -1.8f;
 	float LeftArmZ = 0.0f;
+	
+	float elapsedTime;
+	float dialogueTime;
+	float finalPosition;
+	float middlePosition;
+	float startingPosition;
+	bool escapeanimation;
+	bool textbox;
 
 	bool AchievementScene;
 

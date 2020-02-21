@@ -56,11 +56,13 @@ void CSalesCustomer::CustomerUpdate(float dt)
 	elapsedTime += dt;
 	if  (elapsedTime - debounceTime > 0.25f && Application::IsKeyPressed('Q') && answered == false)
 	{
+		soundEngine->play2D("audio\\bleep.mp3", false);
 		debounceTime = elapsedTime;
 		playerChoice = playerChoice->getPrevious();
 	}
 	else if (elapsedTime - debounceTime > 0.25f && Application::IsKeyPressed('E') && answered == false)
 	{
+		soundEngine->play2D("audio\\bleep.wav", false);
 		debounceTime = elapsedTime;
 		playerChoice = playerChoice->getNext();
 	}

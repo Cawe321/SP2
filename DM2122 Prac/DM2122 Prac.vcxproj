@@ -126,6 +126,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Achievements.h" />
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Boss.h" />
     <ClInclude Include="Source\Bouncertask.h" />
@@ -153,6 +154,7 @@
     <ClInclude Include="Source\VocationJob.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Achievements.cpp" />
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Boss.cpp" />
     <ClCompile Include="Source\Bouncertask.cpp" />

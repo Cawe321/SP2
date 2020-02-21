@@ -81,14 +81,10 @@
     <ClInclude Include="Source\VocationJob.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="Source\CSalesCustomer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\CSalesAnswer.h">
-=======
-    <ClInclude Include="Source\Boss.h">
->>>>>>> a7a47a0a2df685d89d2240669683bb6db3f7bc0d
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -150,14 +146,10 @@
     <ClCompile Include="Source\VocationJob.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-<<<<<<< HEAD
     <ClCompile Include="Source\CSalesCustomer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\CSalesAnswer.cpp">
-=======
-    <ClCompile Include="Source\Boss.cpp">
->>>>>>> a7a47a0a2df685d89d2240669683bb6db3f7bc0d
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

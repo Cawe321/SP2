@@ -9,6 +9,7 @@
 #include "Vocation.h"
 #include "Mechanictask.h"
 //#include "StarterScene.h"
+#include "CSalesCustomer.h"
 
 const int MECHANIC_GAME_MAX_SCORE = 10;
 const int MECHANIC_GAME_MAX_LIVES = 3;
@@ -29,6 +30,9 @@ class SceneText : public Scene
 		GEO_ACHIEVEMENTS,
 		GEO_ACHIEVEMENTSBG,
 		GEO_TEXT,
+		GEO_CUSTOMERLOGO,
+		GEO_FRAME,
+		GEO_FRAME2,
 		NUM_GEOMETRY,
 	};
 
@@ -101,11 +105,14 @@ private:
 	bool MechanicGame;
 	bool FreezeMovement;
 
+	CSalesCustomer* salesCustomer;
+
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);
+	void RenderTextOnScreenWithNewLine(Mesh* mesh, std::string text, Color color, float size, float x, float y, int characters, bool spacing);
 	void RenderObjectOnScreen(Mesh* mesh, float size, float x, float y);
 	void CalculateFrameRate();
 

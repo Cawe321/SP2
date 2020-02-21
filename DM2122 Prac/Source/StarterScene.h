@@ -9,6 +9,7 @@
 #include "Vocation.h"
 #include "VocationJob.h"
 
+
 class StarterScene : public Scene
 {
 	enum GEOMETRY_TYPE

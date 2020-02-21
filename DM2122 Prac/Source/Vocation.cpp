@@ -145,6 +145,29 @@ VocationJob::JOBTYPE Vocation::getVocation()
 	return VocationWork->getJob();
 }
 
+CSalesCustomer::CustomerType Vocation::returnCustomerMood()
+{
+	int magicNo = rand() % 10;
+	if (VocationWork->getJob() == VocationJob::SALES)
+	{
+		if (magicNo >= 0 && magicNo <= 4) // 50%
+			return CSalesCustomer::HAPPY;
+		else if (magicNo >= 5 && magicNo <= 7) // 30%
+			return CSalesCustomer::NEUTRAL;
+		else
+			return CSalesCustomer::MAD;
+	}
+	else
+	{
+		if (magicNo >= 0 && magicNo <= 2) // 30%
+			return CSalesCustomer::HAPPY;
+		else if (magicNo >= 3 && magicNo <= 6) // 40%
+			return CSalesCustomer::NEUTRAL;
+		else
+			return CSalesCustomer::MAD; // 30 %
+	}
+}
+
 void Vocation::setVocation(VocationJob* job)
 {
 	Vocation::VocationWork = job;

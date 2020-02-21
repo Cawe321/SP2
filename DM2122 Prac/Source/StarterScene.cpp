@@ -8,6 +8,8 @@
 #include "LoadTGA.h"
 
 
+
+
 #define ROT_LIMIT 45.f;
 #define SCALE_LIMIT 5.f;
 #define LSPEED 10.f

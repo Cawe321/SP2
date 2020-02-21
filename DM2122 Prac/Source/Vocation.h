@@ -2,6 +2,7 @@
 #define VOCATION_H
 #include <vector>
 #include "VocationJob.h"
+#include "CSalesCustomer.h"
 class Vocation
 {
 private:
@@ -20,6 +21,7 @@ public:
 	};
 	static std::vector<Vocation::Quest> getMainQuest(int day);
 	static VocationJob::JOBTYPE getVocation();
+	static CSalesCustomer::CustomerType returnCustomerMood();
 	static void setVocation(VocationJob* work);
 	static void InitializeJob();
 	static void ClearJob(bool programEnd);

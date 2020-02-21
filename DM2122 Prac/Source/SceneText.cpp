@@ -24,9 +24,11 @@ SceneText::SceneText()
 	Day1 = Vocation::getMainQuest(1);
 	Day2 = Vocation::getMainQuest(2);
 	Day3 = Vocation::getMainQuest(3);
+	BossOpinion = new Boss();
 	MechanicGameScore = new Mechanictask();
 	MechanicGame = false;
 	FreezeMovement = false;
+	hasmissed = false;
 	for (int i = 0; i < 10; i++) {
 		game[i] = '-';
 	}
@@ -150,19 +152,12 @@ void SceneText::Init()
 	meshList[GEO_ACHIEVEMENTS] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_ACHIEVEMENTS]->textureID = LoadTGA("Image//calibri.tga");
 	
-	meshList[GEO_ACHIEVEMENTSBG] = MeshBuilder::GenerateQuad("Achievementsbg", Color(1, 1, 1), 1.f, 1.f);
+	meshList[GEO_ACHIEVEMENTSBG] = MeshBuilder::GenerateQuad("Achievementsbg", Color(1, 1, 1), 1.6f, 1.4f);
 	meshList[GEO_ACHIEVEMENTSBG]->textureID = LoadTGA("Image//AchievementScreen.tga");
 
-	meshList[GEO_FRAME] = MeshBuilder::GenerateQuad("Frame", Color(0, 1, 0), 7.f, 1.5f);
-	meshList[GEO_FRAME]->textureID = LoadTGA("Image//AchievementScreen.tga");
+	meshList[GEO_MECHANIC_GAME] = MeshBuilder::GenerateQuad("Mechanic_Game", Color(0.5f, 1, 1), 1.f, 1.f);
 
-	meshList[GEO_FRAME2] = MeshBuilder::GenerateQuad("Frame2", Color(0, 1, 0), 7.f, 2.4f);
-	meshList[GEO_FRAME2]->textureID = LoadTGA("Image//customersalesbackground.tga");
 
-	meshList[GEO_CUSTOMERLOGO] = MeshBuilder::GenerateQuad("CustomerLogo", Color(0, 0, 0), 1.f, 1.f);
-	meshList[GEO_CUSTOMERLOGO]->textureID = LoadTGA("Image//customerlogo.tga");
-	// init values
-	salesCustomer = new CSalesCustomer();
 }
 
 void SceneText::Update(double dt)
@@ -201,10 +196,14 @@ void SceneText::Update(double dt)
 			{
 				//Moves characters forward
 				game[i - 1] = game[i];
-				if (game[1] != '-') {
-					MechanicGameScore->AddStrike();
-				}
+				
 			}
+			if (game[1] != '-' && hasmissed == false) {
+				MechanicGameScore->AddStrike();
+				hasmissed = true;
+
+			}
+			hasmissed = false;
 			game[9] = '-';
 			if (count >= random)
 			{
@@ -221,12 +220,6 @@ void SceneText::Update(double dt)
 		}
 	}
 	// end for keypress game
-
-
-	if (salesCustomer != nullptr)
-	{
-		salesCustomer->CustomerUpdate(dt);
-	}
 
 	if (Application::IsKeyPressed(0x31))
 	{
@@ -366,121 +359,10 @@ void SceneText::Render()
 			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "I Rather Walk Achieved!", Color(0.93, 1.f, 0.26f), 2.5f, 5, 17);
 		}
 	}
-	
-	else
-	{
-		RenderSkybox();
-		if (salesCustomer != nullptr && salesCustomer->answered == false)
-		{
-			if (salesCustomer->count <= salesCustomer->getQuestion().length())
-				salesCustomer->count++;
-			std::string toPrint = salesCustomer->getQuestion().substr(0, salesCustomer->count);
-			
-			RenderObjectOnScreen(meshList[GEO_FRAME], 10, 4, 3.5);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], toPrint, Color(1, 1, 1), 3, 4, 13, 28, false);
-	
-			
-			RenderObjectOnScreen(meshList[GEO_FRAME2], 10, 4, 1.3);
-			if (salesCustomer->count > salesCustomer->getQuestion().length())
-			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Q", Color(0, 0.7, 0), 5, 1, 3.15);
-				RenderTextOnScreen(meshList[GEO_TEXT], "E", Color(0, 0.7, 0), 5.3, 1, 1.3);
-
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 5, 10, 40, true);
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 3.5, 8, 40, true);
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getText(), Color(1, 1, 1), 2.25, 2, 6, 40, true);
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getNext()->getText(), Color(0, 0, 0), 2.25, 3.5, 4, 40, true);
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getNext()->getNext()->getText(), Color(0, 0, 0), 2.25, 5, 2, 40, true);
-			}
-			RenderObjectOnScreen(meshList[GEO_CUSTOMERLOGO], 15, 1, 3.4);
-			RenderTextOnScreen(meshList[GEO_TEXT], salesCustomer->getName(), Color(0, 1, 0), 3, 8, 18.25);
-			RenderTextOnScreen(meshList[GEO_TEXT], "Satisfaction:", Color(0, 1, 0), 3, 8, 17.25);
-			if (salesCustomer->getAppeaseRate() < 0)
-				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(3, 0, 0), 3, 17, 17.25);
-			else
-				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(0, 1, 0), 3, 17, 17.25);
-			RenderTextOnScreen(meshList[GEO_TEXT], "/" + std::to_string(salesCustomer->getSatisfactionRate()), Color(0, 1, 0), 3, 18.5, 17.25);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Reach satisfaction(" + std::to_string(salesCustomer->getSatisfactionRate() - 4) + ") and you will face the penalty!", Color(3, 0, 0), 2, 12, 24.37, 30, false);
-		}
-		else if (salesCustomer != nullptr && salesCustomer->answered == true)
-		{
-			if (salesCustomer->count <= salesCustomer->getPlaceHolderText().length() + 100)
-				salesCustomer->count++;
-			std::string toPrint = salesCustomer->getPlaceHolderText().substr(0, salesCustomer->count);
-			modelStack.PushMatrix();
-				RenderObjectOnScreen(meshList[GEO_FRAME], 10, 4, 3.5);
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], toPrint, Color(1, 1, 1), 3, 4, 13, 28, false);
-				modelStack.PopMatrix();
-			modelStack.PushMatrix();
-			RenderObjectOnScreen(meshList[GEO_FRAME2], 10, 4, 1.3);
-			if (salesCustomer->count >= salesCustomer->getPlaceHolderText().length() + 100)
-			{
-				salesCustomer->answered = false;
-				salesCustomer->count = 0;
-				salesCustomer->isAppeased(); // will check if customer is appeased, if not get another question
-			}
-			RenderObjectOnScreen(meshList[GEO_CUSTOMERLOGO], 15, 1, 3.4);
-			RenderTextOnScreen(meshList[GEO_TEXT], salesCustomer->getName(), Color(0, 1, 0), 3, 8, 18.25);
-			RenderTextOnScreen(meshList[GEO_TEXT], "Satisfaction:", Color(0, 1, 0), 3, 8, 17.25);
-			if (salesCustomer->getAppeaseRate() < 0)
-				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(3, 0, 0), 3, 17, 17.25);
-			else
-				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(0, 1, 0), 3, 17, 17.25);
-			RenderTextOnScreen(meshList[GEO_TEXT], "/" + std::to_string(salesCustomer->getSatisfactionRate()), Color(0, 1, 0), 3, 18.5, 17.25);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Reach satisfaction(" + std::to_string(salesCustomer->getSatisfactionRate() - 4) + ") and you will face the penalty!", Color(3, 0, 0), 2, 12, 24.37, 30, false);
-		}
-
-
-		modelStack.PushMatrix();
-		modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
-		RenderMesh(meshList[GEO_LIGHTSPHERE], false);
-		modelStack.PopMatrix();
-
-		//modelStack.PushMatrix();
-		//modelStack.Translate(0, -3, 0);
-		//RenderMesh(meshList[GEO_DICE], true);
-		//modelStack.PopMatrix();
-
-
-
-	//	std::string TrackedTask;
-	//	Vocation::getVocation();
-	//	Tasklist* Task = new Salesmantask(Day1);
-	//	TrackedTask = Task->Taskstatus(Day1);
-	//	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
-
-
-	//	Tasklist* BouncerTask = new Bouncertask(Day1);
-	//	TrackedTask = BouncerTask->Taskstatus(Day1);
-	//	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
-
-
-	//	//Day2 
-	//	std::string TrackedTask2;
-	//	Vocation::getVocation();
-	//	Tasklist* BouncerTask2 = new Bouncertask(Day2);
-	//	TrackedTask2 = BouncerTask2->Taskstatus(Day2);
-	//	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
-
-
-	//	//Day3
-	//	std::string TrackedTask3;
-	//	Vocation::getVocation();
-	//	Tasklist* BouncerTask3 = new Bouncertask(Day3);
-	//	TrackedTask3 = BouncerTask3->Taskstatus(Day3);
-	//	RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4);
-
-	//	modelStack.PushMatrix();
-	//	//scale, translate, rotate
-	//	RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));
-	//	modelStack.PopMatrix();
-	}
-
-	//No transform needed
-	//RenderTextOnScreen(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0), 2, 0, 0);
-
-	std::string print = "";
-	if (MechanicGame == true) {
+	else if (MechanicGame == true) {
+		std::string print = "";
+		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
+		//RenderObjectOnScreen(meshList[GEO_MECHANIC_GAME], 50, 0.8, 0.5);
 		for (int i = 0; i < 10; i++)
 		{
 			if (i != 2)
@@ -511,7 +393,7 @@ void SceneText::Render()
 		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 5, 3.9, 0);
 
 
-		if (MechanicGameScore->GetStrike() == MECHANIC_GAME_MAX_LIVES) {
+		if (MechanicGameScore->GetStrike() > MECHANIC_GAME_MAX_LIVES) {
 			//You Lose
 			FreezeMovement = false;
 			MechanicGame = false;
@@ -526,6 +408,60 @@ void SceneText::Render()
 			MechanicGame = false;
 		}
 	}
+	else
+	{
+		RenderSkybox();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
+		RenderMesh(meshList[GEO_LIGHTSPHERE], false);
+		modelStack.PopMatrix();
+
+		//modelStack.PushMatrix();
+		//modelStack.Translate(0, -3, 0);
+		//RenderMesh(meshList[GEO_DICE], true);
+		//modelStack.PopMatrix();
+
+
+
+		std::string TrackedTask;
+		Vocation::getVocation();
+		Tasklist* Task = new Salesmantask(Day1);
+		TrackedTask = Task->Taskstatus(Day1);
+		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
+
+
+		Tasklist* BouncerTask = new Bouncertask(Day1);
+		TrackedTask = BouncerTask->Taskstatus(Day1);
+		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
+
+
+		//Day2 
+		std::string TrackedTask2;
+		Vocation::getVocation();
+		Tasklist* BouncerTask2 = new Bouncertask(Day2);
+		TrackedTask2 = BouncerTask2->Taskstatus(Day2);
+		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
+
+
+		//Day3
+		std::string TrackedTask3;
+		Vocation::getVocation();
+		Tasklist* BouncerTask3 = new Bouncertask(Day3);
+		TrackedTask3 = BouncerTask3->Taskstatus(Day3);
+		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4);
+
+		modelStack.PushMatrix();
+		//scale, translate, rotate
+		RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));
+		modelStack.PopMatrix();
+	}
+
+	//No transform needed
+	//RenderTextOnScreen(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0), 2, 0, 0);
+
+	
+	
 }
 
 void SceneText::Exit()
@@ -690,7 +626,7 @@ void SceneText::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 	for (unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 0.7f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 
@@ -703,51 +639,6 @@ void SceneText::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 	modelStack.PopMatrix();
 
 	glEnable(GL_DEPTH_TEST);
-}
-
-void SceneText::RenderTextOnScreenWithNewLine(Mesh* mesh, std::string text, Color color, float size, float x, float y, int character, bool spacing)
-{
-	std::string additionalSpacing = "";
-	if (spacing)
-		additionalSpacing = "   ";
-	std::string toPrint = text;
-	int lastSpacing = 0;
-	int length = toPrint.length();
-	for (int i = 0; length > 0; i++)
-	{
-		if (toPrint[0] == ' ' && toPrint[1] != ' ' && i != 0) // toPrint[1] != ' ' is to check if the spacing was intended
-			toPrint.erase(0, 1);			// remove the spacing if it's the first char of line
-		length = toPrint.length();
-		if (length < character)
-		{
-			if (i != 0)
-				RenderTextOnScreen(meshList[GEO_TEXT], additionalSpacing + toPrint.substr(0, length), color, size, x, y - i);
-			else
-				RenderTextOnScreen(meshList[GEO_TEXT], toPrint.substr(0, length), color, size, x, y - i);
-			break;
-		}
-		else if (toPrint[character - 1] != ' ' && toPrint[character] != ' ') // means the word may be cut off if nothing is done
-		{
-			for (int j = 0; j <= character; j++)
-			{
-				if (toPrint[j] == ' ')
-					lastSpacing = j;
-			}
-			if (i != 0)
-				RenderTextOnScreen(meshList[GEO_TEXT], additionalSpacing + toPrint.substr(0, lastSpacing), color, size, x, y - i);
-			else
-				RenderTextOnScreen(meshList[GEO_TEXT], toPrint.substr(0, lastSpacing), color, size, x, y - i);
-			toPrint.erase(0, lastSpacing);
-		}
-		else
-		{
-			if (i != 0)
-				RenderTextOnScreen(meshList[GEO_TEXT], additionalSpacing + toPrint.substr(0, character), color, size, x, y - i);
-			else
-				RenderTextOnScreen(meshList[GEO_TEXT], toPrint.substr(0, character), color, size, x, y - i);
-			toPrint.erase(0, character);
-		}
-	}
 }
 
 void SceneText::RenderObjectOnScreen(Mesh* mesh, float size, float x, float y)

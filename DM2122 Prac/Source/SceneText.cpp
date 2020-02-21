@@ -430,7 +430,7 @@ void SceneText::Render()
 		CurrentBouncerTask = Day1[2].currentNumber + Day2[2].currentNumber + Day2[2].currentNumber;
 
 		CurrentSalespersonTask = Day1[0].currentNumber + Day2[0].currentNumber + Day3[0].currentNumber; //just leave like this for now, same reason as bouncer
-
+		/*
 		std::string CarAchievements;
 		Achievements* Cartext = new Achievements();
 		CarAchievements = Cartext->carAchievements(Price);
@@ -442,7 +442,7 @@ void SceneText::Render()
 		std::string SalesAchievements;
 		Achievements* Salestext = new Achievements();
 		SalesAchievements = Salestext->salespersonAchievements(CurrentSalespersonTask);
-
+		*/
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
 
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], CarAchievements, Color(1, 0, 0), 3.f, 3.5f, 10);

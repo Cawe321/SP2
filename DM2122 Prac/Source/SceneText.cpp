@@ -245,7 +245,7 @@ void SceneText::Init()
 	meshList[ITEM_LIGHTBULB]->textureID = LoadTGA("Image//background_items//Light.tga");
 
 	// init values
-	salesCustomer = new CSalesCustomer(Vector3(0,0,0));
+	salesCustomer =  nullptr; //new CSalesCustomer(Vector3(0,0,0))
 }
 
 void SceneText::Update(double dt)
@@ -878,6 +878,70 @@ void SceneText::RenderCustomer() // Facing x-axis
 	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_LEG], true); // Right Leg
 	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderSuspect()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(10, 0, 0);
+	RenderMesh(meshList[CUSTOMER_BODY], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 6.5, 0);
+	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
+	RenderMesh(meshList[CUSTOMER_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, -1.5);
+	modelStack.Rotate(15, 1, 0, 0);
+	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
+	RenderMesh(meshList[CUSTOMER_SHOULDER], true); // Left Arm
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -1.8, 0);
+	RenderMesh(meshList[CUSTOMER_ARM], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[CUSTOMER_HAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, 1.5);
+	modelStack.Rotate(-15, 1, 0, 0);
+	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
+	RenderMesh(meshList[CUSTOMER_SHOULDER], true); // Right Arm
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -1.8, 0);
+	RenderMesh(meshList[CUSTOMER_ARM], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[CUSTOMER_HAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, -0.5);
+	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
+	RenderMesh(meshList[CUSTOMER_LEG], true); // Left Leg
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, 0.5);
+	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
+	RenderMesh(meshList[CUSTOMER_LEG], true); // Right Leg
+	modelStack.PopMatrix();
+
 	modelStack.PopMatrix();
 }
 

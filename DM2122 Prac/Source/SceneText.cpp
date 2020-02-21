@@ -34,7 +34,11 @@ SceneText::SceneText()
 		game[i] = '-';
 	}
 	
-	Price = 15000; //for me to render out the achievements
+	Price = 0; //for me to render out the achievements
+	
+	escapeanimation = false;
+
+	AchievementScene = false;
 	
 }
 
@@ -120,6 +124,11 @@ void SceneText::Init()
 	glUniform1f(m_parameters[U_LIGHT0_COSINNER], light[0].cosInner);
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1); 
+	
+	finalPosition = 0;
+	middlePosition = 0;
+	dialogueTime = 0;
+	elapsedTime = 0;
 
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_LEFT]->textureID = LoadTGA("Image//left.tga");
@@ -253,6 +262,17 @@ void SceneText::Update(double dt)
 	rotateCustomerHead = 45;
 	rotateCustomerLeftLeg = 25;
 	rotateCustomerRightLeg = -25;
+	
+	//for bouncer
+	if (escapeanimation == true)
+	{
+		if (middlePosition > 25)
+		{
+			finalPosition += 4 * dt;
+		}
+		middlePosition += 2 * dt;
+		elapsedTime += dt;
+	}
 
 	if (MechanicGame == true) {
 		// to make the keypress game
@@ -377,6 +397,14 @@ void SceneText::Update(double dt)
 	 {
 		AchievementScene = false;
 	 }
+	}
+	if (AchievementScene == false)
+	{
+		if (Application::IsKeyPressed('X'))
+		{
+			escapeanimation = true;
+		}
+		
 	}
 	if (FreezeMovement == false) {
 		camera.Update(dt);
@@ -513,7 +541,26 @@ void SceneText::Render()
 		//modelStack.Translate(0, -3, 0);
 		//RenderMesh(meshList[GEO_DICE], true);
 		//modelStack.PopMatrix();
+		
+                if (escapeanimation == false)
+		{
+			RenderCustomer(); //ignore the fact that it's renderCustomer, Im changing it
+		}
+		else if (escapeanimation == true && middlePosition <= 25)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(middlePosition, 0, 0);
+			RenderCustomer();
+			modelStack.PopMatrix();
+		}
+		else if (escapeanimation == true && finalPosition <= 55 && middlePosition > 25)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(25.1f, 0, finalPosition);
+			RenderCustomer();
+			modelStack.PopMatrix();
 
+		}
 
 
 		std::string TrackedTask;
@@ -547,6 +594,20 @@ void SceneText::Render()
 		//scale, translate, rotate
 		RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));
 		modelStack.PopMatrix();
+		
+			if (escapeanimation == true && finalPosition > 55) //it's placed here so that it covers the task text
+		{
+			if (elapsedTime < 31) //if less than 5 seconds
+			{
+				RenderBouncerTextBox();
+			}
+
+			Tasklist* temp;
+			temp = new Bouncertask(Day1);
+			Day1 = temp->Addscore(Day1);
+			delete temp;
+
+		}
 	}
 
 	//No transform needed
@@ -912,6 +973,12 @@ void SceneText::Renderlevel()
 	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
+}
+
+void SceneText::RenderBouncerTextBox()
+{
+	RenderObjectOnScreen(meshList[GEO_TEXTBOX], 10, 3.3f, 1.f);
+	RenderTextOnScreen(meshList[GEO_TEXT], "I left okay geez!", Color(1, 0, 0), 3.5f, 1.f, 3);
 }
 
 void SceneText::RenderText(Mesh* mesh, std::string text, Color color)

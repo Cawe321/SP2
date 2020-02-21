@@ -173,7 +173,58 @@ void StarterScene::Init()
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+	
+	// Cleaner Robot
+	meshList[CLEANER_TOP] = MeshBuilder::GenerateOBJ("CleanerTopBody", "OBJ//CleanerBot//CleanerTopBody.obj");
+	meshList[CLEANER_TOP]->textureID = LoadTGA("Image//CleanerRobot.tga");
+	meshList[CLEANER_BOTTOM] = MeshBuilder::GenerateOBJ("CleanerBottomBody", "OBJ//CleanerBot//CleanerBottomBody.obj");
+	meshList[CLEANER_BOTTOM]->textureID = LoadTGA("Image//CleanerRobot.tga");
+	meshList[CLEANER_WHEEL] = MeshBuilder::GenerateOBJ("CleanerWheel", "OBJ//CleanerBot//CleanerWheel.obj");
+	meshList[CLEANER_WHEEL]->textureID = LoadTGA("Image//CleanerRobot.tga");
+	meshList[CLEANER_WHEELJOINT] = MeshBuilder::GenerateOBJ("CleanerWheelJoint", "OBJ//CleanerBot//CleanerWheelJoint.obj");
+	meshList[CLEANER_WHEELJOINT]->textureID = LoadTGA("Image//CleanerRobot.tga");
 
+	// Customer
+	meshList[CUSTOMER_BODY] = MeshBuilder::GenerateOBJ("CustomerBody", "OBJ//Customer//CustomerBody.obj");
+	meshList[CUSTOMER_BODY]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[CUSTOMER_HEAD] = MeshBuilder::GenerateOBJ("CustomerHead", "OBJ//Customer//CustomerHead.obj");
+	meshList[CUSTOMER_HEAD]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[CUSTOMER_SHOULDER] = MeshBuilder::GenerateOBJ("CustomerShoulder", "OBJ//Customer//CustomerShoulder.obj");
+	meshList[CUSTOMER_SHOULDER]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[CUSTOMER_ARM] = MeshBuilder::GenerateOBJ("CustomerArm", "OBJ//Customer//CustomerArm.obj");
+	meshList[CUSTOMER_ARM]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[CUSTOMER_HAND] = MeshBuilder::GenerateOBJ("CustomerHand", "OBJ//Customer//CustomerHand.obj");
+	meshList[CUSTOMER_HAND]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[CUSTOMER_LEG] = MeshBuilder::GenerateOBJ("CustomerLeg", "OBJ//Customer//CustomerLeg.obj");
+	meshList[CUSTOMER_LEG]->textureID = LoadTGA("Image//Customer.tga");
+
+	// Guard Bot
+	meshList[GUARD_BODY] = MeshBuilder::GenerateOBJ("GuardBody", "OBJ//GuardBot//GuardBody.obj");
+	meshList[GUARD_BODY]->textureID = LoadTGA("Image//GuardBot.tga");
+	meshList[GUARD_HEAD] = MeshBuilder::GenerateOBJ("GuardHead", "OBJ//GuardBot//GuardHead.obj");
+	meshList[GUARD_HEAD]->textureID = LoadTGA("Image//GuardBot.tga");
+	meshList[GUARD_LEFTARM] = MeshBuilder::GenerateOBJ("GuardLeftArm", "OBJ//GuardBot//GuardLeftArm.obj");
+	meshList[GUARD_LEFTARM]->textureID = LoadTGA("Image//GuardBot.tga");
+	meshList[GUARD_RIGHTARM] = MeshBuilder::GenerateOBJ("GuardRightArm", "OBJ//GuardBot//GuardRightArm.obj");
+	meshList[GUARD_RIGHTARM]->textureID = LoadTGA("Image//GuardBot.tga");
+	meshList[GUARD_LEG] = MeshBuilder::GenerateOBJ("GuardLeg", "OBJ//GuardBot//GuardLeg.obj");
+	meshList[GUARD_LEG ]->textureID = LoadTGA("Image//GuardBot.tga");
+	
+	// Sale Bot
+	meshList[SALE_BOTTOM] = MeshBuilder::GenerateOBJ("SaleBody", "OBJ//SaleBot//SaleBottom.obj");
+	meshList[SALE_BOTTOM]->textureID = LoadTGA("Image//Salesbot.tga");
+	meshList[SALE_TOP] = MeshBuilder::GenerateOBJ("SaleTop", "OBJ//SaleBot//SaleTop.obj");
+	meshList[SALE_TOP]->textureID = LoadTGA("Image//Salesbot.tga");
+	meshList[SALE_NECK] = MeshBuilder::GenerateOBJ("SaleNeck", "OBJ//SaleBot//SaleNeck.obj");
+	meshList[SALE_NECK]->textureID = LoadTGA("Image//Salesbot.tga");
+	meshList[SALE_HEAD] = MeshBuilder::GenerateOBJ("SaleHead", "OBJ//SaleBot//SaleHead.obj");
+	meshList[SALE_HEAD]->textureID = LoadTGA("Image//Salesbot.tga");
+	meshList[SALE_LEFTARM] = MeshBuilder::GenerateOBJ("SaleLeftArm", "OBJ//SaleBot//SaleLeftArm.obj");
+	meshList[SALE_LEFTARM]->textureID = LoadTGA("Image//Salesbot.tga");
+	meshList[SALE_RIGHTARM] = MeshBuilder::GenerateOBJ("SaleRightArm", "OBJ//SaleBot//SaleRightArm.obj");
+	meshList[SALE_RIGHTARM]->textureID = LoadTGA("Image//Salesbot.tga");
+	meshList[SALE_WHEEL] = MeshBuilder::GenerateOBJ("SaleWheel", "OBJ//SaleBot//SaleWheel.obj");
+	meshList[SALE_WHEEL]->textureID = LoadTGA("Image//Salesbot.tga");
 }
 
 void StarterScene::Update(double dt)
@@ -578,6 +629,182 @@ void StarterScene::RenderSkybox()
 }
 
 
+void StarterScene::RenderCleanerRobot() // Facing x-axis
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0.4, 0);
+	RenderMesh(meshList[CLEANER_BOTTOM], true);
+		modelStack.PushMatrix();
+		modelStack.Rotate(rotateCleanerTop, 0, 1, 0);
+		modelStack.Translate(0, 0.55, 0);
+		RenderMesh(meshList[CLEANER_TOP], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0.65, 0.1, -0.8);
+		modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
+		RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Front Left
+			modelStack.PushMatrix();
+			RenderMesh(meshList[CLEANER_WHEEL], true);
+			modelStack.PopMatrix();
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0.65, 0.1, 0.8);
+		modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
+		RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Front Right
+			modelStack.PushMatrix();
+			RenderMesh(meshList[CLEANER_WHEEL], true);
+			modelStack.PopMatrix();
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(-0.8, 0.1, -0.8);
+		modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
+		RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Back Left
+			modelStack.PushMatrix();
+			RenderMesh(meshList[CLEANER_WHEEL], true);
+			modelStack.PopMatrix();
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(-0.8, 0.1, 0.8);
+		modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
+		RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Back Right
+			modelStack.PushMatrix();
+			RenderMesh(meshList[CLEANER_WHEEL], true);
+			modelStack.PopMatrix();
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void StarterScene::RenderCustomer() // Facing x-axis
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(5, 3.8, 0);
+	RenderMesh(meshList[CUSTOMER_BODY], true);
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 6.5, 0);
+		modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
+		RenderMesh(meshList[CUSTOMER_HEAD], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 5.2, -1.5);
+		modelStack.Rotate(15, 1, 0, 0);
+		modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
+		RenderMesh(meshList[CUSTOMER_SHOULDER], true); // Left Arm
+			modelStack.PushMatrix();
+			modelStack.Translate(0, LeftArmY , LeftArmZ);
+			RenderMesh(meshList[CUSTOMER_ARM], true);
+				modelStack.PushMatrix();
+				modelStack.Translate(0, -2.2, 0);
+				RenderMesh(meshList[CUSTOMER_HAND], true);
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+		modelStack.PopMatrix(); 
+		modelStack.PushMatrix(); 
+		modelStack.Translate(0, 5.2, 1.5);
+		modelStack.Rotate(-15, 1, 0, 0);
+		modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
+		RenderMesh(meshList[CUSTOMER_SHOULDER], true); // Right Arm
+			modelStack.PushMatrix();
+			modelStack.Translate(0, -1.8, 0);
+			RenderMesh(meshList[CUSTOMER_ARM], true);
+				modelStack.PushMatrix();
+				modelStack.Translate(0, -2.2, 0);
+				RenderMesh(meshList[CUSTOMER_HAND], true);
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 0, -0.5);
+		modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
+		RenderMesh(meshList[CUSTOMER_LEG], true); // Left Leg
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 0, 0.5);
+		modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
+		RenderMesh(meshList[CUSTOMER_LEG], true); // Right Leg
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void StarterScene::RenderGuardBot() // Facing z-axis
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(15, 9, 0);
+	RenderMesh(meshList[GUARD_BODY], true);
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 3, 0);
+		RenderMesh(meshList[GUARD_HEAD], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(4.5, 2.5 ,0);
+		RenderMesh(meshList[GUARD_LEFTARM], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(-4.5, 2.5, 0);
+		RenderMesh(meshList[GUARD_RIGHTARM], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(1.3, -3, 0);
+		RenderMesh(meshList[GUARD_LEG], true); // Left Leg
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(-1.3, -3, 0);
+		RenderMesh(meshList[GUARD_LEG], true); // Right Leg
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void StarterScene::RenderSaleBot() // Facing negative z-axis
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(-7, 0.7, 0);
+	RenderMesh(meshList[SALE_BOTTOM], true);
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 3, 0);
+		RenderMesh(meshList[SALE_TOP], true);
+			modelStack.PushMatrix();
+			modelStack.Translate(0, 4.5, 0);
+			RenderMesh(meshList[SALE_NECK], true);
+				modelStack.PushMatrix();
+				modelStack.Translate(0, 0.5, 0);
+				RenderMesh(meshList[SALE_HEAD], true);
+				modelStack.PopMatrix();
+			modelStack.PopMatrix();
+			modelStack.PushMatrix();
+			modelStack.Translate(-1.5, 3, 0);
+			modelStack.Rotate(-15, 0, 0, 1);
+			RenderMesh(meshList[SALE_LEFTARM], true);
+			modelStack.PopMatrix();
+			modelStack.PushMatrix();
+			modelStack.Translate(1.5, 3, 0);
+			modelStack.Rotate(15, 0, 0, 1);
+			RenderMesh(meshList[SALE_RIGHTARM], true);
+			modelStack.PopMatrix();
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0, -0.2, -1.1);
+		RenderMesh(meshList[SALE_WHEEL], true); // First Horizontal Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0, -0.2, 1.1);
+		RenderMesh(meshList[SALE_WHEEL], true); // Second Horizontal Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Translate(0, -0.2, -1);
+		RenderMesh(meshList[SALE_WHEEL], true); // First Vertical Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Translate(0, -0.2, 0);
+		RenderMesh(meshList[SALE_WHEEL], true); // Second Vertical Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Rotate(90, 0, 1, 0);
+		modelStack.Translate(0, -0.2, 1);
+		RenderMesh(meshList[SALE_WHEEL], true); // Third Vertical Wheel
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
 
 void StarterScene::RenderText(Mesh* mesh, std::string text, Color color)
 {

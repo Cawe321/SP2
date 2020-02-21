@@ -1,15 +1,15 @@
 #ifndef CSALESCUSTOMER_H
 #define CSALESCUSTOMER_H
+#include "Vertex.h"
 #include <string>
 #include "CSalesAnswer.h"
 
-// together with CSalesCustomer since the functions affect CSalesCustomer class
-
+#include "irrKlang.h"
 
 class CSalesCustomer
 {
 public:
-	CSalesCustomer();
+	CSalesCustomer(Vector3 coordinates);
 	~CSalesCustomer();
 	//animValues
 	int count;
@@ -42,6 +42,8 @@ public:
 	void setPlaceHolderText(std::string text);
 	void isAppeased();
 private:
+	irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
+	Vector3 coordinates;
 	std::string placeHolderText;
 	SalesQuestion QuestionList[5];
 	CSalesAnswer* playerChoice;

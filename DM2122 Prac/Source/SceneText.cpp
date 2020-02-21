@@ -158,15 +158,18 @@ void SceneText::Init()
 	meshList[GEO_MECHANIC_GAME] = MeshBuilder::GenerateQuad("Mechanic_Game", Color(0.5f, 1, 1), 1.f, 1.f);
 
 	meshList[GEO_FRAME] = MeshBuilder::GenerateQuad("Frame", Color(0, 1, 0), 7.f, 1.5f);
-	meshList[GEO_FRAME]->textureID = LoadTGA("Image//AchievementScreen.tga");
+	meshList[GEO_FRAME]->textureID = LoadTGA("Image//NPCtextbox2.tga");
 
 	meshList[GEO_FRAME2] = MeshBuilder::GenerateQuad("Frame2", Color(0, 1, 0), 7.f, 2.4f);
 	meshList[GEO_FRAME2]->textureID = LoadTGA("Image//customersalesbackground.tga");
 
-	meshList[GEO_CUSTOMERLOGO] = MeshBuilder::GenerateQuad("CustomerLogo", Color(0, 0, 0), 1.f, 1.f);
+	meshList[GEO_FRAME3] = MeshBuilder::GenerateQuad("Frame3", Color(0, 1, 0), 7.5f, 1.5f);
+	meshList[GEO_FRAME3]->textureID = LoadTGA("Image//whiteframe.tga");
+
+	meshList[GEO_CUSTOMERLOGO] = MeshBuilder::GenerateQuad("CustomerLogo", Color(0, 0, 0), 0.8f, 0.8f);
 	meshList[GEO_CUSTOMERLOGO]->textureID = LoadTGA("Image//customerlogo.tga");
 	// init values
-	salesCustomer = new CSalesCustomer();
+	salesCustomer = new CSalesCustomer(Vector3(0,0,0));
 }
 
 void SceneText::Update(double dt)
@@ -427,65 +430,7 @@ void SceneText::Render()
 	{
 		RenderSkybox();
 
-		if (salesCustomer != nullptr && salesCustomer->answered == false)
-		{
-			if (salesCustomer->count <= salesCustomer->getQuestion().length())
-				salesCustomer->count++;
-			std::string toPrint = salesCustomer->getQuestion().substr(0, salesCustomer->count);
-
-			RenderObjectOnScreen(meshList[GEO_FRAME], 10, 4, 3.5);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], toPrint, Color(1, 1, 1), 3, 4, 13, 28, false);
-
-
-			RenderObjectOnScreen(meshList[GEO_FRAME2], 10, 4, 1.3);
-			if (salesCustomer->count > salesCustomer->getQuestion().length())
-			{
-				RenderTextOnScreen(meshList[GEO_TEXT], "Q", Color(0, 0.7, 0), 5, 1, 3.15);
-				RenderTextOnScreen(meshList[GEO_TEXT], "E", Color(0, 0.7, 0), 5.3, 1, 1.3);
-
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 5, 10, 40, true);
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 3.5, 8, 40, true);
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getText(), Color(1, 1, 1), 2.25, 2, 6, 40, true);
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getNext()->getText(), Color(0, 0, 0), 2.25, 3.5, 4, 40, true);
-				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getNext()->getNext()->getText(), Color(0, 0, 0), 2.25, 5, 2, 40, true);
-			}
-			RenderObjectOnScreen(meshList[GEO_CUSTOMERLOGO], 15, 1, 3.4);
-			RenderTextOnScreen(meshList[GEO_TEXT], salesCustomer->getName(), Color(0, 1, 0), 3, 8, 18.25);
-			RenderTextOnScreen(meshList[GEO_TEXT], "Satisfaction:", Color(0, 1, 0), 3, 8, 17.25);
-			if (salesCustomer->getAppeaseRate() < 0)
-				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(3, 0, 0), 3, 17, 17.25);
-			else
-				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(0, 1, 0), 3, 17, 17.25);
-			RenderTextOnScreen(meshList[GEO_TEXT], "/" + std::to_string(salesCustomer->getSatisfactionRate()), Color(0, 1, 0), 3, 18.5, 17.25);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Reach satisfaction(" + std::to_string(salesCustomer->getSatisfactionRate() - 4) + ") and you will face the penalty!", Color(3, 0, 0), 2, 12, 24.37, 30, false);
-		}
-		else if (salesCustomer != nullptr && salesCustomer->answered == true)
-		{
-			if (salesCustomer->count <= salesCustomer->getPlaceHolderText().length() + 100)
-				salesCustomer->count++;
-			std::string toPrint = salesCustomer->getPlaceHolderText().substr(0, salesCustomer->count);
-			modelStack.PushMatrix();
-			RenderObjectOnScreen(meshList[GEO_FRAME], 10, 4, 3.5);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], toPrint, Color(1, 1, 1), 3, 4, 13, 28, false);
-			modelStack.PopMatrix();
-			modelStack.PushMatrix();
-			RenderObjectOnScreen(meshList[GEO_FRAME2], 10, 4, 1.3);
-			if (salesCustomer->count >= salesCustomer->getPlaceHolderText().length() + 100)
-			{
-				salesCustomer->answered = false;
-				salesCustomer->count = 0;
-				salesCustomer->isAppeased(); // will check if customer is appeased, if not get another question
-			}
-			RenderObjectOnScreen(meshList[GEO_CUSTOMERLOGO], 15, 1, 3.4);
-			RenderTextOnScreen(meshList[GEO_TEXT], salesCustomer->getName(), Color(0, 1, 0), 3, 8, 18.25);
-			RenderTextOnScreen(meshList[GEO_TEXT], "Satisfaction:", Color(0, 1, 0), 3, 8, 17.25);
-			if (salesCustomer->getAppeaseRate() < 0)
-				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(3, 0, 0), 3, 17, 17.25);
-			else
-				RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(0, 1, 0), 3, 17, 17.25);
-			RenderTextOnScreen(meshList[GEO_TEXT], "/" + std::to_string(salesCustomer->getSatisfactionRate()), Color(0, 1, 0), 3, 18.5, 17.25);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Reach satisfaction(" + std::to_string(salesCustomer->getSatisfactionRate() - 4) + ") and you will face the penalty!", Color(3, 0, 0), 2, 12, 24.37, 30, false);
-		}
+		
 		modelStack.PushMatrix();
 		modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
 		RenderMesh(meshList[GEO_LIGHTSPHERE], false);
@@ -534,6 +479,67 @@ void SceneText::Render()
 	//No transform needed
 	//RenderTextOnScreen(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0), 2, 0, 0);
 
+	if (salesCustomer != nullptr && salesCustomer->answered == false)
+	{
+		if (salesCustomer->count <= salesCustomer->getQuestion().length())
+			salesCustomer->count++;
+		std::string toPrint = salesCustomer->getQuestion().substr(0, salesCustomer->count);
+
+		RenderObjectOnScreen(meshList[GEO_FRAME], 10, 4, 3.5);
+		RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], toPrint, Color(0, 0, 0), 3, 4, 12.5, 28, false);
+
+		RenderObjectOnScreen(meshList[GEO_FRAME3], 10, 4, 5.1);
+		RenderObjectOnScreen(meshList[GEO_CUSTOMERLOGO], 15, 1, 3.4);
+		RenderTextOnScreen(meshList[GEO_TEXT], salesCustomer->getName(), Color(0,0,1), 3, 8, 18.25);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Satisfaction:", Color(0,2,0), 3, 8, 17.25);
+
+		RenderObjectOnScreen(meshList[GEO_FRAME2], 10, 4, 1.3);
+		if (salesCustomer->count > salesCustomer->getQuestion().length())
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "Q", Color(5, 5, 5), 5, 2.7, 3.15);
+			RenderTextOnScreen(meshList[GEO_TEXT], "E", Color(5, 5, 5), 5, 2.8, 1.3);
+
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 5, 10, 40, true);
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 3.5, 8, 40, true);
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getText(), Color(0,0,0), 2.25, 2.2, 6, 40, true);
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getNext()->getText(), Color(0, 0, 0), 2.25, 3.5, 4, 40, true);
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getNext()->getNext()->getText(), Color(0, 0, 0), 2.25, 5, 2, 40, true);
+		}
+		if (salesCustomer->getAppeaseRate() < 0)
+			RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(3, 0, 0), 3, 17, 17.25);
+		else
+			RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(0, 2, 0), 3, 17, 17.25);
+		RenderTextOnScreen(meshList[GEO_TEXT], "/" + std::to_string(salesCustomer->getSatisfactionRate()), Color(0, 2, 0), 3, 18.5, 17.25);
+		RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Reach satisfaction(" + std::to_string(salesCustomer->getSatisfactionRate() - 4) + ") and you will face the penalty!", Color(3, 0, 0), 2, 12, 24.37, 30, false);
+	}
+	else if (salesCustomer != nullptr && salesCustomer->answered == true)
+	{
+		if (salesCustomer->count <= salesCustomer->getPlaceHolderText().length() + 100)
+			salesCustomer->count++;
+		std::string toPrint = salesCustomer->getPlaceHolderText().substr(0, salesCustomer->count);
+		modelStack.PushMatrix();
+		RenderObjectOnScreen(meshList[GEO_FRAME], 10, 4, 3.5);
+		RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], toPrint, Color(0, 0, 0), 3, 4, 12.5, 28, false);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		RenderObjectOnScreen(meshList[GEO_FRAME2], 10, 4, 1.3);
+		if (salesCustomer->count >= salesCustomer->getPlaceHolderText().length() + 100)
+		{
+			salesCustomer->answered = false;
+			salesCustomer->count = 0;
+			salesCustomer->isAppeased(); // will check if customer is appeased, if not get another question
+		}
+		RenderObjectOnScreen(meshList[GEO_FRAME3], 10, 4, 5.1);
+		RenderObjectOnScreen(meshList[GEO_CUSTOMERLOGO], 15, 1, 3.4);
+		RenderTextOnScreen(meshList[GEO_TEXT], salesCustomer->getName(), Color(0, 0, 1), 3, 8, 18.25);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Satisfaction:", Color(0, 2, 0), 3, 8, 17.25);
+		if (salesCustomer->getAppeaseRate() < 0)
+			RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(3, 0, 0), 3, 17, 17.25);
+		else
+			RenderTextOnScreen(meshList[GEO_TEXT], std::to_string(salesCustomer->getAppeaseRate()), Color(0, 2, 0), 3, 17, 17.25);
+		RenderTextOnScreen(meshList[GEO_TEXT], "/" + std::to_string(salesCustomer->getSatisfactionRate()), Color(0, 2, 0), 3, 18.5, 17.25);
+		RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Reach satisfaction(" + std::to_string(salesCustomer->getSatisfactionRate() - 4) + ") and you will face the penalty!", Color(3, 0, 0), 2, 12, 24.37, 30, false);
+	}
 	
 	
 }

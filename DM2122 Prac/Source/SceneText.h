@@ -33,6 +33,7 @@ class SceneText : public Scene
 		GEO_MECHANIC_GAME,
 		GEO_FRAME,
 		GEO_FRAME2,
+		GEO_FRAME3,
 		GEO_CUSTOMERLOGO,
 		GEO_TEXT,
 		NUM_GEOMETRY,

@@ -58,7 +58,7 @@ void CSalesGoodAnswer::answerEffect(CSalesCustomer* customer)
 	customer->count = 0;
 	customer->setAppeaseRate(customer->getAppeaseRate() + 1);
 	if (customer->getAppeaseRate() >= customer->getSatisfactionRate())
-		customer->setPlaceHolderText("Thank you for help!");
+		customer->setPlaceHolderText("Thank you for helping!");
 	else
 		customer->setPlaceHolderText("You are very helpful!");
 }

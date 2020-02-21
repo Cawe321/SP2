@@ -1,6 +1,8 @@
 #include "CSalesCustomer.h"
 #include "Application.h"
 #include "Vocation.h"
+
+
 int CSalesCustomer::getAppeaseRate()
 {
 	return appeaseRate;
@@ -17,8 +19,9 @@ std::string CSalesCustomer::getQuestion()
 {
 	return ChosenQuestion.Question;
 }
-CSalesCustomer::CSalesCustomer()
+CSalesCustomer::CSalesCustomer(Vector3 coordinates)
 {
+	this->coordinates = coordinates;
 	answered = false;
 	debounceTime = 0;
 	elapsedTime = 0;
@@ -81,11 +84,13 @@ void CSalesCustomer::isAppeased()
 	if (satisfactionCheck())
 	{
 		// do something to show customer is satisfied and won the minigame
+		soundEngine->play2D("audio\\yay.mp3", false);
 		delete this;
 	}
 	else if (appeaseRate <= (satisfactionRate - 4))
 	{
 		// do something to show customer is disatisfied  and lostthe minigame
+		soundEngine->play2D("audio\\negativebeep.mp3", false);
 		delete this;
 	}
 	else

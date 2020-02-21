@@ -126,7 +126,21 @@ void StarterScene::Init()
 	IntroScene = true;
 	VocationScene = false;
 	EntranceScene = false;
+	
+	if (rotateCleanerTop > -30.f)
+		rotateCleanerTop -= (float)(RSPEED * dt);
+	if (rotateCleanerTop < -30.f)					// does not work
+		rotateCleanerTop += (float)(RSPEED * dt);
 
+	rotateCleanerTop += (float)(RSPEED * dt);
+	rotateCleanerWheels -= (float)(RSPEED * dt);
+	rotateCustomerRightArm -= (float)(RSPEED * dt);
+	if (LeftArmY < 5.0f && LeftArmZ < 2.0f)
+		rotateCustomerLeftArm += (float)(RSPEED * dt);
+
+	rotateCustomerHead = 45;
+	rotateCustomerLeftLeg = 25;
+	rotateCustomerRightLeg = -25;
 
 	// Skybox
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.f, 1.f);

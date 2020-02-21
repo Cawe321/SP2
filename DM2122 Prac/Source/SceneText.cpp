@@ -405,10 +405,7 @@ void SceneText::Render()
 	}
 
 	 
-	TotalBouncerTask = Day1[2].maxNumber ; //algo for this needs to be tested once the minigame is done
-	CurrentBouncerTask = Day1[2].currentNumber ;
-
-	CurrentSalespersonTask = Day1[0].currentNumber; //just leave like this for now, same reason as bouncer
+	
 
 	//modelStack.PushMatrix();
 	//modelStack.Translate(0, -3, 0);
@@ -418,33 +415,29 @@ void SceneText::Render()
 	if (AchievementScene == true)
 	{
 
+		TotalBouncerTask = Day1[2].maxNumber + Day2[2].maxNumber + Day2[2].maxNumber; //algo for this needs to be tested once the minigame is done
+		CurrentBouncerTask = Day1[2].currentNumber + Day2[2].currentNumber + Day2[2].currentNumber;
+
+		CurrentSalespersonTask = Day1[0].currentNumber + Day2[0].currentNumber + Day3[0].currentNumber; //just leave like this for now, same reason as bouncer
+
+		std::string CarAchievements;
+		Achievements* Cartext = new Achievements();
+		CarAchievements = Cartext->carAchievements(Price);
+
+		std::string BouncerAchievements;
+		Achievements* Bouncertext = new Achievements();
+		BouncerAchievements = Bouncertext->bouncerAchievements(CurrentBouncerTask, TotalBouncerTask);
+		
+		std::string SalesAchievements;
+		Achievements* Salestext = new Achievements();
+		SalesAchievements = Salestext->salespersonAchievements(CurrentSalespersonTask);
+
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
 
-		if (CurrentBouncerTask == 0) //placeholder until bouncer minigame is done
-		{
-			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Doing the Right Thing Achieved!", Color(0.93f, 1.f, 0.26f), 2.5f, 0.5f, 12);
-		}
-		if (CurrentSalespersonTask == 0) 
-		{
-			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "No, I Quit! Achieved", Color(0.93f, 1.f, 0.26f), 2.5f, 5, 13);
-		}
-		//numbers are to be replaced with the relevant function
-		if (Price == 15000)
-		{
-			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Cheapskate Achieved!", Color(0.93f, 1.f, 0.26f), 2.5f, 5, 14);
-		}
-		else if (Price == 90000)
-		{
-			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Playing It Safe Achieved!", Color(0.93f, 1.f, 0.26f), 2.5f, 5, 15);
-		}
-		else if (Price == 225000)
-		{
-			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "Crazy Rich Achieved!", Color(0.93f, 1.f, 0.26f), 2.5f, 5, 16);
-		}
-		else  //supposed to be an else if statement, condition being that no car is bought, so no car stored inside the relevant data
-		{
-			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], "I Rather Walk Achieved!", Color(0.93, 1.f, 0.26f), 2.5f, 5, 17);
-		}
+		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], CarAchievements, Color(1, 0, 0), 3.f, 3.5f, 10);
+		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], BouncerAchievements, Color(1, 0, 0), 3, 3.5f, 11);
+		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], SalesAchievements, Color(1, 0, 0), 3, 3.5f, 12);
+	
 	}
 	else if (MechanicGame == true) {
 		std::string print = "";

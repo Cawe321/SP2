@@ -519,6 +519,62 @@ void StarterScene::RenderMesh(Mesh* mesh, bool enableLight)
 	if(mesh->textureID > 0) glBindTexture(GL_TEXTURE_2D, 0);
 }
 
+void StarterScene::RenderSkybox()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 3.75, 0);
+
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(19.9f, 0.f, 0.f);
+	modelStack.Scale(40.f, 60.f, 82.f);
+	modelStack.Rotate(-90.f, 0.f, 1.f, 0.f);
+	RenderMesh(meshList[GEO_LEFT], false);
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(-19.9f, 0.f, 0.f);
+	modelStack.Scale(80.f, 60.f, 82.f);
+	modelStack.Rotate(90.f, 0.f, 1.f, 0.f);
+	RenderMesh(meshList[GEO_RIGHT], false);
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(0.0f, 29.9f, 1.f);
+	modelStack.Scale(40.f, 60.f, 80.9f);
+	modelStack.Rotate(90.f, 1.f, 0.f, 0.f);
+	modelStack.PushMatrix();
+	modelStack.Rotate(180.f, 0.f, 0.f, 1.f);
+	RenderMesh(meshList[GEO_TOP], false);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(0.f, -29.9f, 0.f);
+	modelStack.Scale(40.f, 60.f, 82.f);
+	modelStack.Rotate(-90.f, 1.f, 0.f, 0.f);
+	modelStack.PushMatrix();
+	modelStack.Rotate(180.f, 0.f, 0.f, 1.f);
+	RenderMesh(meshList[GEO_BOTTOM], false);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(0.f, 0.f, -39.9f);
+	modelStack.Scale(40.f, 60.f, 40.f);
+	RenderMesh(meshList[GEO_FRONT], false);
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	///scale, translate, rotate 
+	modelStack.Translate(0.f, 0.f, 40.9f);
+	modelStack.Scale(40.f, 60.f, 40.f);
+	modelStack.Rotate(180.f, 0.f, 1.f, 0.f);
+	RenderMesh(meshList[GEO_BACK], false);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+}
+
 void StarterScene::RenderText(Mesh* mesh, std::string text, Color color)
 {
 	if (!mesh || mesh->textureID <= 0) //Proper error check

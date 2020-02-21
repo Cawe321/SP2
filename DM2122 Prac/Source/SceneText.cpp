@@ -151,8 +151,8 @@ void SceneText::Init()
 	meshList[GEO_ACHIEVEMENTS] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_ACHIEVEMENTS]->textureID = LoadTGA("Image//calibri.tga");
 	
-	meshList[GEO_ACHIEVEMENTSBG] = MeshBuilder::GenerateQuad("Achievementsbg", Color(1, 1, 1), 1.f, 1.f);
-	meshList[GEO_ACHIEVEMENTSBG]->textureID = LoadTGA("Image//AchievementScreen");
+	meshList[GEO_ACHIEVEMENTSBG] = MeshBuilder::GenerateQuad("Achievementsbg", Color(1, 1, 1), 1.6f, 1.4f);
+	meshList[GEO_ACHIEVEMENTSBG]->textureID = LoadTGA("Image//AchievementScreen.tga");
 
 	meshList[GEO_MECHANIC_GAME] = MeshBuilder::GenerateQuad("Mechanic_Game", Color(0.5f, 1, 1), 1.f, 1.f);
 

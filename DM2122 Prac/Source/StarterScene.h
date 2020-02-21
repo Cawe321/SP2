@@ -22,7 +22,33 @@ class StarterScene : public Scene
 		GEO_ENTRANCELEFT,
 		GEO_ENTRANCERIGHT,
 		GEO_CARLOGO,
+		
+		CLEANER_TOP,
+		CLEANER_BOTTOM,
+		CLEANER_WHEEL,
+		CLEANER_WHEELJOINT,
 
+		CUSTOMER_BODY,
+		CUSTOMER_HEAD,
+		CUSTOMER_SHOULDER,
+		CUSTOMER_ARM,
+		CUSTOMER_HAND,
+		CUSTOMER_LEG,
+
+		GUARD_BODY,
+		GUARD_HEAD,
+		GUARD_LEFTARM,
+		GUARD_RIGHTARM,
+		GUARD_LEG,
+
+		SALE_BOTTOM,
+		SALE_TOP,
+		SALE_NECK,
+		SALE_HEAD,
+		SALE_LEFTARM,
+		SALE_RIGHTARM,
+		SALE_WHEEL,
+		
 		GEO_LEFT,
 		GEO_RIGHT,
 		GEO_TOP,
@@ -92,6 +118,10 @@ private:
 
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();
+	void RenderCleanerRobot();
+	void RenderCustomer();
+	void RenderGuardBot();
+	void RenderSaleBot();
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);

@@ -63,6 +63,13 @@ class SceneText : public Scene
 		SALE_RIGHTARM,
 		SALE_WHEEL,
 
+		ITEM_INFORMATION_STAND,
+		ITEM_INFORMATION_COUNTER,
+		ITEM_BATTERY,
+		ITEM_DISPLAY_STAND,
+		ITEM_LIGHTBULB,
+		ITEM_BOOTH,
+
 		NUM_GEOMETRY,
 	};
 
@@ -157,6 +164,7 @@ private:
 	void RenderCustomer();
 	void RenderGuardBot();
 	void RenderSaleBot();
+	void Renderlevel();
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);

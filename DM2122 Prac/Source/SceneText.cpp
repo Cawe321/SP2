@@ -221,6 +221,16 @@ void SceneText::Init()
 	meshList[SALE_WHEEL] = MeshBuilder::GenerateOBJ("SaleWheel", "OBJ//SaleBot//SaleWheel.obj");
 	meshList[SALE_WHEEL]->textureID = LoadTGA("Image//Salesbot.tga");
 
+	//Background Assets
+	meshList[ITEM_INFORMATION_STAND] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
+	meshList[ITEM_INFORMATION_STAND]->textureID = LoadTGA("Image//background_items//Infostand.tga");
+	meshList[ITEM_BATTERY] = MeshBuilder::GenerateOBJ("Battery","OBJ//Background_Items//Battery.obj");
+	meshList[ITEM_BATTERY]->textureID = LoadTGA("Image//background_items//Battery.tga");
+	meshList[ITEM_DISPLAY_STAND] = MeshBuilder::GenerateOBJ("Display Stand","OBJ//Background_Items//Display_Stand.obj");
+	meshList[ITEM_DISPLAY_STAND]->textureID = LoadTGA("Image//background_items//DisplayStand.tga");
+	meshList[ITEM_LIGHTBULB] = MeshBuilder::GenerateOBJ("Lightbulb","OBJ//Background_Items//Lightbulb.obj");
+	meshList[ITEM_LIGHTBULB]->textureID = LoadTGA("Image//background_items//Light.tga");
+
 	// init values
 	salesCustomer = new CSalesCustomer(Vector3(0,0,0));
 }
@@ -499,7 +509,7 @@ void SceneText::Render()
 	{
 		RenderSkybox();
 		RenderCustomer();
-		
+		Renderlevel();
 		modelStack.PushMatrix();
 		modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
 		RenderMesh(meshList[GEO_LIGHTSPHERE], false);
@@ -894,6 +904,22 @@ void SceneText::RenderSaleBot() // Facing negative z-axis
 	RenderMesh(meshList[SALE_WHEEL], true); // Third Vertical Wheel
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
+}
+
+void SceneText::Renderlevel()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(5, 0, 0);
+	modelStack.Scale(4, 4, 4);
+	RenderMesh(meshList[ITEM_DISPLAY_STAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(1, 0, 5);
+	modelStack.Rotate(90, 0, 1, 0);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
+	modelStack.PopMatrix();
+
 }
 
 void SceneText::RenderText(Mesh* mesh, std::string text, Color color)

@@ -547,20 +547,20 @@ void SceneText::Render()
 		
                 if (escapeanimation == false)
 		{
-			RenderCustomer(); //ignore the fact that it's renderCustomer, Im changing it
+			RenderSuspect(); //ignore the fact that it's renderCustomer, Im changing it
 		}
 		else if (escapeanimation == true && middlePosition <= 25)
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(middlePosition, 0, 0);
-			RenderCustomer();
+			RenderSuspect();
 			modelStack.PopMatrix();
 		}
 		else if (escapeanimation == true && finalPosition <= 55 && middlePosition > 25)
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(25.1f, 0, finalPosition);
-			RenderCustomer();
+			RenderSuspect();
 			modelStack.PopMatrix();
 
 		}

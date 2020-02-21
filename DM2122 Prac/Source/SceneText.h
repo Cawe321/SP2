@@ -8,6 +8,7 @@
 #include "Light.h"
 #include "Vocation.h"
 #include "Mechanictask.h"
+#include "Boss.h"
 //#include "StarterScene.h"
 
 const int MECHANIC_GAME_MAX_SCORE = 10;
@@ -91,6 +92,8 @@ private:
 	std::vector<Vocation::Quest> Day2;
 	std::vector<Vocation::Quest> Day3;
 	Mechanictask* MechanicGameScore;
+
+	Boss* BossOpinion;
 	
 	char game[10];
 

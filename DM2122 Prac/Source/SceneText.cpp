@@ -24,6 +24,7 @@ SceneText::SceneText()
 	Day1 = Vocation::getMainQuest(1);
 	Day2 = Vocation::getMainQuest(2);
 	Day3 = Vocation::getMainQuest(3);
+	BossOpinion = new Boss();
 	MechanicGameScore = new Mechanictask();
 	MechanicGame = false;
 	FreezeMovement = false;

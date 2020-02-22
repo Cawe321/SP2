@@ -613,10 +613,10 @@ void SceneText::Render()
 			delete temp;
 
 		}
-		//whoever is doing player this is for the command for bouncer
+		//for bouncer command text box to appear
 		if (walkingSide < -4 && walkingSide > -21 && escapeanimation == false) //replace this with distance checker
 		{
-			RenderCommandTextBox(); 
+			RenderCommandTextBox("Press 'X' to tell him to get out"); 
 		}
 	}
 
@@ -1059,10 +1059,10 @@ void SceneText::RenderBouncerTextBox()
 	RenderObjectOnScreen(meshList[GEO_TEXTBOX], 10, 3.3f, 1.f);
 	RenderTextOnScreen(meshList[GEO_TEXT], "I left okay geez!", Color(1, 0, 0), 3.5f, 1.f, 3);
 }
-void SceneText::RenderCommandTextBox()
+void SceneText::RenderCommandTextBox(std::string text)
 {
 	RenderObjectOnScreen(meshList[GEO_TEXTBOX], 10, 3.3f, 1.f);
-	RenderTextOnScreen(meshList[GEO_TEXT], "Press 'X' to tell him to get out", Color(0, 1, 0),2.7f, 1.f, 3);
+	RenderTextOnScreen(meshList[GEO_TEXT], text, Color(0, 1, 0),2.7f, 1.f, 3);
 }
 
 void SceneText::RenderText(Mesh* mesh, std::string text, Color color)

@@ -554,15 +554,15 @@ void SceneText::Render()
 		else if (escapeanimation == true && middlePosition <= 25)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(middlePosition, 0, 0);
-			RenderSuspect();
+			modelStack.Translate(0, 0, middlePosition);
+			RenderCustomer();
 			modelStack.PopMatrix();
 		}
 		else if (escapeanimation == true && finalPosition <= 55 && middlePosition > 25)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(25.1f, 0, finalPosition);
-			RenderSuspect();
+			modelStack.Translate(finalPosition, 0, 25.1f );
+			RenderCustomer();
 			modelStack.PopMatrix();
 
 		}
@@ -612,6 +612,11 @@ void SceneText::Render()
 			Day1 = temp->Addscore(Day1);
 			delete temp;
 
+		}
+		//whoever is doing player this is for the command for bouncer
+		if (walkingSide < -4 && walkingSide > -21 && escapeanimation == false) //replace this with distance checker
+		{
+			RenderCommandTextBox(); 
 		}
 	}
 
@@ -1053,6 +1058,11 @@ void SceneText::RenderBouncerTextBox()
 {
 	RenderObjectOnScreen(meshList[GEO_TEXTBOX], 10, 3.3f, 1.f);
 	RenderTextOnScreen(meshList[GEO_TEXT], "I left okay geez!", Color(1, 0, 0), 3.5f, 1.f, 3);
+}
+void SceneText::RenderCommandTextBox()
+{
+	RenderObjectOnScreen(meshList[GEO_TEXTBOX], 10, 3.3f, 1.f);
+	RenderTextOnScreen(meshList[GEO_TEXT], "Press 'X' to tell him to get out", Color(0, 1, 0),2.7f, 1.f, 3);
 }
 
 void SceneText::RenderText(Mesh* mesh, std::string text, Color color)

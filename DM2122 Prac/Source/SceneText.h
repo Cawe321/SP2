@@ -177,7 +177,7 @@ private:
 	void Renderlevel();
 	
 	void RenderBouncerTextBox();
-	void RenderCommandTextBox();
+	void RenderCommandTextBox(std::string text);
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);

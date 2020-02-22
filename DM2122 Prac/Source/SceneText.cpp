@@ -243,6 +243,8 @@ void SceneText::Init()
 	meshList[ITEM_DISPLAY_STAND]->textureID = LoadTGA("Image//background_items//DisplayStand.tga");
 	meshList[ITEM_LIGHTBULB] = MeshBuilder::GenerateOBJ("Lightbulb","OBJ//Background_Items//Lightbulb.obj");
 	meshList[ITEM_LIGHTBULB]->textureID = LoadTGA("Image//background_items//Light.tga");
+	meshList[ITEM_BOOTH] = MeshBuilder::GenerateOBJ("Booth", "OBJ//Background_Items//Booth.obj");
+	meshList[ITEM_BOOTH]->textureID = LoadTGA("Image//background_items//Booth.tga");
 
 	// init values
 	salesCustomer =  nullptr; //new CSalesCustomer(Vector3(0,0,0))
@@ -1038,6 +1040,11 @@ void SceneText::Renderlevel()
 	modelStack.Translate(1, 0, 5);
 	modelStack.Rotate(90, 0, 1, 0);
 	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(10, 0, 10);
+	RenderMesh(meshList[ITEM_BOOTH], true);
 	modelStack.PopMatrix();
 
 }

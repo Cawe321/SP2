@@ -25,6 +25,22 @@ SceneText::SceneText()
 	Day1 = Vocation::getMainQuest(1);
 	Day2 = Vocation::getMainQuest(2);
 	Day3 = Vocation::getMainQuest(3);
+	std::vector<Vector3> Day1Litter, Day2Litter, Day3Litter; 
+	for (int i = 0; i < Day1.size(); i++)
+	{
+		if (Day1[i].job == VocationJob::CLEANER)
+			Day1Litter = Vocation::getLitterLocations(Day1[i].maxNumber);
+	}
+	for (int i = 0; i < Day2.size(); i++)
+	{
+		if (Day2[i].job == VocationJob::CLEANER)
+			Day2Litter = Vocation::getLitterLocations(Day2[i].maxNumber);
+	}
+	for (int i = 0; i < Day3.size(); i++)
+	{
+		if (Day3[i].job == VocationJob::CLEANER)
+			Day3Litter = Vocation::getLitterLocations(Day3[i].maxNumber);
+	}
 	BossOpinion = new Boss();
 	MechanicGameScore = new Mechanictask();
 	MechanicGame = false;

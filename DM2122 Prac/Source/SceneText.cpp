@@ -237,6 +237,8 @@ void SceneText::Init()
 	//Background Assets
 	meshList[ITEM_INFORMATION_STAND] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
 	meshList[ITEM_INFORMATION_STAND]->textureID = LoadTGA("Image//background_items//Infostand.tga");
+	meshList[ITEM_INFORMATION_COUNTER] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//InfoCounter.obj");
+	meshList[ITEM_INFORMATION_COUNTER]->textureID = LoadTGA("Image//background_items//InfoCounter.tga");
 	meshList[ITEM_BATTERY] = MeshBuilder::GenerateOBJ("Battery","OBJ//Background_Items//Battery.obj");
 	meshList[ITEM_BATTERY]->textureID = LoadTGA("Image//background_items//Battery.tga");
 	meshList[ITEM_DISPLAY_STAND] = MeshBuilder::GenerateOBJ("Display Stand","OBJ//Background_Items//Display_Stand.obj");
@@ -614,10 +616,10 @@ void SceneText::Render()
 
 		}
 		//for bouncer command text box to appear
-		if (walkingSide < -4 && walkingSide > -21 && escapeanimation == false) //replace this with distance checker
-		{
-			RenderCommandTextBox("Press 'X' to tell him to get out" , 2.7f, 1.f, 3);
-		}
+		//if (walkingSide < -4 && walkingSide > -21 && escapeanimation == false) //replace this with distance checker
+		//{
+		//	RenderCommandTextBox("Press 'X' to tell him to get out" , 2.7f, 1.f, 3);
+		//}
 	}
 
 	//No transform needed
@@ -1048,8 +1050,16 @@ void SceneText::Renderlevel()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
-	modelStack.Translate(10, 0, 10);
+	modelStack.Translate(-40, 0, 10);
+	modelStack.Scale(3, 3, 3);
+	modelStack.Rotate(90, 0, 1, 0);
 	RenderMesh(meshList[ITEM_BOOTH], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(-10, 0, 1);
+	modelStack.Scale(4, 4, 4);
+	RenderMesh(meshList[ITEM_INFORMATION_COUNTER], true);
 	modelStack.PopMatrix();
 
 }

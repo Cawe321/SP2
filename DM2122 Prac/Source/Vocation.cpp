@@ -168,6 +168,23 @@ CSalesCustomer::CustomerType Vocation::returnCustomerMood()
 	}
 }
 
+std::vector<Vector3> Vocation::getLitterLocations(int numberOfLitter)
+{
+	// MUST CHANGE ONCE CONVENTION IS COMPLETED!!!!!!!!!
+	srand(time(NULL));
+	std::vector<Vector3> toReturn;
+	int MAX_LENGTH = 100, MAX_WIDTH = 100;
+	for (int i = 0; i < numberOfLitter; i++)
+	{
+		Vector3 toPush;
+		toPush.x = (rand() % MAX_LENGTH) - (MAX_LENGTH / 2);
+		toPush.y = 0;
+		toPush.z = (rand() % MAX_WIDTH) - (MAX_WIDTH / 2);
+		toReturn.push_back(toPush);
+	}
+	return toReturn;
+}
+
 void Vocation::setVocation(VocationJob* job)
 {
 	Vocation::VocationWork = job;

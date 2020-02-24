@@ -12,7 +12,6 @@
 //#include "StarterScene.h"
 #include "CSalesCustomer.h"
 #include "Cleanertask.h"
-#include "CleanerCamera.h"
 
 const int MECHANIC_GAME_MAX_SCORE = 10;
 const int MECHANIC_GAME_MAX_LIVES = 3;
@@ -192,7 +191,6 @@ private:
 	Light light[1];
 
 	Camera2 camera;
-	CleanerCamera cam;
 
 	std::vector<Vocation::Quest> Day1;
 	std::vector<Vocation::Quest> Day2;

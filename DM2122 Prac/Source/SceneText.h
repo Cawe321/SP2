@@ -11,6 +11,8 @@
 #include "Boss.h"
 //#include "StarterScene.h"
 #include "CSalesCustomer.h"
+#include "Cleanertask.h"
+#include "CleanerCamera.h"
 
 const int MECHANIC_GAME_MAX_SCORE = 10;
 const int MECHANIC_GAME_MAX_LIVES = 3;
@@ -35,6 +37,7 @@ class SceneText : public Scene
 		GEO_FRAME2,
 		GEO_FRAME3,
 		GEO_CUSTOMERLOGO,
+		GEO_LITTER,
 		GEO_TEXT,
 		GEO_TEXTBOX,
 
@@ -49,6 +52,13 @@ class SceneText : public Scene
 		CUSTOMER_ARM,
 		CUSTOMER_HAND,
 		CUSTOMER_LEG,
+
+		CUSTOMER2_BODY,
+		CUSTOMER2_HEAD,
+		CUSTOMER2_SHOULDER,
+		CUSTOMER2_ARM,
+		CUSTOMER2_HAND,
+		CUSTOMER2_LEG,
 
 		GUARD_BODY,
 		GUARD_HEAD,
@@ -70,6 +80,43 @@ class SceneText : public Scene
 		ITEM_DISPLAY_STAND,
 		ITEM_LIGHTBULB,
 		ITEM_BOOTH,
+
+		CAR1_BODY,
+		CAR1_STEERINGWHEEL,
+		CAR1_WHEEL,
+
+		CAR2_BODY,
+
+		CAR3_BODY,
+
+		CAR4_BODY,
+		CAR4_LEFTWHEEL,
+		CAR4_RIGHTWHEEL,
+
+		CAR5_BODY,
+		CAR5_WHEEL,
+
+		CAR6_BODY,
+		CAR6_LEFTWHEEL,
+		CAR6_RIGHTWHEEL,
+
+		CAR7_BODY,
+		CAR7_STEERINGWHEEL,
+		CAR7_FRONTWHEEL,
+		CAR7_BACKWHEEL,
+
+		CAR8_BODY,
+		CAR8_STEERINGWHEEL,
+		CAR8_WHEEL,
+
+		CAR9_BODY,
+		CAR9_WHEEL,
+
+		CAR10_BODY,
+		CAR10_WHEEL,
+
+		CAR11_BODY,
+		CAR11_WHEEL,
 
 		NUM_GEOMETRY,
 	};
@@ -119,8 +166,7 @@ private:
 	int Price;
 	
 	float RSPEED = 45.f;
-	float rotateCleanerTop = 0.0f;
-	float rotateCleanerWheels = 0.0f;
+	
 	float rotateCustomerHead = 0.0f;
 	float rotateCustomerLeftArm = 0.0f;
 	float rotateCustomerRightArm = 0.0f;
@@ -146,10 +192,13 @@ private:
 	Light light[1];
 
 	Camera2 camera;
+	CleanerCamera cam;
 
 	std::vector<Vocation::Quest> Day1;
 	std::vector<Vocation::Quest> Day2;
 	std::vector<Vocation::Quest> Day3;
+	std::vector<Vector3> LitterLocations;
+
 	Mechanictask* MechanicGameScore;
 
 	Boss* BossOpinion;
@@ -164,6 +213,14 @@ private:
 	bool MechanicGame;
 	bool FreezeMovement;
 	bool hasmissed;
+ 
+	float rotateCleanerWheelsForward = 0.0f;
+	float rotateCleanerWheelsY = 0.0f; 
+	float rotateCleanerTop = 0.0f;
+	float rotateCleanerWheels = 0.0f;
+	int randomLitter;
+	bool CleanerGame;
+	Cleanertask* CleanerScore;
 
 	CSalesCustomer* salesCustomer;
 
@@ -171,13 +228,26 @@ private:
 	void RenderSkybox();
 	void RenderCleanerRobot();
 	void RenderCustomer();
+	void RenderCustomer2();
 	void RenderSuspect();
 	void RenderGuardBot();
 	void RenderSaleBot();
 	void Renderlevel();
-	
+	void RenderLitter();
+
+	void RenderCar1();
+	void RenderCar2();
+	void RenderCar3();
+	void RenderCar4();
+	void RenderCar5();
+	void RenderCar6();
+	void RenderCar7();
+	void RenderCar8();
+	void RenderCar9();
+	void RenderCar10();
+	void RenderCar11();
+
 	void RenderBouncerTextBox();
-	void RenderCommandTextBox(std::string text, float size, float x, float y);
 
 	void RenderText(Mesh* mesh, std::string text, Color color);
 	void RenderTextOnScreen(Mesh* mesh, std::string text, Color color, float size, float x, float y);

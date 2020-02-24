@@ -268,6 +268,8 @@ void SceneText::Init()
 	meshList[ITEM_LIGHTBULB]->textureID = LoadTGA("Image//background_items//Light.tga");
 	meshList[ITEM_BOOTH] = MeshBuilder::GenerateOBJ("Booth", "OBJ//Background_Items//Booth.obj");
 	meshList[ITEM_BOOTH]->textureID = LoadTGA("Image//background_items//Booth.tga");
+	meshList[ITEM_FAE_BOOTH] = MeshBuilder::GenerateOBJ("Fae Booth", "OBJ//Background_Items//Booth.obj");
+	meshList[ITEM_FAE_BOOTH]->textureID = LoadTGA("Image//background_items//Fae_Booth.tga");
 
 	// Cars
 	meshList[CAR1_BODY] = MeshBuilder::GenerateOBJ("Car1Body", "OBJ//Cars//Car1//Car1Body.obj");
@@ -1267,6 +1269,13 @@ void SceneText::Renderlevel()
 	RenderMesh(meshList[ITEM_BOOTH], true);
 	modelStack.PopMatrix();
 
+	modelStack.PushMatrix();
+	modelStack.Translate(-40, 0, 0);
+	modelStack.Scale(3, 3, 3);
+	modelStack.Rotate(90, 0, 1, 0);
+	RenderMesh(meshList[ITEM_FAE_BOOTH], true);
+	modelStack.PopMatrix();
+	
 	modelStack.PushMatrix();
 	modelStack.Translate(-10, 0, 1);
 	modelStack.Scale(4, 4, 4);

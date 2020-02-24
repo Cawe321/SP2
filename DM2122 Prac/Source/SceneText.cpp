@@ -130,8 +130,7 @@ void SceneText::Init()
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1); 
 	
-	finalPosition = 0;
-	middlePosition = 0;
+	
 	dialogueTime = 0;
 	elapsedTime = 0;
 
@@ -355,11 +354,7 @@ void SceneText::Update(double dt)
 	//for bouncer
 	if (escapeanimation == true)
 	{
-		if (middlePosition > 25)
-		{
-			finalPosition += 4 * dt;
-		}
-		middlePosition += 2 * dt;
+		
 		elapsedTime += dt;
 	}
 
@@ -671,25 +666,38 @@ void SceneText::Render()
 		//modelStack.Translate(0, -3, 0);
 		//RenderMesh(meshList[GEO_DICE], true);
 		//modelStack.PopMatrix();
-		
-                if (escapeanimation == false)
+		if (escapeanimation == false)
 		{
-			RenderCustomer(); //ignore the fact that it's renderCustomer, Im changing it
+			RenderSuspect();
 		}
-		else if (escapeanimation == true && middlePosition <= 25)
+
+		if (elapsedTime <= 5 && escapeanimation == true) //move foward a bit
 		{
+			startingPosition = 0;
+
 			modelStack.PushMatrix();
-			modelStack.Translate(middlePosition, 0, 0);
-			RenderCustomer();
+			modelStack.Translate(startingPosition + elapsedTime * 15 / 5, 0, 30);
+			RenderSuspect();
 			modelStack.PopMatrix();
 		}
-		else if (escapeanimation == true && finalPosition <= 55 && middlePosition > 25)
+		else if (elapsedTime > 5 && elapsedTime <= 10 && escapeanimation == true) // move to the left 
 		{
+			middlePosition = 30;
+			
 			modelStack.PushMatrix();
-			modelStack.Translate(25.1f, 0, finalPosition);
-			RenderCustomer();
+			modelStack.Translate(15, 0, middlePosition - (elapsedTime - 5) * 15 / 5); //moving to the right
+			RenderSuspect();
 			modelStack.PopMatrix();
 
+		}
+		else if (elapsedTime > 10 && elapsedTime <= 25 && escapeanimation == true) 
+		{
+			finalPosition = 0;
+
+			modelStack.PushMatrix();
+			modelStack.Translate(finalPosition + (elapsedTime - 5) * 15/5 , 0, 15); // moving foward
+			RenderSuspect();
+			modelStack.PopMatrix();
 		}
 
 	if (CleanerGame == true)
@@ -745,19 +753,15 @@ void SceneText::Render()
 		RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));
 		modelStack.PopMatrix();
 		
-			if (escapeanimation == true && finalPosition > 55) //it's placed here so that it covers the task text
-		{
-			if (elapsedTime < 31) //if less than 5 seconds
+		if (elapsedTime > 25 && elapsedTime <= 30) //if within 15 seconds
 			{
 				RenderBouncerTextBox();
+
+				Tasklist* temp;
+				temp = new Bouncertask(Day1);
+				Day1 = temp->Addscore(Day1);
+				delete temp;
 			}
-
-			Tasklist* temp;
-			temp = new Bouncertask(Day1);
-			Day1 = temp->Addscore(Day1);
-			delete temp;
-
-		}
 	}
 
 	//No transform needed
@@ -1085,8 +1089,14 @@ void SceneText::RenderCustomer2() // Facing x-axis
 
 void SceneText::RenderSuspect()
 {
-	modelStack.PushMatrix();
-	modelStack.Translate(10, 0, 0);
+		modelStack.PushMatrix();
+	
+	if (escapeanimation == false)
+	{
+		modelStack.Translate(0, 0, 30);
+	}
+	
+
 	RenderMesh(meshList[CUSTOMER_BODY], true);
 
 	modelStack.PushMatrix();

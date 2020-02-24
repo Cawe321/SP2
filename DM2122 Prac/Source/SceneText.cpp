@@ -25,27 +25,16 @@ SceneText::SceneText()
 	Day1 = Vocation::getMainQuest(1);
 	Day2 = Vocation::getMainQuest(2);
 	Day3 = Vocation::getMainQuest(3);
-	std::vector<Vector3> Day1Litter, Day2Litter, Day3Litter; 
-	for (int i = 0; i < Day1.size(); i++)
-	{
-		if (Day1[i].job == VocationJob::CLEANER)
-			Day1Litter = Vocation::getLitterLocations(Day1[i].maxNumber);
-	}
-	for (int i = 0; i < Day2.size(); i++)
-	{
-		if (Day2[i].job == VocationJob::CLEANER)
-			Day2Litter = Vocation::getLitterLocations(Day2[i].maxNumber);
-	}
-	for (int i = 0; i < Day3.size(); i++)
-	{
-		if (Day3[i].job == VocationJob::CLEANER)
-			Day3Litter = Vocation::getLitterLocations(Day3[i].maxNumber);
-	}
 	BossOpinion = new Boss();
 	MechanicGameScore = new Mechanictask();
 	MechanicGame = false;
 	FreezeMovement = false;
 	hasmissed = false;
+
+	CleanerGame = true;
+	srand(20);
+	randomLitter = -20 + rand() % 21;
+
 	for (int i = 0; i < 10; i++) {
 		game[i] = '-';
 	}
@@ -55,7 +44,7 @@ SceneText::SceneText()
 	escapeanimation = false;
 
 	AchievementScene = false;
-	
+
 }
 
 SceneText::~SceneText()
@@ -198,6 +187,9 @@ void SceneText::Init()
 	meshList[GEO_CUSTOMERLOGO] = MeshBuilder::GenerateQuad("CustomerLogo", Color(0, 0, 0), 0.8f, 0.8f);
 	meshList[GEO_CUSTOMERLOGO]->textureID = LoadTGA("Image//customerlogo.tga");
 
+	meshList[GEO_LITTER] = MeshBuilder::GenerateOBJ("Litter", "OBJ//Tissue.obj");
+	meshList[GEO_LITTER]->textureID = LoadTGA("Image//Tissue.tga");
+
 	// Cleaner Robot
 	meshList[CLEANER_TOP] = MeshBuilder::GenerateOBJ("CleanerTopBody", "OBJ//CleanerBot//CleanerTopBody.obj");
 	meshList[CLEANER_TOP]->textureID = LoadTGA("Image//CleanerRobot.tga");
@@ -221,6 +213,20 @@ void SceneText::Init()
 	meshList[CUSTOMER_HAND]->textureID = LoadTGA("Image//Customer.tga");
 	meshList[CUSTOMER_LEG] = MeshBuilder::GenerateOBJ("CustomerLeg", "OBJ//Customer//CustomerLeg.obj");
 	meshList[CUSTOMER_LEG]->textureID = LoadTGA("Image//Customer.tga");
+	
+	// Customer2
+	meshList[CUSTOMER2_BODY] = MeshBuilder::GenerateOBJ("CustomerBody", "OBJ//Customer//CustomerBody.obj");
+	meshList[CUSTOMER2_BODY]->textureID = LoadTGA("Image//CustomerAlt.tga");
+	meshList[CUSTOMER2_HEAD] = MeshBuilder::GenerateOBJ("CustomerHead", "OBJ//Customer//CustomerHead.obj");
+	meshList[CUSTOMER2_HEAD]->textureID = LoadTGA("Image//CustomerAlt.tga");
+	meshList[CUSTOMER2_SHOULDER] = MeshBuilder::GenerateOBJ("CustomerShoulder", "OBJ//Customer//CustomerShoulder.obj");
+	meshList[CUSTOMER2_SHOULDER]->textureID = LoadTGA("Image//CustomerAlt.tga");
+	meshList[CUSTOMER2_ARM] = MeshBuilder::GenerateOBJ("CustomerArm", "OBJ//Customer//CustomerArm.obj");
+	meshList[CUSTOMER2_ARM]->textureID = LoadTGA("Image//CustomerAlt.tga");
+	meshList[CUSTOMER2_HAND] = MeshBuilder::GenerateOBJ("CustomerHand", "OBJ//Customer//CustomerHand.obj");
+	meshList[CUSTOMER2_HAND]->textureID = LoadTGA("Image//CustomerAlt.tga");
+	meshList[CUSTOMER2_LEG] = MeshBuilder::GenerateOBJ("CustomerLeg", "OBJ//Customer//CustomerLeg.obj");
+	meshList[CUSTOMER2_LEG]->textureID = LoadTGA("Image//CustomerAlt.tga");
 
 	// Guard Bot
 	meshList[GUARD_BODY] = MeshBuilder::GenerateOBJ("GuardBody", "OBJ//GuardBot//GuardBody.obj");
@@ -261,9 +267,71 @@ void SceneText::Init()
 	meshList[ITEM_DISPLAY_STAND]->textureID = LoadTGA("Image//background_items//DisplayStand.tga");
 	meshList[ITEM_LIGHTBULB] = MeshBuilder::GenerateOBJ("Lightbulb","OBJ//Background_Items//Lightbulb.obj");
 	meshList[ITEM_LIGHTBULB]->textureID = LoadTGA("Image//background_items//Light.tga");
-	meshList[ITEM_BOOTH] = MeshBuilder::GenerateOBJ("Booth", "OBJ//Background_Items//Booth.obj");
-	meshList[ITEM_BOOTH]->textureID = LoadTGA("Image//background_items//Booth.tga");
 
+	// Cars
+	meshList[CAR1_BODY] = MeshBuilder::GenerateOBJ("Car1Body", "OBJ//Cars//Car1//Car1Body.obj");
+	meshList[CAR1_BODY]->textureID = LoadTGA("Image//CarsTexture//Car1.tga");
+	meshList[CAR1_STEERINGWHEEL] = MeshBuilder::GenerateOBJ("Car1SteeringWheel", "OBJ//Cars//Car1//Car1SteeringWheel.obj");
+	meshList[CAR1_STEERINGWHEEL]->textureID = LoadTGA("Image//CarsTexture//Car1.tga");
+	meshList[CAR1_WHEEL] = MeshBuilder::GenerateOBJ("Car1Wheel", "OBJ//Cars//Car1//Car1Wheel.obj");
+	meshList[CAR1_WHEEL]->textureID = LoadTGA("Image//CarsTexture//Car1.tga");
+
+	meshList[CAR2_BODY] = MeshBuilder::GenerateOBJ("Car2Body", "OBJ//Cars//Car2//Car2body.obj");
+	meshList[CAR2_BODY]->textureID = LoadTGA("Image//CarsTexture//Car2.tga");
+	
+	meshList[CAR3_BODY] = MeshBuilder::GenerateOBJ("Car3Body", "OBJ//Cars//Car3//Car3Body.obj");
+	meshList[CAR3_BODY]->textureID = LoadTGA("Image//CarsTexture//Car3.tga");
+
+	meshList[CAR4_BODY] = MeshBuilder::GenerateOBJ("Car4Body", "OBJ//Cars//Car4//Car4Body.obj");
+	meshList[CAR4_BODY]->textureID = LoadTGA("Image//CarsTexture//Car4.tga");
+	meshList[CAR4_LEFTWHEEL] = MeshBuilder::GenerateOBJ("Car4LeftWheel", "OBJ//Cars//Car4//Car4LeftWheel.obj");
+	meshList[CAR4_LEFTWHEEL]->textureID = LoadTGA("Image//CarsTexture//Car4.tga");
+	meshList[CAR4_RIGHTWHEEL] = MeshBuilder::GenerateOBJ("Car4RightWheel", "OBJ//Cars//Car4//Car4RightWheel.obj");
+	meshList[CAR4_RIGHTWHEEL]->textureID = LoadTGA("Image//CarsTexture//Car4.tga");
+	
+	meshList[CAR5_BODY] = MeshBuilder::GenerateOBJ("Car5Body", "OBJ//Cars//Car5//Car5Body.obj");
+	meshList[CAR5_BODY]->textureID = LoadTGA("Image//CarsTexture//Car5.tga");
+	meshList[CAR5_WHEEL] = MeshBuilder::GenerateOBJ("Car5Wheel", "OBJ//Cars//Car5//Car5Wheel.obj");
+	meshList[CAR5_WHEEL ]->textureID = LoadTGA("Image//CarsTexture//Car5.tga");
+
+	meshList[CAR6_BODY] = MeshBuilder::GenerateOBJ("Car6Body", "OBJ//Cars//Car6//Car6Body.obj");
+	meshList[CAR6_BODY]->textureID = LoadTGA("Image//CarsTexture//Car6.tga");
+	meshList[CAR6_LEFTWHEEL] = MeshBuilder::GenerateOBJ("Car6LeftWheel", "OBJ//Cars//Car6//Car6LeftWheel.obj");
+	meshList[CAR6_LEFTWHEEL]->textureID = LoadTGA("Image//CarsTexture//Car6.tga");
+	meshList[CAR6_RIGHTWHEEL] = MeshBuilder::GenerateOBJ("Car6RightWheel", "OBJ//Cars//Car6//Car6RightWheel.obj");
+	meshList[CAR6_RIGHTWHEEL]->textureID = LoadTGA("Image//CarsTexture//Car6.tga");
+
+	meshList[CAR7_BODY] = MeshBuilder::GenerateOBJ("Car7Body", "OBJ//Cars//Car7//Car7Body.obj");
+	meshList[CAR7_BODY]->textureID = LoadTGA("Image//CarsTexture//Car7.tga");
+	meshList[CAR7_STEERINGWHEEL] = MeshBuilder::GenerateOBJ("Car7SteeringWheel", "OBJ//Cars//Car7//Car7SteeringWheel.obj");
+	meshList[CAR7_STEERINGWHEEL]->textureID = LoadTGA("Image//CarsTexture//Car7.tga");
+	meshList[CAR7_FRONTWHEEL] = MeshBuilder::GenerateOBJ("Car7FrontWheel", "OBJ//Cars//Car7//Car7FrontWheel.obj");
+	meshList[CAR7_FRONTWHEEL]->textureID = LoadTGA("Image//CarsTexture//Car7.tga");
+	meshList[CAR7_BACKWHEEL] = MeshBuilder::GenerateOBJ("Car7RightWheel", "OBJ//Cars//Car7//Car7BackWheel.obj");
+	meshList[CAR7_BACKWHEEL]->textureID = LoadTGA("Image//CarsTexture//Car7.tga");
+
+	//meshList[CAR8_BODY] = MeshBuilder::GenerateOBJ("Car8Body", "OBJ//Cars//Car8//Car8Body.obj");
+	//meshList[CAR8_BODY]->textureID = LoadTGA("Image//CarsTexture//Car8.tga");
+	//meshList[CAR8_STEERINGWHEEL] = MeshBuilder::GenerateOBJ("Car8SteeringWheel", "OBJ//Cars//Car8//Car8SteeringWheel.obj");
+	//meshList[CAR8_STEERINGWHEEL]->textureID = LoadTGA("Image//CarsTexture//Car8.tga");
+	//meshList[CAR8_WHEEL] = MeshBuilder::GenerateOBJ("Car8Wheel", "OBJ//Cars//Car8//Car8Wheel.obj");
+	//meshList[CAR8_WHEEL]->textureID = LoadTGA("Image//CarsTexture//Car8.tga");
+
+	meshList[CAR9_BODY] = MeshBuilder::GenerateOBJ("Car9Body", "OBJ//Cars//Car9//Car9Body.obj");
+	meshList[CAR9_BODY]->textureID = LoadTGA("Image//CarsTexture//Car9.tga");
+	meshList[CAR9_WHEEL] = MeshBuilder::GenerateOBJ("Car9Wheel", "OBJ//Cars//Car9//Car9Wheel.obj");
+	meshList[CAR9_WHEEL]->textureID = LoadTGA("Image//CarsTexture//Car9.tga");
+
+	meshList[CAR10_BODY] = MeshBuilder::GenerateOBJ("GalaxyCar", "OBJ//Cars//Car10//GalaxyCar.obj");
+	meshList[CAR10_BODY]->textureID = LoadTGA("Image//CarsTexture//Car10//GalaxyCar.tga");
+	//meshList[CAR10_WHEEL] = MeshBuilder::GenerateOBJ("Car10Wheel", "OBJ//Cars//Car10//GalaxyWheel.obj");
+	//meshList[CAR10_WHEEL]->textureID = LoadTGA("Image//CarsTexture//GalaxyWheel.tga");
+
+	meshList[CAR11_BODY] = MeshBuilder::GenerateOBJ("Car11Body", "OBJ//Cars//Car11//PointyCar.obj");
+	meshList[CAR11_BODY]->textureID = LoadTGA("Image//CarsTexture//Car11//PointyCarTexture.tga");
+	//meshList[CAR11_WHEEL] = MeshBuilder::GenerateOBJ("Car11Wheel", "OBJ//Cars//Car11//PointyWheel.obj");
+	//meshList[CAR11_BODY]->textureID = LoadTGA("Image//CarsTexture//Car11//PointyCarTexture.tga");
+	
 	// init values
 	salesCustomer =  nullptr; //new CSalesCustomer(Vector3(0,0,0))
 }
@@ -356,6 +424,32 @@ void SceneText::Update(double dt)
 	}
 	// end for keypress game
 
+	if (CleanerGame == true)
+	{
+		if (Application::IsKeyPressed(VK_LEFT))
+			rotateCleanerTop += (float)(RSPEED * dt);
+		if (Application::IsKeyPressed(VK_RIGHT))
+			rotateCleanerTop -= (float)(RSPEED * dt);
+		if (Application::IsKeyPressed('W'))
+			rotateCleanerWheelsForward += (float)(RSPEED * dt);
+		if (Application::IsKeyPressed('S'))
+			rotateCleanerWheelsForward -= (float)(RSPEED * dt);
+		if (Application::IsKeyPressed('A'))
+		{
+			if (rotateCleanerWheelsY < 25.f)
+				rotateCleanerWheelsY += (float)(RSPEED * dt);
+
+		}
+		if (Application::IsKeyPressed('D'))
+		{
+			if (rotateCleanerWheelsY > -25.f)
+				rotateCleanerWheelsY -= (float(RSPEED * dt));
+		}
+
+		//LitterLocations = ;
+		/*if (camera.position.x < randomLitter - 1 && camera.position.x >randomLitter + 1)
+			CleanerScore->Addscore(Day1);*/
+	}
 
 	if (salesCustomer != nullptr)
 	{
@@ -432,6 +526,7 @@ void SceneText::Update(double dt)
 	if (FreezeMovement == false) {
 		camera.Update(dt);
 	}
+	
 	CalculateFrameRate();
 }
 
@@ -554,7 +649,21 @@ void SceneText::Render()
 	{
 		RenderSkybox();
 		RenderCustomer();
+		//RenderCustomer2();
 		Renderlevel();
+
+		//RenderCar1();
+		//RenderCar2();
+		//RenderCar3();
+		//RenderCar4();
+		//RenderCar5();
+		//RenderCar6();
+		//RenderCar7();
+		//RenderCar8(); // unable to show
+		//RenderCar9();
+		//RenderCar10(); // need wheels
+		//RenderCar11(); // need wheels
+
 		modelStack.PushMatrix();
 		modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
 		RenderMesh(meshList[GEO_LIGHTSPHERE], false);
@@ -567,23 +676,39 @@ void SceneText::Render()
 		
                 if (escapeanimation == false)
 		{
-			RenderSuspect(); //ignore the fact that it's renderCustomer, Im changing it
+			RenderCustomer(); //ignore the fact that it's renderCustomer, Im changing it
 		}
 		else if (escapeanimation == true && middlePosition <= 25)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(0, 0, middlePosition);
+			modelStack.Translate(middlePosition, 0, 0);
 			RenderCustomer();
 			modelStack.PopMatrix();
 		}
 		else if (escapeanimation == true && finalPosition <= 55 && middlePosition > 25)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(finalPosition, 0, 25.1f );
+			modelStack.Translate(25.1f, 0, finalPosition);
 			RenderCustomer();
 			modelStack.PopMatrix();
 
 		}
+
+	if (CleanerGame == true)
+	{
+		modelStack.PushMatrix();
+		modelStack.Translate(camera.position.x, camera.position.y - 2, camera.position.z);
+		RenderCleanerRobot();
+		modelStack.PopMatrix();
+
+		modelStack.PushMatrix();
+		modelStack.Translate(randomLitter, 0, randomLitter);
+		RenderMesh(meshList[GEO_LITTER], true);
+		modelStack.PopMatrix();
+
+		for(int i = 0; i < 10 ; ++i)
+			RenderMesh(meshList[GEO_LITTER], true);
+	}
 
 
 		std::string TrackedTask;
@@ -596,6 +721,10 @@ void SceneText::Render()
 		Tasklist* BouncerTask = new Bouncertask(Day1);
 		TrackedTask = BouncerTask->Taskstatus(Day1);
 		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
+
+		Tasklist* CleanerTask = new Cleanertask(Day1);
+		TrackedTask = CleanerTask->Taskstatus(Day1);
+		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 1);
 
 
 		//Day2 
@@ -822,6 +951,7 @@ void SceneText::RenderCleanerRobot() // Facing x-axis
 	modelStack.PopMatrix();
 	modelStack.PushMatrix();
 	modelStack.Translate(0.65, 0.1, -0.8);
+	modelStack.Rotate(rotateCleanerWheelsY, 0, 1, 0);
 	modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
 	RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Front Left
 	modelStack.PushMatrix();
@@ -830,6 +960,7 @@ void SceneText::RenderCleanerRobot() // Facing x-axis
 	modelStack.PopMatrix();
 	modelStack.PushMatrix();
 	modelStack.Translate(0.65, 0.1, 0.8);
+	modelStack.Rotate(rotateCleanerWheelsY, 0, 1, 0);
 	modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
 	RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Front Right
 	modelStack.PushMatrix();
@@ -838,6 +969,7 @@ void SceneText::RenderCleanerRobot() // Facing x-axis
 	modelStack.PopMatrix();
 	modelStack.PushMatrix();
 	modelStack.Translate(-0.8, 0.1, -0.8);
+	modelStack.Rotate(rotateCleanerWheelsY, 0, 1, 0);
 	modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
 	RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Back Left
 	modelStack.PushMatrix();
@@ -846,6 +978,7 @@ void SceneText::RenderCleanerRobot() // Facing x-axis
 	modelStack.PopMatrix();
 	modelStack.PushMatrix();
 	modelStack.Translate(-0.8, 0.1, 0.8);
+	modelStack.Rotate(rotateCleanerWheelsY, 0, 1, 0);
 	modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
 	RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Back Right
 	modelStack.PushMatrix();
@@ -902,6 +1035,57 @@ void SceneText::RenderCustomer() // Facing x-axis
 	modelStack.Translate(0, 0, 0.5);
 	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_LEG], true); // Right Leg
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCustomer2() // Facing x-axis
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(5, 3.8, 0);
+	RenderMesh(meshList[CUSTOMER2_BODY], true);
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 6.5, 0);
+	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
+	RenderMesh(meshList[CUSTOMER2_HEAD], true);
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, -1.5);
+	modelStack.Rotate(15, 1, 0, 0);
+	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
+	RenderMesh(meshList[CUSTOMER2_SHOULDER], true); // Left Arm
+	modelStack.PushMatrix();
+	modelStack.Translate(0, LeftArmY, LeftArmZ);
+	RenderMesh(meshList[CUSTOMER2_ARM], true);
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[CUSTOMER2_HAND], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, 1.5);
+	modelStack.Rotate(-15, 1, 0, 0);
+	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
+	RenderMesh(meshList[CUSTOMER2_SHOULDER], true); // Right Arm
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -1.8, 0);
+	RenderMesh(meshList[CUSTOMER2_ARM], true);
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[CUSTOMER2_HAND], true);
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, -0.5);
+	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
+	RenderMesh(meshList[CUSTOMER2_LEG], true); // Left Leg
+	modelStack.PopMatrix();
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, 0.5);
+	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
+	RenderMesh(meshList[CUSTOMER2_LEG], true); // Right Leg
 	modelStack.PopMatrix();
 	modelStack.PopMatrix();
 }
@@ -1065,12 +1249,10 @@ void SceneText::Renderlevel()
 	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
-	modelStack.PushMatrix();
 	modelStack.Translate(-40, 0, 10);
 	modelStack.Scale(3, 3, 3);
 	modelStack.Rotate(90, 0, 1, 0);
 	RenderMesh(meshList[ITEM_BOOTH], true);
-	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-10, 0, 1);
@@ -1080,15 +1262,210 @@ void SceneText::Renderlevel()
 
 }
 
+void SceneText::RenderLitter()
+{
+}
+
+void SceneText::RenderCar1()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(-5, 0, 0);
+	RenderMesh(meshList[CAR1_BODY], true);
+		modelStack.PushMatrix();
+		modelStack.Translate(2, 1, 0);
+		modelStack.Rotate(-20, 0, 0, 1);
+		RenderMesh(meshList[CAR1_STEERINGWHEEL], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();	// Right Front Wheel
+		modelStack.Translate(3.85, -0.5, 3);
+		RenderMesh(meshList[CAR1_WHEEL], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();	// Left Front Wheel
+		modelStack.Translate(3.85, -0.5, -3);
+		RenderMesh(meshList[CAR1_WHEEL], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();	// Right Back Wheel
+		modelStack.Translate(-4, -0.5, 3);
+		RenderMesh(meshList[CAR1_WHEEL], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();	// Left Back Wheel
+		modelStack.Translate(-4, -0.5, -3);
+		RenderMesh(meshList[CAR1_WHEEL], true);
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCar2()
+{
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CAR2_BODY], true);
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCar3()
+{
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CAR3_BODY], true);
+	modelStack.PopMatrix();
+}
+	
+
+void SceneText::RenderCar4()
+{
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CAR4_BODY], true);
+		modelStack.PushMatrix();
+		modelStack.Translate(-4, 2.5, 5);
+		RenderMesh(meshList[CAR4_LEFTWHEEL], true); // Front Wheel
+		modelStack.PopMatrix();		
+		modelStack.PushMatrix();
+		modelStack.Translate(-4, 2.5, -5);
+		RenderMesh(meshList[CAR4_RIGHTWHEEL], true); // Front Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(3.5, 2.5, 5);
+		RenderMesh(meshList[CAR4_LEFTWHEEL], true); // Back Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(3.5, 2.5, -5);
+		RenderMesh(meshList[CAR4_RIGHTWHEEL], true); // Back Wheel
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCar5()
+{
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CAR5_BODY], true);
+		modelStack.PushMatrix();
+		modelStack.Translate(0.1, -0.7, 2);
+		RenderMesh(meshList[CAR5_WHEEL], true); // Left Front Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0.1, -0.7, -2);
+		RenderMesh(meshList[CAR5_WHEEL], true); // Right Front Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(3.8, -0.7, 2);
+		RenderMesh(meshList[CAR5_WHEEL], true); // Left Back Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(3.8, -0.7, -2);
+		RenderMesh(meshList[CAR5_WHEEL], true); // Right Back Wheel
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCar6()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(-5, 0, 0);
+	RenderMesh(meshList[CAR6_BODY], true);
+		modelStack.PushMatrix();
+		modelStack.Translate(-1.2, 0, 2);
+		RenderMesh(meshList[CAR6_LEFTWHEEL], true); // Front Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(-1.2, 0, -2);
+		RenderMesh(meshList[CAR6_RIGHTWHEEL], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(3.7, 0, 2);
+		RenderMesh(meshList[CAR6_LEFTWHEEL], true); // Back Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(3.7, 0, -2);
+		RenderMesh(meshList[CAR6_RIGHTWHEEL], true);
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCar7()
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(-5, 0, 0);
+	RenderMesh(meshList[CAR7_BODY], true);
+		modelStack.PushMatrix();
+		modelStack.Rotate(15, 0, 0, 1);
+		modelStack.Translate(3, 2.7, 0);
+		RenderMesh(meshList[CAR7_STEERINGWHEEL], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Rotate(15, 0, 0, 1);
+		modelStack.Translate(3.2, 0, 0);
+		RenderMesh(meshList[CAR7_FRONTWHEEL], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Rotate(-35, 0, 0, 1);
+		modelStack.Translate(-2.7, -0.7, 0);
+		RenderMesh(meshList[CAR7_BACKWHEEL], true);
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCar8()
+{
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CAR8_BODY], true);
+		modelStack.PushMatrix();
+		RenderMesh(meshList[CAR8_STEERINGWHEEL], true);
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		RenderMesh(meshList[CAR8_WHEEL], true); // Left Front Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		RenderMesh(meshList[CAR8_WHEEL], true); // Right Front Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		RenderMesh(meshList[CAR8_WHEEL], true); // Left Back Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		RenderMesh(meshList[CAR8_WHEEL], true); // Right Back Wheel
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCar9()
+{
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CAR9_BODY], true);
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 1, 4);
+		RenderMesh(meshList[CAR9_WHEEL], true); // Left Front Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(0, 1, -4);
+		RenderMesh(meshList[CAR9_WHEEL], true); // Right Front Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(5.5, 1, 4);
+		RenderMesh(meshList[CAR9_WHEEL], true); // Left Back Wheel
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		modelStack.Translate(5.5, 1, -4);
+		RenderMesh(meshList[CAR9_WHEEL], true); // Right Back Wheel
+		modelStack.PopMatrix();
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCar10()
+{
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CAR10_BODY], true);
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCar11()
+{
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CAR11_BODY], true);
+	modelStack.PopMatrix();
+}
+
 void SceneText::RenderBouncerTextBox()
 {
 	RenderObjectOnScreen(meshList[GEO_TEXTBOX], 10, 3.3f, 1.f);
 	RenderTextOnScreen(meshList[GEO_TEXT], "I left okay geez!", Color(1, 0, 0), 3.5f, 1.f, 3);
-}
-void SceneText::RenderCommandTextBox(std::string text, float size, float x, float y)
-{
-	RenderObjectOnScreen(meshList[GEO_TEXTBOX], 10, 3.3f, 1.f);
-	RenderTextOnScreen(meshList[GEO_TEXT], text, Color(0, 1, 0),size , x, y);
 }
 
 void SceneText::RenderText(Mesh* mesh, std::string text, Color color)

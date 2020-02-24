@@ -80,7 +80,6 @@ class SceneText : public Scene
 		ITEM_LIGHTBULB,
 		ITEM_BOOTH,
 		ITEM_FAE_BOOTH,
-		ITEM_BENCH,
 
 		CAR1_BODY,
 		CAR1_STEERINGWHEEL,

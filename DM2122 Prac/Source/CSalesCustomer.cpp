@@ -19,9 +19,8 @@ std::string CSalesCustomer::getQuestion()
 {
 	return ChosenQuestion.Question;
 }
-CSalesCustomer::CSalesCustomer(Vector3 coordinates)
+CSalesCustomer::CSalesCustomer()
 {
-	this->coordinates = coordinates;
 	answered = false;
 	debounceTime = 0;
 	elapsedTime = 0;

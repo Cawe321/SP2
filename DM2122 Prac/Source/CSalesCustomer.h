@@ -9,7 +9,7 @@
 class CSalesCustomer
 {
 public:
-	CSalesCustomer(Vector3 coordinates);
+	CSalesCustomer();
 	~CSalesCustomer();
 	//animValues
 	int count;
@@ -43,7 +43,6 @@ public:
 	void isAppeased();
 private:
 	irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
-	Vector3 coordinates;
 	std::string placeHolderText;
 	SalesQuestion QuestionList[5];
 	CSalesAnswer* playerChoice;

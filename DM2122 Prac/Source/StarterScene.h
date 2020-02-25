@@ -76,6 +76,8 @@ private:
 
 	Camera2 camera;
 	
+	globalData* GlobalData;
+
 	irrklang::ISoundEngine* SoundEngine = irrklang::createIrrKlangDevice();
 	bool zoomPlaying;
 	bool vroomPlaying;

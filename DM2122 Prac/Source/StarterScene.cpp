@@ -6,7 +6,7 @@
 #include "MeshBuilder.h"
 #include "Utility.h"
 #include "LoadTGA.h"
-
+#include "globalData.h"
 
 
 
@@ -34,6 +34,7 @@ void StarterScene::Init()
 
 	// Initialize Pointer
 	Vocation::InitializeJob();
+	GlobalData = globalData::instance();
 
 	// Playing bgm
 	SoundEngine->play2D("audio//IntroBackground.mp3", true, false, true);
@@ -222,6 +223,14 @@ void StarterScene::Update(double dt)
 	}
 	else if (VocationScene)
 	{
+		if (Vocation::getVocation() != VocationJob::NONE)
+		{
+			camera.cameraLock = true; // lock the camera from player interaction
+			VocationScene = false;
+			EntranceScene = true;
+			camera.position = { 0, 30, -50 };
+			animationTime = globalTime;
+		}
 		if (Application::IsKeyPressed(VK_RETURN) && Vocation::getVocation() == VocationJob::NONE && globalTime - debounceTime > 0.2f) // enter key
 		{
 			SoundEngine->play2D("audio//bleep.wav", false);
@@ -231,15 +240,8 @@ void StarterScene::Update(double dt)
 			camera.position = { 0, 30, -50 };
 			animationTime = globalTime;
 		
-			Vocation::setVocation(JobSelection);
-			Vocation::ClearJob(false); //prevent memory leaks by deleting all other pointers except the chosen vocation
-			//std::vector<Vocation::Quest> name = Vocation::getMainQuest(2);
-			/*Vocation::Quest temp = name[0];
-			temp.currentNumber = 0;
-			temp.job == Vocation::BOUNCER;*/
+			Vocation::setVocation(JobSelection); // will automatically pass data to globalData class through vocation class
 			
-			//Vocation::getMainQuest(1)[JobSelection].currentNumber = 1;
-
 		}
 
 		if (Application::IsKeyPressed('E') && globalTime - debounceTime > 0.2f)

@@ -3,6 +3,8 @@
 #include <vector>
 #include "VocationJob.h"
 #include "CSalesCustomer.h"
+
+class globalData; // placeholder calss
 class Vocation
 {
 private:
@@ -11,6 +13,7 @@ private:
 	static VocationJob* Bouncer;
 	static VocationJob* Mechanic;
 	static VocationJob* None;
+	static globalData* Data;
 public:
 	static VocationJob* getVocationJobClass(VocationJob::JOBTYPE theType);
 	struct Quest
@@ -26,7 +29,5 @@ public:
 	static void setVocation(VocationJob* work);
 	static void InitializeJob();
 	static void ClearJob(bool programEnd);
-private:
-	static VocationJob* VocationWork;
 };
 #endif

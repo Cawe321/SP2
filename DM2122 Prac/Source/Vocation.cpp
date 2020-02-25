@@ -1,15 +1,14 @@
-#include "Vocation.h"
 #include "VocationJob.h"
 #include <time.h>
-
+#include "globalData.h"
 // Prevent error of external objeects becoz they are static
-VocationJob* Vocation::VocationWork = new VocationJob(VocationJob::NONE);
+
 VocationJob* Vocation::Sales;
 VocationJob* Vocation::Cleaner;
 VocationJob* Vocation::Bouncer;
 VocationJob* Vocation::Mechanic;
 VocationJob* Vocation::None;
-
+globalData* Vocation::Data = globalData::instance();
 
 VocationJob* Vocation::getVocationJobClass(VocationJob::JOBTYPE theType)
 {
@@ -21,6 +20,7 @@ VocationJob* Vocation::getVocationJobClass(VocationJob::JOBTYPE theType)
 		return Bouncer;
 	else if (theType == VocationJob::MECHANIC)
 		return Mechanic;
+	else return None;
 }
 std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 {
@@ -32,11 +32,10 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 	{
 		Quest Push;
 		Push.currentNumber = 0;
-
 		// Since work is more efficient, lesser number of jobs need to be done by the day.
 		// Add SALES quest
 		Push.job = VocationJob::SALES;
-		if (VocationWork->getJob() == VocationJob::SALES)
+		if (Data->getJob()->getJob()  == VocationJob::SALES)
 			Push.maxNumber = 1;
 		else
 			Push.maxNumber = 2;
@@ -44,7 +43,7 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 
 		// Add CLEANER quest
 		Push.job = VocationJob::CLEANER;
-		if (VocationWork->getJob() == VocationJob::CLEANER)
+		if (Data->getJob()->getJob() == VocationJob::CLEANER)
 			Push.maxNumber = 1;
 		else
 			Push.maxNumber = 2;
@@ -52,7 +51,7 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 
 		// Add BOUNCER quest
 		Push.job = VocationJob::BOUNCER;
-		if (VocationWork->getJob() == VocationJob::BOUNCER)
+		if (Data->getJob()->getJob() == VocationJob::BOUNCER)
 			Push.maxNumber = 0;
 		else
 			Push.maxNumber = 1;
@@ -60,7 +59,7 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 
 		// ADD MECHANIC quest
 		Push.job = VocationJob::MECHANIC;
-		if (VocationWork->getJob() == VocationJob::MECHANIC)
+		if (Data->getJob()->getJob() == VocationJob::MECHANIC)
 			Push.maxNumber = 1;
 		else 
 			Push.maxNumber = 2;
@@ -72,7 +71,7 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 		Quest Push;
 		Push.currentNumber = 0;
 		Push.job = VocationJob::SALES;
-		if (VocationWork->getJob() == VocationJob::SALES)
+		if (Data->getJob()->getJob() == VocationJob::SALES)
 			Push.maxNumber = (int)(((rand() % 3) + 2) / 2);
 		else
 			Push.maxNumber = ((rand() % 3) + 2);
@@ -80,21 +79,21 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::CLEANER;
-		if (VocationWork->getJob() == VocationJob::CLEANER)
+		if (Data->getJob()->getJob() == VocationJob::CLEANER)
 			Push.maxNumber = (int)(((rand() % 3) + 2) / 2);
 		else
 			Push.maxNumber = ((rand() % 3) + 2);
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::BOUNCER;
-		if (VocationWork->getJob() == VocationJob::BOUNCER)
+		if (Data->getJob()->getJob() == VocationJob::BOUNCER)
 			Push.maxNumber = (int)((((rand() % 3) + 2)) / 2) - 1;
 		else
 			Push.maxNumber = ((rand() % 3) + 2) - 1;
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::MECHANIC;
-		if (VocationWork->getJob() == VocationJob::MECHANIC)
+		if (Data->getJob()->getJob() == VocationJob::MECHANIC)
 			Push.maxNumber = (int)(((rand() % 3) + 2) / 2);
 		else
 			Push.maxNumber = ((rand() % 3) + 2);
@@ -106,21 +105,21 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 		Quest Push;
 		Push.currentNumber = 0;
 		Push.job = VocationJob::SALES;
-		if (VocationWork->getJob() == VocationJob::SALES)
+		if (Data->getJob()->getJob() == VocationJob::SALES)
 			Push.maxNumber = (int)(((rand() % 4) + 2) / 2);
 		else
 			Push.maxNumber = ((rand() % 4) + 2);
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::CLEANER;
-		if (VocationWork->getJob() == VocationJob::CLEANER)
+		if (Data->getJob()->getJob() == VocationJob::CLEANER)
 			Push.maxNumber = (int)(((rand() % 4) + 2) / 2);
 		else
 			Push.maxNumber = ((rand() % 4) + 2);
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::BOUNCER;
-		if (VocationWork->getJob() == VocationJob::BOUNCER)
+		if (Data->getJob()->getJob() == VocationJob::BOUNCER)
 			Push.maxNumber = (int)((((rand() % 4) + 2)) / 2) - 1;
 		else if ((int)((((rand() % 4) + 2)) / 2) - 1 == 0)
 			Push.maxNumber = 1; // must have at least 1 Bouncer Quest for day 2
@@ -129,7 +128,7 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::MECHANIC;
-		if (VocationWork->getJob() == VocationJob::MECHANIC)
+		if (Data->getJob()->getJob() == VocationJob::MECHANIC)
 			Push.maxNumber = (int)(((rand() % 4) + 2) / 2);
 		else
 			Push.maxNumber = ((rand() % 4) + 2);
@@ -142,13 +141,13 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 
 VocationJob::JOBTYPE Vocation::getVocation()
 {
-	return VocationWork->getJob();
+	return Data->getJob()->getJob();
 }
 
 CSalesCustomer::CustomerType Vocation::returnCustomerMood()
 {
 	int magicNo = rand() % 10;
-	if (VocationWork->getJob() == VocationJob::SALES)
+	if (Data->getJob()->getJob() == VocationJob::SALES)
 	{
 		if (magicNo >= 0 && magicNo <= 4) // 50%
 			return CSalesCustomer::HAPPY;
@@ -187,7 +186,7 @@ std::vector<Vector3> Vocation::getLitterLocations(int numberOfLitter)
 
 void Vocation::setVocation(VocationJob* job)
 {
-	Vocation::VocationWork = job;
+	Data->setJob(job);
 }
 
 void Vocation::InitializeJob()
@@ -233,13 +232,13 @@ void Vocation::ClearJob(bool programEnd)
 	}
 	else
 	{
-		if (Sales != VocationWork)
+		if (Sales != Data->getJob())
 			delete Sales;
-		if (Cleaner != VocationWork)
+		if (Cleaner != Data->getJob())
 			delete Cleaner;
-		if (Bouncer != VocationWork)
+		if (Bouncer != Data->getJob())
 			delete Bouncer;
-		if (Mechanic != VocationWork)
+		if (Mechanic != Data->getJob())
 			delete Mechanic;
 	}
 

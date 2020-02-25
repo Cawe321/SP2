@@ -135,6 +135,7 @@
     <ClInclude Include="Source\Cleanertask.h" />
     <ClInclude Include="Source\CSalesAnswer.h" />
     <ClInclude Include="Source\CSalesCustomer.h" />
+    <ClInclude Include="Source\globalData.h" />
     <ClInclude Include="Source\Light.h" />
     <ClInclude Include="Source\LoadOBJ.h" />
     <ClInclude Include="Source\LoadTGA.h" />
@@ -163,6 +164,7 @@
     <ClCompile Include="Source\Cleanertask.cpp" />
     <ClCompile Include="Source\CSalesAnswer.cpp" />
     <ClCompile Include="Source\CSalesCustomer.cpp" />
+    <ClCompile Include="Source\globalData.cpp" />
     <ClCompile Include="Source\LoadOBJ.cpp" />
     <ClCompile Include="Source\LoadTGA.cpp" />
     <ClCompile Include="Source\main.cpp" />

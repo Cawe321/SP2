@@ -31,6 +31,11 @@ void StarterScene::Init()
 {
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
+	GlobalData = globalData::instance();
+	if (GlobalData->saveFound())
+	{
+		GlobalData->loadGame();
+	}
 
 	// Initialize Pointer
 	Vocation::InitializeJob();

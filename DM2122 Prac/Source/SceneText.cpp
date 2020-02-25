@@ -134,7 +134,6 @@ void SceneText::Init()
 	
 	dialogueTime = 0;
 	elapsedTime = 0;
-	timeData->setinGameTime(600);
 
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_LEFT]->textureID = LoadTGA("Image//left.tga");
@@ -188,8 +187,8 @@ void SceneText::Init()
 	meshList[GEO_CUSTOMERLOGO] = MeshBuilder::GenerateQuad("CustomerLogo", Color(0, 0, 0), 0.8f, 0.8f);
 	meshList[GEO_CUSTOMERLOGO]->textureID = LoadTGA("Image//customerlogo.tga");
 
-	meshList[GEO_LITTER] = MeshBuilder::GenerateOBJ("Litter", "OBJ//Tissue.obj");
-	meshList[GEO_LITTER]->textureID = LoadTGA("Image//Tissue.tga");
+	//meshList[GEO_LITTER] = MeshBuilder::GenerateOBJ("Litter", "OBJ//Tissue.obj");
+	//meshList[GEO_LITTER]->textureID = LoadTGA("Image//Tissue.tga");
 
 	// Cleaner Robot
 	meshList[CLEANER_TOP] = MeshBuilder::GenerateOBJ("CleanerTopBody", "OBJ//CleanerBot//CleanerTopBody.obj");
@@ -787,11 +786,11 @@ void SceneText::Render()
 
 		modelStack.PushMatrix();
 		modelStack.Translate(randomLitter, 0, randomLitter);
-		RenderMesh(meshList[GEO_LITTER], true);
+	//	RenderMesh(meshList[GEO_LITTER], true);
 		modelStack.PopMatrix();
 
-		for(int i = 0; i < 10 ; ++i)
-			RenderMesh(meshList[GEO_LITTER], true);
+	//	for(int i = 0; i < 10 ; ++i)
+	//		RenderMesh(meshList[GEO_LITTER], true);
 	}
 
 
@@ -924,6 +923,10 @@ void SceneText::Exit()
 		if (meshList[i] != NULL)
 			delete meshList[i];
 	}
+	Vocation::ConnectQuest(1, Day1);
+	Vocation::ConnectQuest(2, Day2);
+	Vocation::ConnectQuest(3, Day3);
+	timeData->saveGame();
 	// Cleanup VBO here
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	glDeleteProgram(m_programID);

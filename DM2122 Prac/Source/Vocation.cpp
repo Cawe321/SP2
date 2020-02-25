@@ -8,6 +8,7 @@ VocationJob* Vocation::Cleaner;
 VocationJob* Vocation::Bouncer;
 VocationJob* Vocation::Mechanic;
 VocationJob* Vocation::None;
+std::vector<Vocation::Quest> Vocation::mainQuest[3];
 globalData* Vocation::Data = globalData::instance();
 
 VocationJob* Vocation::getVocationJobClass(VocationJob::JOBTYPE theType)
@@ -64,6 +65,8 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 		else 
 			Push.maxNumber = 2;
 		MainQuests.push_back(Push);
+
+		
 	}
 	else if (day == 2)
 	{
@@ -242,6 +245,16 @@ void Vocation::ClearJob(bool programEnd)
 			delete Mechanic;
 	}
 
+}
+
+void Vocation::ConnectQuest(int day, std::vector<Quest> quest)
+{
+	mainQuest[day - 1] = quest;
+}
+
+std::vector<Vocation::Quest> Vocation::getConnectedQuest(int day)
+{
+	return mainQuest[day - 1];
 }
 
 

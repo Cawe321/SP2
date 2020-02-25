@@ -7,13 +7,6 @@
 class globalData; // placeholder calss
 class Vocation
 {
-private:
-	static VocationJob* Sales;
-	static VocationJob* Cleaner;
-	static VocationJob* Bouncer;
-	static VocationJob* Mechanic;
-	static VocationJob* None;
-	static globalData* Data;
 public:
 	static VocationJob* getVocationJobClass(VocationJob::JOBTYPE theType);
 	struct Quest
@@ -29,5 +22,15 @@ public:
 	static void setVocation(VocationJob* work);
 	static void InitializeJob();
 	static void ClearJob(bool programEnd);
+	static void ConnectQuest(int day, std::vector<Quest> quest);
+	static std::vector<Quest> getConnectedQuest(int day);
+private:
+	static VocationJob* Sales;
+	static VocationJob* Cleaner;
+	static VocationJob* Bouncer;
+	static VocationJob* Mechanic;
+	static VocationJob* None;
+	static globalData* Data;
+	static std::vector<Quest> mainQuest[3];
 };
 #endif

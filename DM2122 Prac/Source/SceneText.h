@@ -12,6 +12,7 @@
 //#include "StarterScene.h"
 #include "CSalesCustomer.h"
 #include "Cleanertask.h"
+#include "globalData.h"
 
 const int MECHANIC_GAME_MAX_SCORE = 10;
 const int MECHANIC_GAME_MAX_LIVES = 3;

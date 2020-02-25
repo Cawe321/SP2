@@ -204,7 +204,8 @@ private:
 	bool textbox;
 
 	bool AchievementScene;
-
+        
+	globalData* timeData = globalData::instance();
 
 	unsigned m_parameters[U_TOTAL];
 

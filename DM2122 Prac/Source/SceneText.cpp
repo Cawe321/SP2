@@ -10,6 +10,7 @@
 #include "Salesmantask.h"
 #include "Bouncertask.h"
 #include "Achievements.h"
+#include "globalData.h"
 
 
 #define ROT_LIMIT 45.f;

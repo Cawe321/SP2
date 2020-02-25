@@ -205,6 +205,8 @@ private:
 	bool textbox;
 
 	bool AchievementScene;
+	bool GameScene;
+	bool DayEnds;
         
 	globalData* timeData = globalData::instance();
 

@@ -562,20 +562,22 @@ void SceneText::Update(double dt)
 		//to do: switch light type to SPOT and pass the information to
 		light[0].type = Light::LIGHT_SPOT;
 	}
-	if (Application::IsKeyPressed(VK_RETURN))
+	if (AchievementScene == false && GameScene == true && DayEnds == false)
 	{
-		if (AchievementScene == false)
+		if (Application::IsKeyPressed(VK_RETURN))
 		{
 			AchievementScene = true;
+			GameScene = false;
+
 		}
-		
 	}
-	if (Application::IsKeyPressed(VK_DELETE))
+	if (AchievementScene == true && GameScene == false)
 	{
-	 if (AchievementScene == true)
-	 {
-		AchievementScene = false;
-	 }
+		if (Application::IsKeyPressed(VK_DELETE))
+		{
+			AchievementScene = false;
+			GameScene = true;
+		}
 	}
 	if (AchievementScene == false)
 	{
@@ -585,13 +587,29 @@ void SceneText::Update(double dt)
 		}
 		
 	}
-	if (AchievementScene == false)
+	if (AchievementScene == false && GameScene == true && DayEnds == false)
 	{
-		timeData->setinGameTime(std::stof(timeData->getinGameTime()) -  dt);
+		timeData->setinGameTime(std::stof(timeData->getinGameTime()) - 5  * dt);
+
+	  if (std::stof(timeData->getinGameTime()) < 0)
+	  {
+		DayEnds = true;
+		GameScene = false;
+	  } 
 	}
 	else if (AchievementScene == true)
 	{
 		
+	}
+	if (DayEnds == true && GameScene == false && AchievementScene == false)
+	{
+		if (Application::IsKeyPressed(VK_LBUTTON))
+		{
+			DayEnds = false;
+			GameScene = true;
+
+			timeData->setinGameTime(600);
+		}
 	}
 	if (FreezeMovement == false) {
 		camera.Update(dt);
@@ -715,7 +733,7 @@ void SceneText::Render()
 			MechanicGame = false;
 		}
 	}
-	else
+	else if(GameScene == true)
 	{
 		RenderSkybox();
 		RenderCustomer();
@@ -833,11 +851,7 @@ void SceneText::Render()
 		if (elapsedTime > 25 && elapsedTime <= 30) //if within 15 seconds
 		{
 				RenderBouncerTextBox();
-		//for bouncer command text box to appear
-		//if (walkingSide < -4 && walkingSide > -21 && escapeanimation == false) //replace this with distance checker
-		//{
-		//	RenderCommandTextBox("Press 'X' to tell him to get out" , 2.7f, 1.f, 3);
-		//}
+		
 				Tasklist* temp;
 				temp = new Bouncertask(Day1);
 				Day1 = temp->Addscore(Day1);
@@ -848,6 +862,14 @@ void SceneText::Render()
 
 		RenderTextOnScreen(meshList[GEO_TEXT], time , Color(1, 0, 0), 2, 0, 29);
 	}
+	else if (DayEnds == true)
+	{
+	
+		
+		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Day 1 completed", Color(0, 1, 0), 3, 9, 10);
+		
+    }
 
 	//No transform needed
 	//RenderTextOnScreen(meshList[GEO_TEXT], "Hello World", Color(0, 1, 0), 2, 0, 0);

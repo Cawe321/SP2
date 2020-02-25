@@ -45,6 +45,8 @@ SceneText::SceneText()
 	escapeanimation = false;
 
 	AchievementScene = false;
+	GameScene = true;
+	
 
 }
 

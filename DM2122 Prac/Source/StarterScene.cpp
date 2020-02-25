@@ -32,10 +32,6 @@ void StarterScene::Init()
 	glClearColor(0.0f, 0.0f, 0.4f, 0.0f);
 
 	GlobalData = globalData::instance();
-	if (GlobalData->saveFound())
-	{
-		GlobalData->loadGame();
-	}
 
 	// Initialize Pointer
 	Vocation::InitializeJob();
@@ -132,6 +128,7 @@ void StarterScene::Init()
 	IntroScene = true;
 	VocationScene = false;
 	EntranceScene = false;
+
 	
 	// Skybox
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.f, 1.f);
@@ -175,6 +172,9 @@ void StarterScene::Init()
 
 	meshList[GEO_CARLOGO] = MeshBuilder::GenerateQuad("Background", Color(0, 1, 0), 1, 1);
 	meshList[GEO_CARLOGO]->textureID = LoadTGA("Image//carlogo.tga");
+
+	meshList[GEO_SAVESCENE] = MeshBuilder::GenerateQuad("SaveScene", Color(0, 1, 0), 1.6, 1.4);
+	meshList[GEO_SAVESCENE]->textureID = LoadTGA("Image//saveselection.tga");
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
@@ -220,10 +220,37 @@ void StarterScene::Update(double dt)
 		if (Application::IsKeyPressed(VK_RETURN))
 		{
 			SoundEngine->play2D("audio//bleep.wav", false);
-			IntroScene = false;
+			if (GlobalData->saveFound())
+			{
+				IntroScene = false;
+				SaveScene = true;
+				debounceTime = globalTime;
+			}
+			else
+			{
+				IntroScene = false;
+				VocationScene = true;
+				animationTime = globalTime;
+			}
+			
+		}
+	}
+	else if (SaveScene)
+	{
+		if (Application::IsKeyPressed('Q'))
+		{
+			SoundEngine->play2D("audio//bleep.wav", false);
+			SaveScene = false;
+			EntranceScene = true;
+			GlobalData->loadGame();
+			animationTime = globalTime;
+		}
+		else if (Application::IsKeyPressed('E'))
+		{
+			SoundEngine->play2D("audio//bleep.wav", false);
+			SaveScene = false;
 			VocationScene = true;
 			debounceTime = globalTime;
-			animationTime = globalTime;
 		}
 	}
 	else if (VocationScene)
@@ -392,6 +419,10 @@ void StarterScene::Render()
 		
 
 		
+	}
+	else if (SaveScene)
+	{
+		RenderObjectOnScreen(meshList[GEO_SAVESCENE], 0.8, 0.5, 50);
 	}
 	else if (VocationScene)
 	{

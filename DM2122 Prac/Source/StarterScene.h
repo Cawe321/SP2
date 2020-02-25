@@ -22,6 +22,7 @@ class StarterScene : public Scene
 		GEO_ENTRANCELEFT,
 		GEO_ENTRANCERIGHT,
 		GEO_CARLOGO,
+		GEO_SAVESCENE,
 		
 		GEO_LEFT,
 		GEO_RIGHT,
@@ -91,6 +92,7 @@ private:
 	bool IntroScene;
 	bool VocationScene;
 	bool EntranceScene;
+	bool SaveScene;
 
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();

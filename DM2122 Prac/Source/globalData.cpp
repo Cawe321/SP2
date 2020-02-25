@@ -6,7 +6,11 @@ globalData* globalData::s_instance = nullptr;
 globalData::globalData()
 {
 	// check if save file exists first only once, which is only at the start of the game, otherwise, init all private data members as 0
+	Loaded = false;
 	setinGameTime(600);
+	day = 1;
+	Jobs == nullptr;
+	money = 0;
 }
 
 bool globalData::isLoaded()
@@ -183,10 +187,102 @@ void globalData::loadGame()
 					
 				}
 				
-				questList;
-				int c = 3 + 5;
+				Vocation::ConnectQuest(1, questList);
+			}
+			else if (line.substr(0, 5) == "DAY2:")
+			{
+				std::string temp = "", newLine = line.substr(5, line.length() - 5);
+				std::vector<Vocation::Quest> questList;
+				bool current = true;
+				Vocation::Quest toPush;
+				for (int i = 0; newLine[i] != '\0'; ++i)
+				{
+					if (newLine[i] == '|')
+					{
+						toPush.maxNumber = std::stoi(temp);
+						temp = "";
+						questList.push_back(toPush);
+					}
+					else if (newLine[i] == 'S')
+					{
+						toPush.job = VocationJob::SALES;
+					}
+					else if (newLine[i] == 'C')
+					{
+						toPush.job = VocationJob::CLEANER;
+					}
+					else if (newLine[i] == 'B')
+					{
+						toPush.job = VocationJob::BOUNCER;
+					}
+					else if (newLine[i] == 'M')
+					{
+						toPush.job = VocationJob::MECHANIC;
+					}
+					else if (newLine[i] == '/')
+					{
+
+						toPush.currentNumber = std::stoi(temp);
+						temp = "";
+					}
+					else
+					{
+						temp.push_back(newLine[i]);
+					}
+
+
+				}
+
+				Vocation::ConnectQuest(2, questList);
+			}
+			else if (line.substr(0, 5) == "DAY3:")
+			{
+			std::string temp = "", newLine = line.substr(5, line.length() - 5);
+			std::vector<Vocation::Quest> questList;
+			bool current = true;
+			Vocation::Quest toPush;
+			for (int i = 0; newLine[i] != '\0'; ++i)
+			{
+				if (newLine[i] == '|')
+				{
+					toPush.maxNumber = std::stoi(temp);
+					temp = "";
+					questList.push_back(toPush);
+				}
+				else if (newLine[i] == 'S')
+				{
+					toPush.job = VocationJob::SALES;
+				}
+				else if (newLine[i] == 'C')
+				{
+					toPush.job = VocationJob::CLEANER;
+				}
+				else if (newLine[i] == 'B')
+				{
+					toPush.job = VocationJob::BOUNCER;
+				}
+				else if (newLine[i] == 'M')
+				{
+					toPush.job = VocationJob::MECHANIC;
+				}
+				else if (newLine[i] == '/')
+				{
+
+					toPush.currentNumber = std::stoi(temp);
+					temp = "";
+				}
+				else
+				{
+					temp.push_back(newLine[i]);
+				}
+
+
+			}
+
+			Vocation::ConnectQuest(3, questList);
 			}
 		}
+		Loaded = true;
 		myfile.close();
 	}
 }

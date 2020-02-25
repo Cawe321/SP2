@@ -134,6 +134,7 @@ void SceneText::Init()
 	
 	dialogueTime = 0;
 	elapsedTime = 0;
+	timeData->setinGameTime(600);
 
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_LEFT]->textureID = LoadTGA("Image//left.tga");
@@ -585,6 +586,14 @@ void SceneText::Update(double dt)
 		}
 		
 	}
+	if (AchievementScene == false)
+	{
+		timeData->setinGameTime(std::stof(timeData->getinGameTime()) -  dt);
+	}
+	else if (AchievementScene == true)
+	{
+		
+	}
 	if (FreezeMovement == false) {
 		camera.Update(dt);
 	}
@@ -835,6 +844,10 @@ void SceneText::Render()
 				Day1 = temp->Addscore(Day1);
 				delete temp;
 		}
+		
+		std::string time = std::to_string((int)std::stof(timeData->getinGameTime()));
+
+		RenderTextOnScreen(meshList[GEO_TEXT], time , Color(1, 0, 0), 2, 0, 29);
 	}
 
 	//No transform needed

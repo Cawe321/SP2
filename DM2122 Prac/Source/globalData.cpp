@@ -98,9 +98,23 @@ void globalData::saveGame()
 
 	std::ofstream out;
 	out.open("saveFile.txt");
-	out << "Futuristic MotorShow Save File\n"; // first line
-	out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest;
-	out.close();
+	if (out.is_open())
+	{
+		out << "Futuristic MotorShow Save File\n"; // first line
+		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest;
+		out.close();
+	}
+	else
+	{
+		std::ofstream out;
+		while (!out.is_open())
+		{
+			out.open("saveFile.txt"); // loop until it's open
+		}
+		out << "Futuristic MotorShow Save File\n"; // first line
+		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest;
+		out.close();
+	}
 }
 
 void globalData::loadGame()
@@ -121,7 +135,7 @@ void globalData::loadGame()
 		{
 			if (line.substr(0, 4) == "Day:")
 			{
-				day = std::stoi(std::to_string(line[4]));
+				day = line[4] - '0';
 			}
 			else if (line.substr(0, 5) == "Time:")
 			{

@@ -10,7 +10,7 @@
 #include "Salesmantask.h"
 #include "Bouncertask.h"
 #include "Achievements.h"
-#include "globalData.h"
+
 
 
 #define ROT_LIMIT 45.f;
@@ -23,9 +23,19 @@ SceneText::SceneText()
 	{
 		meshList[i] = NULL;
 	}
-	Day1 = Vocation::getMainQuest(1);
-	Day2 = Vocation::getMainQuest(2);
-	Day3 = Vocation::getMainQuest(3);
+	if (timeData->isLoaded())
+	{
+		Day1 = Vocation::getConnectedQuest(1);
+		Day2 = Vocation::getConnectedQuest(2);
+		Day3 = Vocation::getConnectedQuest(3);
+	}
+	else
+	{
+		Day1 = Vocation::getMainQuest(1);
+		Day2 = Vocation::getMainQuest(2);
+		Day3 = Vocation::getMainQuest(3);
+	}
+	
 	BossOpinion = new Boss();
 	MechanicGameScore = new Mechanictask();
 	MechanicGame = false;
@@ -591,7 +601,7 @@ void SceneText::Update(double dt)
 	}
 	if (AchievementScene == false && GameScene == true && DayEnds == false)
 	{
-		timeData->setinGameTime(std::stof(timeData->getinGameTime()) - 5  * dt);
+		timeData->setinGameTime(std::stof(timeData->getinGameTime()) - dt);
 
 	  if (std::stof(timeData->getinGameTime()) < 0)
 	  {

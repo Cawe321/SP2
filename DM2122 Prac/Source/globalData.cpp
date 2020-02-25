@@ -27,7 +27,6 @@ bool globalData::saveFound()
 void globalData::saveGame()
 {
 	std::string saveDay = "Day:" + std::to_string(day) + "\n";
-
 	std::string saveTime = "Time:" + inGameTime + "\n";
 
 

@@ -335,7 +335,7 @@ void SceneText::Init()
 	//Background Assets
 	meshList[ITEM_INFORMATION_STAND] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
 	meshList[ITEM_INFORMATION_STAND]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_2] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
+	/*meshList[ITEM_INFORMATION_STAND_2] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
 	meshList[ITEM_INFORMATION_STAND_2]->textureID = LoadTGA("Image//background_items//Infostand.tga");
 	meshList[ITEM_INFORMATION_STAND_3] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
 	meshList[ITEM_INFORMATION_STAND_3]->textureID = LoadTGA("Image//background_items//Infostand.tga");
@@ -358,7 +358,7 @@ void SceneText::Init()
 	meshList[ITEM_INFORMATION_STAND_12] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
 	meshList[ITEM_INFORMATION_STAND_12]->textureID = LoadTGA("Image//background_items//Infostand.tga");
 	meshList[ITEM_INFORMATION_STAND_13] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_13]->textureID = LoadTGA("Image//background_items//Infostand.tga");
+	meshList[ITEM_INFORMATION_STAND_13]->textureID = LoadTGA("Image//background_items//Infostand.tga");*/
 	meshList[ITEM_INFORMATION_COUNTER] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//InfoCounter.obj");
 	meshList[ITEM_INFORMATION_COUNTER]->textureID = LoadTGA("Image//background_items//InfoCounter.tga");
 	meshList[ITEM_BATTERY] = MeshBuilder::GenerateOBJ("Battery","OBJ//Background_Items//Battery.obj");
@@ -379,12 +379,12 @@ void SceneText::Init()
 	meshList[ITEM_BOOTH_5]->textureID = LoadTGA("Image//background_items//Tour_Booth.tga");
 	meshList[ITEM_BENCH] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
 	meshList[ITEM_BENCH]->textureID = LoadTGA("Image//background_items//Bench.tga");
-	meshList[ITEM_BENCH_2] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
+	/*meshList[ITEM_BENCH_2] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
 	meshList[ITEM_BENCH_2]->textureID = LoadTGA("Image//background_items//Bench.tga");
 	meshList[ITEM_BENCH_3] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
 	meshList[ITEM_BENCH_3]->textureID = LoadTGA("Image//background_items//Bench.tga");
 	meshList[ITEM_BENCH_4] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
-	meshList[ITEM_BENCH_4]->textureID = LoadTGA("Image//background_items//Bench.tga");
+	meshList[ITEM_BENCH_4]->textureID = LoadTGA("Image//background_items//Bench.tga");*/
 	meshList[ITEM_FLOOR] = MeshBuilder::GenerateCuboid("Floor", Color(1, 1, 1), 1.f, 1.f, 1.f);
 
 	// Cars
@@ -1626,17 +1626,17 @@ void SceneText::Renderlevel()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(40, 1, 0);
-	RenderMesh(meshList[ITEM_BENCH_2], true);
+	RenderMesh(meshList[ITEM_BENCH], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(40, 1, -20);
-	RenderMesh(meshList[ITEM_BENCH_3], true);
+	RenderMesh(meshList[ITEM_BENCH], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(40, 1, -40);
-	RenderMesh(meshList[ITEM_BENCH_4], true);
+	RenderMesh(meshList[ITEM_BENCH], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
@@ -1648,73 +1648,73 @@ void SceneText::Renderlevel()
 	modelStack.PushMatrix();
 	modelStack.Translate(5, 0.5, 20);
 	modelStack.Rotate(60, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_2], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-5, 0.5, 20);
 	modelStack.Rotate(150, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_3], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(5, 0.5, 10);
 	modelStack.Rotate(60, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_4], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-5, 0.5, 10);
 	modelStack.Rotate(150, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_5], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(5, 0.5, 0);
 	modelStack.Rotate(60, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_6], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-5, 0.5, 0);
 	modelStack.Rotate(150, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_7], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(5, 0.5, -10);
 	modelStack.Rotate(60, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_8], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-5, 0.5, -10);
 	modelStack.Rotate(150, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_9], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(5, 0.5, -20);
 	modelStack.Rotate(60, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_10], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-5, 0.5, -20);
 	modelStack.Rotate(150, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_11], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(5, 0.5, -30);
 	modelStack.Rotate(60, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_12], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-5, 0.5, -30);
 	modelStack.Rotate(150, 0, 1, 0);
-	RenderMesh(meshList[ITEM_INFORMATION_STAND_13], true);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
 }

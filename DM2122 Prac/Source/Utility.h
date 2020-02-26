@@ -5,5 +5,5 @@
 #include "Vertex.h"
 
 Position operator*(const Mtx44& lhs, const Position& rhs);
-
+float distancecalculator(Vector3 a, Vector3 b);
 #endif

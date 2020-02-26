@@ -54,8 +54,8 @@ SceneText::SceneText()
 	}
 	BossOpinion = new Boss();
 	MechanicGameScore = new Mechanictask();
-	MechanicGame = false;
-	FreezeMovement = false;
+	MechanicGame = true;
+	FreezeMovement = true;
 	hasmissed = false;
 
 	BankOpen = false;
@@ -612,7 +612,11 @@ void SceneText::Update(double dt)
 				Tasklist * temp;
 				temp = new Salesmantask(Day1);
 				Day1 = temp->Addscore(Day1);
+				BossOpinion->AddGoodwill(5);
 				delete temp;
+			}
+			else {
+				BossOpinion->LoseGoodwill(5);
 			}
 			delete salesCustomer;
 			salesCustomer = nullptr;
@@ -735,6 +739,9 @@ void SceneText::Update(double dt)
 		}
 	}
 	CalculateFrameRate();
+	if (BossOpinion->GetGoodwill() < 0) {
+		//Your Fired
+	}
 }
 
 void SceneText::Render()
@@ -841,16 +848,21 @@ void SceneText::Render()
 			//You Lose
 			FreezeMovement = false;
 			MechanicGame = false;
+			BossOpinion->LoseGoodwill(5);
 		}
 
 		if (MechanicGameScore->GetPoints() == MECHANIC_GAME_MAX_SCORE) {
 			Tasklist* Temp;
 			Temp = new Mechanictask();
 			Day1 = Temp->Addscore(Day1);
+			BossOpinion->AddGoodwill(5);
 			delete Temp;
 			FreezeMovement = false;
 			MechanicGame = false;
 		}
+
+		delete MechanicGameScore;
+		MechanicGameScore = new Mechanictask();
 	}
 	
 	else if(GameScene == true)

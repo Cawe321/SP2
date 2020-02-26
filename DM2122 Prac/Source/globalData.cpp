@@ -11,6 +11,13 @@ globalData::globalData()
 	day = 1;
 	Jobs == nullptr;
 	money = 0;
+	
+	car1bought = false;
+	car2bought = false;
+	car3bought = false;
+	car4bought = false;
+	car5bought = false;
+	car6bought = false; 
 }
 
 bool globalData::isLoaded()
@@ -300,6 +307,28 @@ void globalData::loadGame()
 	}
 }
 
+void globalData::buycar(int a)
+{
+	if (a == 1) {
+		car1bought = true;
+	}
+	else if (a == 2) {
+		car2bought = true;
+	}
+	else if (a == 3) {
+		car3bought = true;
+	}
+	else if (a == 4) {
+		car4bought = true;
+	}
+	else if (a == 5) {
+		car5bought = true;
+	}
+	else if (a == 6) {
+		car6bought = true;
+	}
+}
+
 std::string globalData::getinGameTime()
 {
 	return inGameTime;
@@ -345,6 +374,24 @@ float globalData::getMoney()
 void globalData::setMoney(float cash)
 {
 	money = cash;
+}
+
+bool globalData::Deposit(CarSelection* input)
+{
+	select = input;
+	if (money >= select->GetIndicator()->GetPrice())
+	{
+		money -= select->GetIndicator()->GetPrice();
+		std::cout << "Bought." << " ";
+		std::cout << select->GetIndicator()->GetName() << " " << select->GetIndicator()->GetPrice() << " ";
+		return true;
+	}
+	else
+	{
+		std::cout << "Not enough." << " ";
+		return false;
+
+	}
 }
 
 std::vector<Vocation::Quest> globalData::getMainQuest()

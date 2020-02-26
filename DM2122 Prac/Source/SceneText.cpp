@@ -590,6 +590,7 @@ void SceneText::Update(double dt)
 				delete temp;
 			}
 			delete salesCustomer;
+			salesCustomer = nullptr;
 		}
 	}
 

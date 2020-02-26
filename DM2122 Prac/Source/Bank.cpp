@@ -6,13 +6,13 @@ void Bank::SetMoney()
 	CleanerSalary = 9000;
 	BouncerSalary = 12000;
 	MechanicSalary = 11000;
-	if (Vocation::getVocation() == Vocation::SALES)
+	if (Vocation::getVocation() == VocationJob::SALES)
 		SalesPersonSalary = SalesPersonSalary * 1.2;
-	if (Vocation::getVocation() == Vocation::CLEANER)
+	if (Vocation::getVocation() == VocationJob::CLEANER)
 		CleanerSalary = CleanerSalary * 1.2;
-	if (Vocation::getVocation() == Vocation::BOUNCER)
+	if (Vocation::getVocation() == VocationJob::BOUNCER)
 		BouncerSalary = BouncerSalary * 1.2;
-	if (Vocation::getVocation() == Vocation::MECHANIC)
+	if (Vocation::getVocation() == VocationJob::MECHANIC)
 		MechanicSalary = MechanicSalary * 1.2;
 }
 

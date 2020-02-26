@@ -103,12 +103,27 @@ void globalData::saveGame()
 	}
 	saveDay3Quest.append("\n");
 
+	std::string saveCars = "";
+	if (car1bought)
+		saveCars = saveCars + "Car1\n";
+	if (car2bought)
+		saveCars = saveCars + "Car2\n";
+	if (car3bought)
+		saveCars = saveCars + "Car3\n";
+	if (car4bought)
+		saveCars = saveCars + "Car4\n";
+	if (car5bought)
+		saveCars = saveCars + "Car5\n";
+	if (car6bought)
+		saveCars = saveCars + "Car6\n";
+
+
 	std::ofstream out;
 	out.open("saveFile.txt");
 	if (out.is_open())
 	{
 		out << "Futuristic MotorShow Save File\n"; // first line
-		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest;
+		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest + saveCars;
 		out.close();
 	}
 	else
@@ -119,7 +134,7 @@ void globalData::saveGame()
 			out.open("saveFile.txt"); // loop until it's open
 		}
 		out << "Futuristic MotorShow Save File\n"; // first line
-		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest;
+		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest + saveCars;
 		out.close();
 	}
 }
@@ -162,6 +177,30 @@ void globalData::loadGame()
 			else if (line.substr(0, 6) == "Money:")
 			{
 				money = std::stoi(line.substr(6, line.length() - 6));
+			}
+			else if (line.substr(0, 4) == "Car1")
+			{
+				car1bought = true;
+			}
+			else if (line.substr(0, 4) == "Car2")
+			{
+				car2bought = true;
+			}
+			else if (line.substr(0, 4) == "Car3")
+			{
+				car3bought = true;
+			}
+			else if (line.substr(0, 4) == "Car4")
+			{
+				car4bought = true;
+			}
+			else if (line.substr(0, 4) == "Car5")
+			{
+				car5bought = true;
+			}
+			else if (line.substr(0, 4) == "Car6")
+			{
+				car6bought = true;
 			}
 			else if (line.substr(0, 5) == "DAY1:")
 			{
@@ -327,6 +366,22 @@ void globalData::buycar(int a)
 	else if (a == 6) {
 		car6bought = true;
 	}
+}
+
+bool globalData::owncar(int car)
+{
+	if (car == 1)
+		return car1bought;
+	else if (car == 2)
+		return car2bought;
+	else if (car == 3)
+		return car3bought;
+	else if (car == 4)
+		return car4bought;
+	else if (car == 5)
+		return car5bought;
+	else if (car == 6)
+		return car6bought;
 }
 
 std::string globalData::getinGameTime()

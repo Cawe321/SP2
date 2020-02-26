@@ -58,7 +58,7 @@ SceneText::SceneText()
 	FreezeMovement = false;
 	hasmissed = false;
 
-	BankOpen = false;
+	BankOpen = true;
 	NotEnough = false;
 	HasCars = false;
 
@@ -75,6 +75,7 @@ SceneText::SceneText()
 	AchievementScene = false;
 	GameScene = true;
 	
+	no = 1;
 	SalesPersonSalary = 10000;
 	CleanerSalary = 9000;
 	BouncerSalary = 12000;
@@ -715,25 +716,39 @@ void SceneText::Update(double dt)
 	debounceTime += dt;
 	if (BankOpen == true)
 	{
-		int no = 1;
+		
 		BankOpen = true;
 		IsReserved = true;
 		if (Application::IsKeyPressed(VK_LEFT) && debounceTime > 0.2f) {
 			debounceTime = 0;
 			Selection->Up();
-			no++;
+			if (no != 1)
+				no--;
 		}
 		if (Application::IsKeyPressed(VK_RIGHT) && debounceTime > 0.2f) {
 			debounceTime = 0;
 			Selection->Down();
-			no--;
+			if (no != 6 )
+				no++;
 		}
 		if (Application::IsKeyPressed(VK_RETURN) && debounceTime > 0.2f) {
 			debounceTime = 0;
-			timeData->Deposit(Selection);
-			if (!timeData->Deposit(Selection))
+			;
+			if (timeData->owncar(no))
+			{
+				int i = 3;
+				// maybe something happens if the player owns the car
+				
+			}
+			else if (timeData->Deposit(Selection))
+			{
+				timeData->buycar(no);
+			}
+			else
+			{
 				IsReserved = false;
-			dayData->buycar(no);
+			}
+				
 		}
 	}
 	CalculateFrameRate();

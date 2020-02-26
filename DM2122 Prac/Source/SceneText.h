@@ -187,6 +187,7 @@ private:
 	int CurrentSalespersonTask;
 
 	int Price;
+	int no;
 	
 	bool BankOpen;
 	bool NotEnough;

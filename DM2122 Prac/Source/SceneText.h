@@ -192,7 +192,6 @@ private:
 	bool NotEnough;
 	bool HasCars;
 	bool IsReserved;
-	Bank* Account;
 	CarSelection* Selection;
 
 	float RSPEED = 45.f;
@@ -212,6 +211,11 @@ private:
 	float startingPosition;
 	bool escapeanimation;
 	bool textbox;
+	
+	int SalesPersonSalary;
+	int CleanerSalary;
+	int BouncerSalary;
+	int MechanicSalary;
 
 	bool AchievementScene;
 	bool GameScene;

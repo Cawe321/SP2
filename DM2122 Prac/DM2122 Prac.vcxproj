@@ -128,10 +128,13 @@
   <ItemGroup>
     <ClInclude Include="Source\Achievements.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Bank.h" />
     <ClInclude Include="Source\Boss.h" />
     <ClInclude Include="Source\Bouncertask.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Camera2.h" />
+    <ClInclude Include="Source\Car.h" />
+    <ClInclude Include="Source\CarSelection.h" />
     <ClInclude Include="Source\Cleanertask.h" />
     <ClInclude Include="Source\CSalesAnswer.h" />
     <ClInclude Include="Source\CSalesCustomer.h" />
@@ -157,10 +160,13 @@
   <ItemGroup>
     <ClCompile Include="Source\Achievements.cpp" />
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Bank.cpp" />
     <ClCompile Include="Source\Boss.cpp" />
     <ClCompile Include="Source\Bouncertask.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Camera2.cpp" />
+    <ClCompile Include="Source\Car.cpp" />
+    <ClCompile Include="Source\CarSelection.cpp" />
     <ClCompile Include="Source\Cleanertask.cpp" />
     <ClCompile Include="Source\CSalesAnswer.cpp" />
     <ClCompile Include="Source\CSalesCustomer.cpp" />

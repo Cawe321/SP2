@@ -322,7 +322,20 @@ void globalData::setJob(VocationJob* career)
 	Jobs = career;
 }
 
+int globalData::getDay()
+{
+	return day;
+}
 
+void globalData::NextDay()
+{
+
+	if (std::stof(getinGameTime()) < 0)
+	{
+		day++;
+	}
+	
+}
 
 float globalData::getMoney()
 {

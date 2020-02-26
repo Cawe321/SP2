@@ -209,6 +209,7 @@ private:
 	bool DayEnds;
         
 	globalData* timeData = globalData::instance();
+	globalData* dayData = globalData::instance();
 
 	unsigned m_parameters[U_TOTAL];
 

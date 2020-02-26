@@ -23,6 +23,8 @@ SceneText::SceneText()
 	{
 		meshList[i] = NULL;
 	}
+	Selection = new CarSelection();
+	Account = new Bank();
 	if (timeData->isLoaded())
 	{
 		Day1 = Vocation::getConnectedQuest(1);
@@ -55,6 +57,10 @@ SceneText::SceneText()
 	MechanicGame = false;
 	FreezeMovement = false;
 	hasmissed = false;
+
+	BankOpen = false;
+	NotEnough = false;
+	HasCars = false;
 
 	CleanerGame = true;
 
@@ -159,9 +165,25 @@ void SceneText::Init()
 	glUniform1f(m_parameters[U_LIGHT0_EXPONENT], light[0].exponent);
 	glUniform1i(m_parameters[U_NUMLIGHTS], 1); 
 	
-	
 	dialogueTime = 0;
 	elapsedTime = 0;
+	dayData->NextDay();
+
+	if (HasCars == false) {
+		Selection->AddCar("Car1", 1000);
+		Selection->AddCar("Car2", 2000);
+		Selection->AddCar("Car3", 3000);
+		Selection->AddCar("Car4", 4000);
+		Selection->AddCar("Car5", 5000);
+		Selection->AddCar("Car6", 6000);
+		Selection->AddCar("Car7", 7000);
+		Selection->AddCar("Car8", 8000);
+		Selection->AddCar("Car9", 9000);
+		Selection->AddCar("Car10", 10000);
+		Selection->AddCar("Car11", 11000);
+		Selection->AddCar("Car12", 12000);
+		HasCars = true;
+	}
 
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_LEFT]->textureID = LoadTGA("Image//left.tga");
@@ -188,6 +210,9 @@ void SceneText::Init()
 	meshList[GEO_DICE]->textureID = LoadTGA("Image//doorman.tga");
 
 	meshList[GEO_LIGHTSPHERE] = MeshBuilder::GenerateSphere("lightBall", Color(1.f, 1.f, 1.f), 9, 36, 1.f);
+
+	meshList[GEO_BANKMENU] = MeshBuilder::GenerateQuad("BankMenu", Color(0, 1, 0), 1, 1);
+	meshList[GEO_BANKMENU]->textureID = LoadTGA("Image//UI.tga");
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
@@ -683,14 +708,32 @@ void SceneText::Update(double dt)
 		{
 			DayEnds = false;
 			GameScene = true;
-
+			dayData->NextDay();
 			timeData->setinGameTime(600);
+
+			
 		}
 	}
 	if (FreezeMovement == false) {
 		camera.Update(dt);
 	}
-	
+
+	if (BankOpen == true)
+	{
+		BankOpen = true;
+		IsReserved = true;
+		if (Application::IsKeyPressed(VK_LEFT)) {
+			Selection->Up();
+		}
+		if (Application::IsKeyPressed(VK_RIGHT)) {
+			Selection->Down();
+		}
+		if (Application::IsKeyPressed(VK_RETURN)) {
+			Account->Deposit(Selection);
+			if (!Account->Deposit(Selection))
+				IsReserved = false;
+		}
+	}
 	CalculateFrameRate();
 }
 
@@ -922,6 +965,9 @@ void SceneText::Render()
 		std::string time = std::to_string((int)std::stof(timeData->getinGameTime()));
 
 		RenderTextOnScreen(meshList[GEO_TEXT], time , Color(1, 0, 0), 2, 0, 29);
+		
+		std::string day = std::to_string(dayData->getDay());
+		RenderTextOnScreen(meshList[GEO_TEXT], day, Color(1, 0, 0), 2, 3, 29);
 		if (CleanerGame == true)
 		{
 			modelStack.PushMatrix();
@@ -1006,7 +1052,29 @@ void SceneText::Render()
 		RenderTextOnScreen(meshList[GEO_TEXT], "/" + std::to_string(salesCustomer->getSatisfactionRate()), Color(0, 2, 0), 3, 18.5, 17.25);
 		RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Reach satisfaction(" + std::to_string(salesCustomer->getSatisfactionRate() - 4) + ") and you will face the penalty!", Color(3, 0, 0), 2, 12, 24.37, 30, false);
 	}
-	
+	if (BankOpen)
+	{
+		RenderObjectOnScreen(meshList[GEO_BANKMENU], 0.5, 0.4, 80);
+		RenderTextOnScreen(meshList[GEO_TEXT], "BANK: $" + std::to_string(Account->GetMoney()), Color(0, 1, 1), 2.5, 15.5, 17.5);
+		RenderTextOnScreen(meshList[GEO_TEXT], "RESERVE A CAR", Color(0, 1, 1), 3, 7, 16);
+		int position = 0;
+		while (true) {
+			RenderTextOnScreen(meshList[GEO_TEXT], Selection->PrintName(position), Color(0, 1, 1), 2.5, 4, 16 - position);
+			RenderTextOnScreen(meshList[GEO_TEXT], "$" + Selection->PrintPrice(position), Color(0, 1, 1), 2.5, 21, 16 - position);
+			position++;
+			if (position > 11) {
+				break;
+			}
+		}
+		position = 0;
+		if (IsReserved)
+			RenderTextOnScreen(meshList[GEO_TEXT], "Reserve " + Selection->PrintSelection(Selection) + "?", Color(0, 1, 1), 2.5, 3, 3.5);
+		if (!IsReserved && Application::IsKeyPressed(VK_RETURN))
+			RenderTextOnScreen(meshList[GEO_TEXT], "Not enough money", Color(0, 1, 1), 2.5, 3, 3.5);
+
+		//Selection->Printing(); // for checking
+
+	}
 	
 }
 

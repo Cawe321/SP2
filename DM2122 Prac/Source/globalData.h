@@ -8,10 +8,18 @@ private:
 	std::string inGameTime;
 	int day;
 	VocationJob* Jobs;
-	float money;
+	int money;
 	static globalData* s_instance;
 	globalData();
 	bool Loaded;
+	CarSelection* select;
+	
+	bool car1bought;
+	bool car2bought;
+	bool car3bought;
+	bool car4bought;
+	bool car5bought;
+	bool car6bought;
 public:
 	bool isLoaded();
 	bool saveFound();
@@ -28,8 +36,10 @@ public:
 	void NextDay();
 
 	float getMoney();
-	void setMoney(float cash);
-
+	void setMoney(int cash);
+	void buycar(int);
+	bool Deposit(CarSelection* input);
+	
 	std::vector<Vocation::Quest> getMainQuest();
 
 	static globalData* instance();

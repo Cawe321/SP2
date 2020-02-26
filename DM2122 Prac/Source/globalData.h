@@ -23,6 +23,9 @@ public:
 
 	VocationJob* getJob();
 	void setJob(VocationJob* career);
+	
+	int getDay();
+	void NextDay();
 
 	float getMoney();
 	void setMoney(float cash);

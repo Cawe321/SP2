@@ -13,6 +13,7 @@
 #include "CSalesCustomer.h"
 #include "Cleanertask.h"
 #include "globalData.h"
+#include "Bank.h"
 
 const int MECHANIC_GAME_MAX_SCORE = 10;
 const int MECHANIC_GAME_MAX_LIVES = 3;
@@ -38,6 +39,7 @@ class SceneText : public Scene
 		GEO_FRAME3,
 		GEO_CUSTOMERLOGO,
 		GEO_LITTER,
+		GEO_BANKMENU,
 		GEO_TEXT,
 		GEO_TEXTBOX,
 
@@ -185,7 +187,15 @@ private:
 	int CurrentSalespersonTask;
 
 	int Price;
-	
+
+	bool BankOpen;
+	bool NotEnough;
+	bool HasCars;
+	bool IsReserved; 
+	int row = 16;
+	Bank* Account;
+	CarSelection* Selection;
+
 	float RSPEED = 45.f;
 	
 	float rotateCustomerHead = 0.0f;

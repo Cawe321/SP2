@@ -62,7 +62,7 @@ SceneText::SceneText()
 	NotEnough = false;
 	HasCars = false;
 
-	CleanerGame = true;
+	CleanerGame = false;
 
 	for (int i = 0; i < 10; i++) {
 		game[i] = '-';

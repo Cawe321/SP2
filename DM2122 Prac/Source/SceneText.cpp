@@ -54,8 +54,8 @@ SceneText::SceneText()
 	}
 	BossOpinion = new Boss();
 	MechanicGameScore = new Mechanictask();
-	MechanicGame = true;
-	FreezeMovement = true;
+	MechanicGame = false;
+	FreezeMovement = false;
 	hasmissed = false;
 
 	BankOpen = false;

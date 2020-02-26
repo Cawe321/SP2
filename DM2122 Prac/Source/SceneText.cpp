@@ -1452,6 +1452,13 @@ void SceneText::Render()
 		//modelStack.Translate(0, -3, 0);
 		//RenderMesh(meshList[GEO_DICE], true);
 		//modelStack.PopMatrix();
+		
+		modelStack.PushMatrix();
+		modelStack.Translate(-45, 0, -27);
+		modelStack.Rotate(90.f, 0, 1, 0);
+		RenderGuardBot();
+		modelStack.PopMatrix();
+		
 		if (dayData->getDay() == 1)
 		{
 			if (thirdescapeanimation == false) //Day1

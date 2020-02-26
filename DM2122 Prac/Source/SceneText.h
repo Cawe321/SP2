@@ -61,6 +61,20 @@ class SceneText : public Scene
 		CUSTOMER2_ARM,
 		CUSTOMER2_HAND,
 		CUSTOMER2_LEG,
+		
+		SUSPECT1_BODY,
+		SUSPECT1_HEAD,
+		SUSPECT1_SHOULDER,
+		SUSPECT1_ARM,
+		SUSPECT1_HAND,
+		SUSPECT1_LEG,
+
+		SUSPECT2_BODY,
+		SUSPECT2_HEAD,
+		SUSPECT2_SHOULDER,
+		SUSPECT2_ARM,
+		SUSPECT2_HAND,
+		SUSPECT2_LEG,
 
 		GUARD_BODY,
 		GUARD_HEAD,
@@ -212,6 +226,8 @@ private:
 	float startingPosition;
 	float debounceTime;
 	bool escapeanimation;
+	bool secondescpaeanimation;
+	bool thirdescapeanimation;
 	bool textbox;
 	
 	int SalesPersonSalary;
@@ -274,6 +290,8 @@ private:
 	void RenderCustomer();
 	void RenderCustomer2();
 	void RenderSuspect();
+	void RenderSuspect2();
+	void RenderSuspect3();
 	void RenderGuardBot();
 	void RenderSaleBot();
 	void Renderlevel();

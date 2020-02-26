@@ -319,6 +319,9 @@ private:
 	float LeftArmZ = 0.0f;
 	float rotatecar = 0.0f;
 	
+	float passedTime = 0.0f;
+	float timeDisappeared = 0.0f;
+
 	float elapsedTime;
 	float dialogueTime;
 	float finalPosition;

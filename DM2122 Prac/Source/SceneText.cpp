@@ -58,7 +58,7 @@ SceneText::SceneText()
 	FreezeMovement = false;
 	hasmissed = false;
 
-	BankOpen = true;
+	BankOpen = false;
 	NotEnough = false;
 	HasCars = false;
 

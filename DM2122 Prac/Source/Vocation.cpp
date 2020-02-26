@@ -170,6 +170,24 @@ CSalesCustomer::CustomerType Vocation::returnCustomerMood()
 	}
 }
 
+bool Vocation::isCustomerCurious()
+{
+	if (Data->getJob()->getJob() == VocationJob::SALES)
+	{
+		int magicNo = rand() % 10;
+		if (magicNo < 7) // 70% Chance
+			return true;
+		else return false;
+	}
+	else
+	{
+		int magicNo = rand() % 10;
+		if (magicNo < 5) // 50% Chance
+			return true;
+		else return false;
+	}
+}
+
 std::vector<Vector3> Vocation::getLitterLocations(int numberOfLitter)
 {
 	// MUST CHANGE ONCE CONVENTION IS COMPLETED!!!!!!!!!

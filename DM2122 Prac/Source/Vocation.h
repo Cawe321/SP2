@@ -18,6 +18,7 @@ public:
 	static std::vector<Vocation::Quest> getMainQuest(int day);
 	static VocationJob::JOBTYPE getVocation();
 	static CSalesCustomer::CustomerType returnCustomerMood();
+	static bool isCustomerCurious();
 	static std::vector<Vector3> getLitterLocations(int numberOfLitter);
 	static void setVocation(VocationJob* work);
 	static void InitializeJob();

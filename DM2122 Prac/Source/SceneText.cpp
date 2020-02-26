@@ -335,30 +335,6 @@ void SceneText::Init()
 	//Background Assets
 	meshList[ITEM_INFORMATION_STAND] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
 	meshList[ITEM_INFORMATION_STAND]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	/*meshList[ITEM_INFORMATION_STAND_2] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_2]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_3] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_3]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_4] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_4]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_5] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_5]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_6] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_6]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_7] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_7]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_8] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_8]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_9] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_9]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_10] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_10]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_11] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_11]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_12] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_12]->textureID = LoadTGA("Image//background_items//Infostand.tga");
-	meshList[ITEM_INFORMATION_STAND_13] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//Infostand.obj");
-	meshList[ITEM_INFORMATION_STAND_13]->textureID = LoadTGA("Image//background_items//Infostand.tga");*/
 	meshList[ITEM_INFORMATION_COUNTER] = MeshBuilder::GenerateOBJ("Information Stand", "OBJ//Background_Items//InfoCounter.obj");
 	meshList[ITEM_INFORMATION_COUNTER]->textureID = LoadTGA("Image//background_items//InfoCounter.tga");
 	meshList[ITEM_BATTERY] = MeshBuilder::GenerateOBJ("Battery","OBJ//Background_Items//Battery.obj");
@@ -379,12 +355,6 @@ void SceneText::Init()
 	meshList[ITEM_BOOTH_5]->textureID = LoadTGA("Image//background_items//Tour_Booth.tga");
 	meshList[ITEM_BENCH] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
 	meshList[ITEM_BENCH]->textureID = LoadTGA("Image//background_items//Bench.tga");
-	/*meshList[ITEM_BENCH_2] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
-	meshList[ITEM_BENCH_2]->textureID = LoadTGA("Image//background_items//Bench.tga");
-	meshList[ITEM_BENCH_3] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
-	meshList[ITEM_BENCH_3]->textureID = LoadTGA("Image//background_items//Bench.tga");
-	meshList[ITEM_BENCH_4] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
-	meshList[ITEM_BENCH_4]->textureID = LoadTGA("Image//background_items//Bench.tga");*/
 	meshList[ITEM_FLOOR] = MeshBuilder::GenerateCuboid("Floor", Color(1, 1, 1), 1.f, 1.f, 1.f);
 
 	// Cars
@@ -639,7 +609,7 @@ void SceneText::Update(double dt)
 	{
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
-	if (Application::IsKeyPressed('I'))
+	/*if (Application::IsKeyPressed('I'))
 		light[0].position.z -= (float)(LSPEED * dt);
 	if (Application::IsKeyPressed('K'))
 		light[0].position.z += (float)(LSPEED * dt);
@@ -650,8 +620,14 @@ void SceneText::Update(double dt)
 	if (Application::IsKeyPressed('O'))
 		light[0].position.y -= (float)(LSPEED * dt);
 	if (Application::IsKeyPressed('P'))
-		light[0].position.y += (float)(LSPEED * dt);
-
+		light[0].position.y += (float)(LSPEED * dt);*/
+	if (Application::IsKeyPressed('I')) {
+		//Universal interaction key
+		if ((distancecalculator(camera.position, Vector3(45, 0.5, 45)) < 7)) {
+			MechanicGame = true;
+			FreezeMovement = true;
+		}
+	}
 	if (Application::IsKeyPressed('Q'))
 	{
 		//to do: switch light type to POINT and pass the information to
@@ -849,6 +825,8 @@ void SceneText::Render()
 			FreezeMovement = false;
 			MechanicGame = false;
 			BossOpinion->LoseGoodwill(5);
+			delete MechanicGameScore;
+			MechanicGameScore = new Mechanictask();
 		}
 
 		if (MechanicGameScore->GetPoints() == MECHANIC_GAME_MAX_SCORE) {
@@ -859,10 +837,9 @@ void SceneText::Render()
 			delete Temp;
 			FreezeMovement = false;
 			MechanicGame = false;
+			delete MechanicGameScore;
+			MechanicGameScore = new Mechanictask();
 		}
-
-		delete MechanicGameScore;
-		MechanicGameScore = new Mechanictask();
 	}
 	
 	else if(GameScene == true)
@@ -1717,6 +1694,33 @@ void SceneText::Renderlevel()
 	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
 	modelStack.PopMatrix();
 
+	modelStack.PushMatrix();
+	modelStack.Translate(45, 0.5, 45);
+	//modelStack.Rotate(150, 0, 1, 0);
+	RenderMesh(meshList[ITEM_INFORMATION_STAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	//Scale, Translate, Rotate
+	modelStack.Translate(45, 5, 40);
+	modelStack.Rotate(-90, 0, 1, 0);
+	RenderText(meshList[GEO_TEXT], "Mechanic Bay", Color(0, 1, 0));
+	modelStack.PopMatrix();
+
+	if ((distancecalculator(camera.position, Vector3(45, 0.5, 45)) < 7)) {
+		modelStack.PushMatrix();
+		//Scale, Translate, Rotate
+		modelStack.Translate(45, 3, 38);
+		modelStack.Rotate(-90, 0, 1, 0);
+		RenderText(meshList[GEO_TEXT], "Press I to play", Color(0, 1, 0));
+		modelStack.PopMatrix();
+		modelStack.PushMatrix();
+		//Scale, Translate, Rotate
+		modelStack.Translate(45, 2, 38);
+		modelStack.Rotate(-90, 0, 1, 0);
+		RenderText(meshList[GEO_TEXT], "the Mechanic Game", Color(0, 1, 0));
+		modelStack.PopMatrix();
+	}
 }
 
 void SceneText::RenderLitter()

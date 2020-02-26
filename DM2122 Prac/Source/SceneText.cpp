@@ -24,7 +24,7 @@ SceneText::SceneText()
 		meshList[i] = NULL;
 	}
 	Selection = new CarSelection();
-	Account = new Bank();
+	timeData->getMoney();
 	if (timeData->isLoaded())
 	{
 		Day1 = Vocation::getConnectedQuest(1);
@@ -75,6 +75,19 @@ SceneText::SceneText()
 	AchievementScene = false;
 	GameScene = true;
 	
+	SalesPersonSalary = 10000;
+	CleanerSalary = 9000;
+	BouncerSalary = 12000;
+	MechanicSalary = 11000;
+
+	if (timeData->getJob()->getJob() == VocationJob::SALES)
+		SalesPersonSalary = SalesPersonSalary * 1.2;
+	if (timeData->getJob()->getJob() == VocationJob::CLEANER)
+		CleanerSalary = CleanerSalary * 1.2;
+	if (timeData->getJob()->getJob() == VocationJob::BOUNCER)
+		BouncerSalary = BouncerSalary * 1.2;
+	if (timeData->getJob()->getJob() == VocationJob::MECHANIC)
+		MechanicSalary = MechanicSalary * 1.2;
 
 }
 
@@ -167,6 +180,7 @@ void SceneText::Init()
 	
 	dialogueTime = 0;
 	elapsedTime = 0;
+	debounceTime = 0;
 	dayData->NextDay();
 
 	if (HasCars == false) {
@@ -698,20 +712,28 @@ void SceneText::Update(double dt)
 		camera.Update(dt);
 	}
 
+	debounceTime += dt;
 	if (BankOpen == true)
 	{
+		int no = 1;
 		BankOpen = true;
 		IsReserved = true;
-		if (Application::IsKeyPressed(VK_LEFT)) {
+		if (Application::IsKeyPressed(VK_LEFT) && debounceTime > 0.2f) {
+			debounceTime = 0;
 			Selection->Up();
+			no++;
 		}
-		if (Application::IsKeyPressed(VK_RIGHT)) {
+		if (Application::IsKeyPressed(VK_RIGHT) && debounceTime > 0.2f) {
+			debounceTime = 0;
 			Selection->Down();
+			no--;
 		}
-		if (Application::IsKeyPressed(VK_RETURN)) {
-			Account->Deposit(Selection);
-			if (!Account->Deposit(Selection))
+		if (Application::IsKeyPressed(VK_RETURN) && debounceTime > 0.2f) {
+			debounceTime = 0;
+			timeData->Deposit(Selection);
+			if (!timeData->Deposit(Selection))
 				IsReserved = false;
+			dayData->buycar(no);
 		}
 	}
 	CalculateFrameRate();
@@ -837,6 +859,8 @@ void SceneText::Render()
 			delete Temp;
 			FreezeMovement = false;
 			MechanicGame = false;
+			timeData->setMoney(MechanicSalary* BossOpinion->getmodifier());
+			std::cout << timeData->getMoney();
 			delete MechanicGameScore;
 			MechanicGameScore = new Mechanictask();
 		}

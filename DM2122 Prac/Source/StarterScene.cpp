@@ -176,6 +176,9 @@ void StarterScene::Init()
 	meshList[GEO_SAVESCENE] = MeshBuilder::GenerateQuad("SaveScene", Color(0, 1, 0), 1.6, 1.4);
 	meshList[GEO_SAVESCENE]->textureID = LoadTGA("Image//saveselection.tga");
 
+	meshList[GEO_LOADSCREEN] = MeshBuilder::GenerateQuad("LoadScreen", Color(0, 1, 0), 1.6, 1.4);
+	meshList[GEO_LOADSCREEN]->textureID = LoadTGA("Image//Loading.tga");
+
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
 }
@@ -300,6 +303,7 @@ void StarterScene::Update(double dt)
 	}
 	else if (EntranceScene)
 	{
+
 		if (globalTime - animationTime <= 1)
 		{
 			camera.position.z = -(50 - (globalTime - animationTime) * 60);
@@ -333,6 +337,7 @@ void StarterScene::Update(double dt)
 			camera.target = { 0, 2.f, 45 };
 			SoundEngine->stopAllSounds();
 			Application::Isonlevel = true;
+			
 		}
 	}
 
@@ -426,6 +431,7 @@ void StarterScene::Render()
 	}
 	else if (VocationScene)
 	{
+		
 		meshList[GEO_BACKGROUND]->textureID = background2;
 		RenderObjectOnScreen(meshList[GEO_BACKGROUND], 0.8, 0.5, 50);
 		
@@ -451,7 +457,7 @@ void StarterScene::Render()
 			RenderTextOnScreen(meshList[GEO_TEXT], "To", Color(0, 1, 1), 2.5, 15.25, 3.75);
 			RenderTextOnScreen(meshList[GEO_TEXT], "Confirm", Color(0, 1, 1), 2.5, 12.66, 2.5);
 		}
-
+		
 
 	}
 	else if (EntranceScene)
@@ -479,7 +485,7 @@ void StarterScene::Render()
 				modelStack.PopMatrix();
 
 			}
-			else if (globalTime - animationTime > 2)
+			else if (globalTime - animationTime > 2 && globalTime - animationTime <= 4)
 			{
 				modelStack.PushMatrix();
 					modelStack.Translate(0, 0, 1);
@@ -492,8 +498,11 @@ void StarterScene::Render()
 				modelStack.PopMatrix();
 				
 			}
-			
-			
+			else if (globalTime - animationTime > 4)
+			{
+				RenderObjectOnScreen(meshList[GEO_LOADSCREEN], 0.8, 0.5, 50);
+			}
+		
 		modelStack.PopMatrix();
 
 	}

@@ -1,6 +1,6 @@
 Futuristic MotorShow Save File
 Day:1
-Time:560.390015
+Time:511.510345
 Vocation:SALES
 Money:0.000000
 DAY1:S0/1|C0/2|B0/1|M0/2|

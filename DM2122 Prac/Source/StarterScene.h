@@ -23,7 +23,9 @@ class StarterScene : public Scene
 		GEO_ENTRANCERIGHT,
 		GEO_CARLOGO,
 		GEO_SAVESCENE,
-		
+		GEO_LOADSCREEN,
+
+
 		GEO_LEFT,
 		GEO_RIGHT,
 		GEO_TOP,

@@ -135,6 +135,7 @@
     <ClInclude Include="Source\Car.h" />
     <ClInclude Include="Source\CarSelection.h" />
     <ClInclude Include="Source\Cleanertask.h" />
+    <ClInclude Include="Source\CollisionCheck.h" />
     <ClInclude Include="Source\CSalesAnswer.h" />
     <ClInclude Include="Source\CSalesCustomer.h" />
     <ClInclude Include="Source\globalData.h" />
@@ -166,6 +167,7 @@
     <ClCompile Include="Source\Car.cpp" />
     <ClCompile Include="Source\CarSelection.cpp" />
     <ClCompile Include="Source\Cleanertask.cpp" />
+    <ClCompile Include="Source\CollisionCheck.cpp" />
     <ClCompile Include="Source\CSalesAnswer.cpp" />
     <ClCompile Include="Source\CSalesCustomer.cpp" />
     <ClCompile Include="Source\globalData.cpp" />

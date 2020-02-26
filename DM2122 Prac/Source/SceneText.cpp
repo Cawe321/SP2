@@ -1203,6 +1203,7 @@ void SceneText::RenderSkybox()
 void SceneText::RenderCleanerRobot() // Facing x-axis
 {
 	modelStack.PushMatrix();
+	modelStack.Rotate(180, 0, 1, 0);
 	modelStack.Translate(0, 0.4, 0);
 	RenderMesh(meshList[CLEANER_BOTTOM], true);
 	

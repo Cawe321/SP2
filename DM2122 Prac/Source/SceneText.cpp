@@ -167,6 +167,7 @@ void SceneText::Init()
 	
 	dialogueTime = 0;
 	elapsedTime = 0;
+	dayData->NextDay();
 
 	if (HasCars == false) {
 		Selection->AddCar("Car1", 1000);
@@ -707,8 +708,10 @@ void SceneText::Update(double dt)
 		{
 			DayEnds = false;
 			GameScene = true;
-
+			dayData->NextDay();
 			timeData->setinGameTime(600);
+
+			
 		}
 	}
 	if (FreezeMovement == false) {
@@ -962,6 +965,9 @@ void SceneText::Render()
 		std::string time = std::to_string((int)std::stof(timeData->getinGameTime()));
 
 		RenderTextOnScreen(meshList[GEO_TEXT], time , Color(1, 0, 0), 2, 0, 29);
+		
+		std::string day = std::to_string(dayData->getDay());
+		RenderTextOnScreen(meshList[GEO_TEXT], day, Color(1, 0, 0), 2, 3, 29);
 		if (CleanerGame == true)
 		{
 			modelStack.PushMatrix();

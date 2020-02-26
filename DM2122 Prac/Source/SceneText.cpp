@@ -58,7 +58,7 @@ SceneText::SceneText()
 	FreezeMovement = false;
 	hasmissed = false;
 
-	BankOpen = false;
+	BankOpen = true;
 	NotEnough = false;
 	HasCars = false;
 
@@ -71,10 +71,12 @@ SceneText::SceneText()
 	Price = 0; //for me to render out the achievements
 	
 	escapeanimation = false;
-
+        secondescpaeanimation = false;
+	thirdescapeanimation = false;
 	AchievementScene = false;
 	GameScene = true;
 	
+	no = 1;
 	SalesPersonSalary = 10000;
 	CleanerSalary = 9000;
 	BouncerSalary = 12000;
@@ -590,6 +592,44 @@ void SceneText::Init()
 	
 	meshList[CUSTOMER2_LEG] = MeshBuilder::GenerateOBJ("CustomerLeg", "OBJ//Customer//CustomerLeg.obj");
 	meshList[CUSTOMER2_LEG]->textureID = LoadTGA("Image//CustomerAlt.tga");
+	
+	//suspect 1
+	meshList[SUSPECT1_BODY] = MeshBuilder::GenerateOBJ("CustomerBody", "OBJ//Customer//CustomerBody.obj");
+	meshList[SUSPECT1_BODY]->textureID = LoadTGA("Image//CustomerAlt2.tga");
+
+	meshList[SUSPECT1_HEAD] = MeshBuilder::GenerateOBJ("CustomerHead", "OBJ//Customer//CustomerHead.obj");
+	meshList[SUSPECT1_HEAD]->textureID = LoadTGA("Image//CustomerAlt2.tga");
+
+	meshList[SUSPECT1_SHOULDER] = MeshBuilder::GenerateOBJ("CustomerShoulder", "OBJ//Customer//CustomerShoulder.obj");
+	meshList[SUSPECT1_SHOULDER]->textureID = LoadTGA("Image//CustomerAlt2.tga");
+
+	meshList[SUSPECT1_ARM] = MeshBuilder::GenerateOBJ("CustomerArm", "OBJ//Customer//CustomerArm.obj");
+	meshList[SUSPECT1_ARM]->textureID = LoadTGA("Image//CustomerAlt2.tga");
+
+	meshList[SUSPECT1_HAND] = MeshBuilder::GenerateOBJ("CustomerHand", "OBJ//Customer//CustomerHand.obj");
+	meshList[SUSPECT1_HAND]->textureID = LoadTGA("Image//CustomerAlt2.tga");
+
+	meshList[SUSPECT1_LEG] = MeshBuilder::GenerateOBJ("CustomerLeg", "OBJ//Customer//CustomerLeg.obj");
+	meshList[SUSPECT1_LEG]->textureID = LoadTGA("Image//CustomerAlt2.tga");
+    
+	//suspect 2
+	meshList[SUSPECT2_BODY] = MeshBuilder::GenerateOBJ("CustomerBody", "OBJ//Customer//CustomerBody.obj");
+	meshList[SUSPECT2_BODY]->textureID = LoadTGA("Image//CustomerAlt3.tga");
+
+	meshList[SUSPECT2_HEAD] = MeshBuilder::GenerateOBJ("CustomerHead", "OBJ//Customer//CustomerHead.obj");
+	meshList[SUSPECT2_HEAD]->textureID = LoadTGA("Image//CustomerAlt3.tga");
+
+	meshList[SUSPECT2_SHOULDER] = MeshBuilder::GenerateOBJ("CustomerShoulder", "OBJ//Customer//CustomerShoulder.obj");
+	meshList[SUSPECT2_SHOULDER]->textureID = LoadTGA("Image//CustomerAlt3.tga");
+
+	meshList[SUSPECT2_ARM] = MeshBuilder::GenerateOBJ("CustomerArm", "OBJ//Customer//CustomerArm.obj");
+	meshList[SUSPECT2_ARM]->textureID = LoadTGA("Image//CustomerAlt3.tga");
+
+	meshList[SUSPECT2_HAND] = MeshBuilder::GenerateOBJ("CustomerHand", "OBJ//Customer//CustomerHand.obj");
+	meshList[SUSPECT2_HAND]->textureID = LoadTGA("Image//CustomerAlt3.tga");
+
+	meshList[SUSPECT2_LEG] = MeshBuilder::GenerateOBJ("CustomerLeg", "OBJ//Customer//CustomerLeg.obj");
+	meshList[SUSPECT2_LEG]->textureID = LoadTGA("Image//CustomerAlt3.tga");
 
 	// Guard Bot
 	meshList[GUARD_BODY] = MeshBuilder::GenerateOBJ("GuardBody", "OBJ//GuardBot//GuardBody.obj");
@@ -746,6 +786,15 @@ void SceneText::Update(double dt)
 	{
 		
 		elapsedTime += dt;
+	}
+	if (secondescpaeanimation == true)
+	{
+		passedTime += dt;
+	}
+
+	if (thirdescapeanimation == true)
+	{
+		timeDisappeared += dt;
 	}
 
 	if (MechanicGame == true) {
@@ -964,7 +1013,14 @@ void SceneText::Update(double dt)
 		{
 			escapeanimation = true;
 		}
-		
+		if (Application::IsKeyPressed('Z')) //change to I
+		{
+			secondescpaeanimation = true;
+		}
+		if (Application::IsKeyPressed('C')) //change to I
+		{
+			thirdescapeanimation = true;
+		}
 	}
 	if (AchievementScene == false && GameScene == true && DayEnds == false)
 	{
@@ -999,25 +1055,39 @@ void SceneText::Update(double dt)
 	debounceTime += dt;
 	if (BankOpen == true)
 	{
-		int no = 1;
+		
 		BankOpen = true;
 		IsReserved = true;
 		if (Application::IsKeyPressed(VK_LEFT) && debounceTime > 0.2f) {
 			debounceTime = 0;
 			Selection->Up();
-			no++;
+			if (no != 1)
+				no--;
 		}
 		if (Application::IsKeyPressed(VK_RIGHT) && debounceTime > 0.2f) {
 			debounceTime = 0;
 			Selection->Down();
-			no--;
+			if (no != 6 )
+				no++;
 		}
 		if (Application::IsKeyPressed(VK_RETURN) && debounceTime > 0.2f) {
 			debounceTime = 0;
-			timeData->Deposit(Selection);
-			if (!timeData->Deposit(Selection))
+			;
+			if (timeData->owncar(no))
+			{
+				int i = 3;
+				// maybe something happens if the player owns the car
+				
+			}
+			else if (timeData->Deposit(Selection))
+			{
+				timeData->buycar(no);
+			}
+			else
+			{
 				IsReserved = false;
-			dayData->buycar(no);
+			}
+				
 		}
 	}
 	CalculateFrameRate();
@@ -1382,63 +1452,140 @@ void SceneText::Render()
 		//modelStack.Translate(0, -3, 0);
 		//RenderMesh(meshList[GEO_DICE], true);
 		//modelStack.PopMatrix();
-		
+		if (dayData->getDay() == 1)
+		{
+			if (thirdescapeanimation == false) //Day1
+			{
+				RenderSuspect3();
+			}
+
+			if (timeDisappeared <= 2 && thirdescapeanimation == true)
+			{
+				startingPosition = 15;
+
+				modelStack.PushMatrix();
+				modelStack.Translate(-20, 3.8f, startingPosition + timeDisappeared * 15);
+				RenderSuspect3();
+				modelStack.PopMatrix();
+			}
+			else if (timeDisappeared > 2 && timeDisappeared <= 5 && thirdescapeanimation == true)
+			{
+				middlePosition = -20;
+
+				modelStack.PushMatrix();
+				modelStack.Translate(middlePosition + (timeDisappeared - 2) * 15 / 2, 3.8f, 44);
+				RenderSuspect3();
+				modelStack.PopMatrix();
+			}
+			else if (timeDisappeared > 5 && timeDisappeared <= 10 && thirdescapeanimation == true)
+			{
+				finalPosition = 34;
+
+				modelStack.PushMatrix();
+				modelStack.Translate(2, 3.8f, finalPosition + (timeDisappeared - 3) * 15 / 3);
+				RenderSuspect3();
+				modelStack.PopMatrix();
+			}
+
+			std::string TrackedTask;
+			Vocation::getVocation();
+			Tasklist* Task = new Salesmantask(Day1);
+			TrackedTask = Task->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
+
+
+			Tasklist* BouncerTask = new Bouncertask(Day1);
+			TrackedTask = BouncerTask->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
+
+			Tasklist* CleanerTask = new Cleanertask(Day1);
+			TrackedTask = CleanerTask->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 1);
+		}
+
+		else if(dayData->getDay() == 2)
+		{
+			if (secondescpaeanimation == false) //Day2
+			{
+				RenderSuspect2();
+			}
+
+			if (passedTime <= 3 && secondescpaeanimation == true)
+			{
+				startingPosition = 0;
+
+				modelStack.PushMatrix();
+				modelStack.Translate(15, 3.8f, startingPosition + passedTime * 15);
+				RenderSuspect2();
+				modelStack.PopMatrix();
+			}
+			else if (passedTime > 3 && passedTime <= 6 && secondescpaeanimation == true)
+			{
+				middlePosition = 15;
+
+				modelStack.PushMatrix();
+				modelStack.Translate(middlePosition - (passedTime - 3) * 15 / 3, 3.8f, 45);
+				RenderSuspect2();
+				modelStack.PopMatrix();
+			}
+			else if (passedTime > 6 && passedTime <= 10 && secondescpaeanimation == true)
+			{
+				finalPosition = 30;
+
+				modelStack.PushMatrix();
+				modelStack.Translate(0, 3.8f, finalPosition + (passedTime - 2) * 15 / 4);
+				RenderSuspect2();
+				modelStack.PopMatrix();
+			}
+
+
+			
+
+			//Day2 
+			std::string TrackedTask2;
+			Vocation::getVocation();
+			Tasklist* BouncerTask2 = new Bouncertask(Day2);
+			TrackedTask2 = BouncerTask2->Taskstatus(Day2);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
+
+
+			
+		}
+		else if (dayData->getDay() == 3)
+		{
 		if (escapeanimation == false)
 		{
 			RenderSuspect();
 		}
 
-		if (elapsedTime <= 5 && escapeanimation == true) //move foward a bit
+		if (elapsedTime <= 1 && escapeanimation == true) //Day3
 		{
-			startingPosition = 0;
+			startingPosition = 30;
 
 			modelStack.PushMatrix();
-			modelStack.Translate(startingPosition + elapsedTime * 15 / 5, 0, 30);
+			modelStack.Translate(15, 3.8, startingPosition + elapsedTime * 15);
 			RenderSuspect();
 			modelStack.PopMatrix();
 		}
-		else if (elapsedTime > 5 && elapsedTime <= 10 && escapeanimation == true) // move to the left 
+		else if (elapsedTime > 1 && elapsedTime <= 3 && escapeanimation == true) // move foward
 		{
-			middlePosition = 30;
-			
+			middlePosition = 15;
+
 			modelStack.PushMatrix();
-			modelStack.Translate(15, 0, middlePosition - (elapsedTime - 5) * 15 / 5); //moving to the right
+			modelStack.Translate(middlePosition - (elapsedTime - 1) * 15 / 3, 3.8, 45); //moving to the right
 			RenderSuspect();
 			modelStack.PopMatrix();
 
 		}
-		else if (elapsedTime > 10 && elapsedTime <= 25 && escapeanimation == true) 
+		else if (elapsedTime > 3 && elapsedTime <= 6 && escapeanimation == true)
 		{
-			finalPosition = 0;
+			finalPosition = 45;
 
 			modelStack.PushMatrix();
-			modelStack.Translate(finalPosition + (elapsedTime - 5) * 15/5 , 0, 15); // moving foward
+			modelStack.Translate(5, 3.8, finalPosition + (elapsedTime - 3) * 15 / 3); // moving foward
 			RenderSuspect();
 			modelStack.PopMatrix();
 		}
-
-		std::string TrackedTask;
-		Vocation::getVocation();
-		Tasklist* Task = new Salesmantask(Day1);
-		TrackedTask = Task->Taskstatus(Day1);
-		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
-
-
-		Tasklist* BouncerTask = new Bouncertask(Day1);
-		TrackedTask = BouncerTask->Taskstatus(Day1);
-		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
-
-		Tasklist* CleanerTask = new Cleanertask(Day1);
-		TrackedTask = CleanerTask->Taskstatus(Day1);
-		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 1);
-
-
-		//Day2 
-		std::string TrackedTask2;
-		Vocation::getVocation();
-		Tasklist* BouncerTask2 = new Bouncertask(Day2);
-		TrackedTask2 = BouncerTask2->Taskstatus(Day2);
-		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
 
 
 		//Day3
@@ -1447,6 +1594,7 @@ void SceneText::Render()
 		Tasklist* BouncerTask3 = new Bouncertask(Day3);
 		TrackedTask3 = BouncerTask3->Taskstatus(Day3);
 		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4);
+        }
 
 		modelStack.PushMatrix();
 		//scale, translate, rotate
@@ -1943,6 +2091,144 @@ void SceneText::RenderSuspect()
 	modelStack.Translate(0, 0, 0.5);
 	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_LEG], true); // Right Leg
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderSuspect2()
+{
+	modelStack.PushMatrix();
+
+	if (secondescpaeanimation == false)
+	{
+		modelStack.Translate(15, 3.8, 0);
+	}
+	
+	RenderMesh(meshList[SUSPECT1_BODY], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 6.5, 0);
+	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
+	RenderMesh(meshList[SUSPECT1_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, -1.5);
+	modelStack.Rotate(15, 1, 0, 0);
+	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
+	RenderMesh(meshList[SUSPECT1_SHOULDER], true); // Left Arm
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, LeftArmY, LeftArmZ);
+	RenderMesh(meshList[SUSPECT1_ARM], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[SUSPECT1_HAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, 1.5);
+	modelStack.Rotate(-15, 1, 0, 0);
+	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
+	RenderMesh(meshList[SUSPECT1_SHOULDER], true); // Right Arm
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -1.8, 0);
+	RenderMesh(meshList[SUSPECT1_ARM], true);
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[SUSPECT1_HAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, -0.5);
+	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
+	RenderMesh(meshList[SUSPECT1_LEG], true); // Left Leg
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, 0.5);
+	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
+	RenderMesh(meshList[SUSPECT1_LEG], true); // Right Leg
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderSuspect3()
+{
+	modelStack.PushMatrix();
+
+	if (thirdescapeanimation == false)
+	{
+		modelStack.Translate(-20, 3.8, 15);
+	}
+
+	RenderMesh(meshList[SUSPECT2_BODY], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 6.5, 0);
+	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
+	RenderMesh(meshList[SUSPECT2_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, -1.5);
+	modelStack.Rotate(15, 1, 0, 0);
+	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
+	RenderMesh(meshList[SUSPECT2_SHOULDER], true); // Left Arm
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, LeftArmY, LeftArmZ);
+	RenderMesh(meshList[SUSPECT2_ARM], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[SUSPECT2_HAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, 1.5);
+	modelStack.Rotate(-15, 1, 0, 0);
+	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
+	RenderMesh(meshList[SUSPECT2_SHOULDER], true); // Right Arm
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -1.8, 0);
+	RenderMesh(meshList[SUSPECT2_ARM], true);
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[SUSPECT2_HAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, -0.5);
+	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
+	RenderMesh(meshList[SUSPECT2_LEG], true); // Left Leg
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, 0.5);
+	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
+	RenderMesh(meshList[SUSPECT2_LEG], true); // Right Leg
 	modelStack.PopMatrix();
 
 	modelStack.PopMatrix();

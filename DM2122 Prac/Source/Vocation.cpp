@@ -52,10 +52,7 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 
 		// Add BOUNCER quest
 		Push.job = VocationJob::BOUNCER;
-		if (Data->getJob()->getJob() == VocationJob::BOUNCER)
-			Push.maxNumber = 0;
-		else
-			Push.maxNumber = 1;
+		Push.maxNumber = 1;
 		MainQuests.push_back(Push);
 
 		// ADD MECHANIC quest
@@ -89,10 +86,7 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::BOUNCER;
-		if (Data->getJob()->getJob() == VocationJob::BOUNCER)
-			Push.maxNumber = 1;
-		else
-			Push.maxNumber = 2;
+		Push.maxNumber = 1;
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::MECHANIC;
@@ -122,10 +116,7 @@ std::vector<Vocation::Quest> Vocation::getMainQuest(int day)
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::BOUNCER;
-		if (Data->getJob()->getJob() == VocationJob::BOUNCER)
-			Push.maxNumber = 1; // must have at least 1 Bouncer Quest for day 2
-		else
-			Push.maxNumber = 2;
+		Push.maxNumber = 1;
 		MainQuests.push_back(Push);
 
 		Push.job = VocationJob::MECHANIC;

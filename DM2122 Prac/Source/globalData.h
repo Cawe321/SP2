@@ -39,6 +39,7 @@ public:
 	float getMoney();
 	void setMoney(int cash);
 	void buycar(int);
+	bool owncar(int car);
 	bool Deposit(CarSelection* input);
 	
 	std::vector<Vocation::Quest> getMainQuest();

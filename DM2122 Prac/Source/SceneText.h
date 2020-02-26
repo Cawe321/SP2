@@ -12,6 +12,7 @@
 //#include "StarterScene.h"
 #include "CSalesCustomer.h"
 #include "Cleanertask.h"
+#include "globalData.h"
 
 const int MECHANIC_GAME_MAX_SCORE = 10;
 const int MECHANIC_GAME_MAX_LIVES = 3;
@@ -74,11 +75,32 @@ class SceneText : public Scene
 		SALE_WHEEL,
 
 		ITEM_INFORMATION_STAND,
+		ITEM_INFORMATION_STAND_2,
+		ITEM_INFORMATION_STAND_3,
+		ITEM_INFORMATION_STAND_4,
+		ITEM_INFORMATION_STAND_5,
+		ITEM_INFORMATION_STAND_6,
+		ITEM_INFORMATION_STAND_7,
+		ITEM_INFORMATION_STAND_8,
+		ITEM_INFORMATION_STAND_9,
+		ITEM_INFORMATION_STAND_10,
+		ITEM_INFORMATION_STAND_11,
+		ITEM_INFORMATION_STAND_12,
+		ITEM_INFORMATION_STAND_13,
 		ITEM_INFORMATION_COUNTER,
 		ITEM_BATTERY,
 		ITEM_DISPLAY_STAND,
 		ITEM_LIGHTBULB,
 		ITEM_BOOTH,
+		ITEM_FAE_BOOTH,
+		ITEM_BOOTH_3,
+		ITEM_BOOTH_4,
+		ITEM_BOOTH_5,
+		ITEM_BENCH,
+		ITEM_BENCH_2,
+		ITEM_BENCH_3,
+		ITEM_BENCH_4,
+		ITEM_FLOOR,
 
 		CAR1_BODY,
 		CAR1_STEERINGWHEEL,
@@ -183,7 +205,10 @@ private:
 	bool textbox;
 
 	bool AchievementScene;
-
+	bool GameScene;
+	bool DayEnds;
+        
+	globalData* timeData = globalData::instance();
 
 	unsigned m_parameters[U_TOTAL];
 
@@ -196,9 +221,6 @@ private:
 	std::vector<Vocation::Quest> Day2;
 	std::vector<Vocation::Quest> Day3;
 	std::vector<Vector3> LitterLocations;
-	std::vector<Vector3> Day1Litter;
-	std::vector<Vector3> Day2Litter;
-	std::vector<Vector3> Day3Litter;
 
 	Mechanictask* MechanicGameScore;
 
@@ -214,13 +236,12 @@ private:
 	bool MechanicGame;
 	bool FreezeMovement;
 	bool hasmissed;
-	bool RenderModel;
-
+ 
 	float rotateCleanerWheelsForward = 0.0f;
 	float rotateCleanerWheelsY = 0.0f; 
 	float rotateCleanerTop = 0.0f;
 	float rotateCleanerWheels = 0.0f;
-	float LitterX, LitterY, LitterZ;
+	int randomLitter;
 	bool CleanerGame;
 	Cleanertask* CleanerScore;
 

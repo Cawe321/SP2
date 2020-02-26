@@ -528,6 +528,17 @@ void SceneText::Update(double dt)
 	if (salesCustomer != nullptr)
 	{
 		salesCustomer->CustomerUpdate(dt);
+		if (salesCustomer->isCompleted() != 0)
+		{
+			if (salesCustomer->isCompleted() == 1)
+			{
+				Tasklist * temp;
+				temp = new Salesmantask(Day1);
+				Day1 = temp->Addscore(Day1);
+				delete temp;
+			}
+			delete salesCustomer;
+		}
 	}
 
 	if (Application::IsKeyPressed(0x31))

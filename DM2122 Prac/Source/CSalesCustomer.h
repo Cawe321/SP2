@@ -16,7 +16,7 @@ public:
 	float debounceTime;
 	float elapsedTime; // elapsed time for Customer UI only
 	bool answered;
-
+	
 	struct SalesQuestion
 	{
 		std::string Question;
@@ -41,6 +41,7 @@ public:
 	void CustomerUpdate(float dt);
 	void setPlaceHolderText(std::string text);
 	void isAppeased();
+	int isCompleted();
 private:
 	irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
 	std::string placeHolderText;
@@ -50,7 +51,7 @@ private:
 	int appeaseRate; // the satisfied status of the customer in numbers
 	int satisfactionRate; // once appeaseRate >= satisfactionRate, customer is satisfied with service & player wins the minigame
 	SalesQuestion ChosenQuestion;
-	
+	int Completed;
 	void InitializeQuestions();
 	bool satisfactionCheck();
 	void ChooseQuestion();

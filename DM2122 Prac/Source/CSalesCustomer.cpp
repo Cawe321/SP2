@@ -89,18 +89,23 @@ void CSalesCustomer::isAppeased()
 	{
 		// do something to show customer is satisfied and won the minigame
 		soundEngine->play2D("audio\\yay.mp3", false);
-		delete this;
+		Completed = 1;
 	}
 	else if (appeaseRate <= (satisfactionRate - 4))
 	{
 		// do something to show customer is disatisfied  and lostthe minigame
 		soundEngine->play2D("audio\\fail.mp3", false);
-		delete this;
+		Completed = 2;
 	}
 	else
 	{
 		ChooseQuestion();
 	}
+}
+
+int CSalesCustomer::isCompleted()
+{
+	return Completed;
 }
 
 std::string CSalesCustomer::getName()

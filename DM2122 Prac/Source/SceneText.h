@@ -12,8 +12,8 @@
 //#include "StarterScene.h"
 #include "CSalesCustomer.h"
 #include "Cleanertask.h"
-#include "Bank.h"
 #include "globalData.h"
+#include "CarSelection.h"
 
 const int MECHANIC_GAME_MAX_SCORE = 10;
 const int MECHANIC_GAME_MAX_LIVES = 3;
@@ -209,6 +209,7 @@ private:
 	float finalPosition;
 	float middlePosition;
 	float startingPosition;
+	float debounceTime;
 	bool escapeanimation;
 	bool textbox;
 	

@@ -20,8 +20,7 @@ void Camera2::Init(const Vector3& pos, const Vector3& target, const Vector3& up)
 	Vector3 right = view.Cross(up);
 	right.y = 0;
 	right.Normalize();
-	this->up = defaultUp = right.Cross(view).Normalized(); 
-	CleanerHeight = 3;
+	this->up = defaultUp = right.Cross(view).Normalized();
 }
 
 void Camera2::Update(double dt)
@@ -109,25 +108,21 @@ void Camera2::Update(double dt)
 		up = right.Cross(view).Normalized();
 		if (Application::IsKeyPressed('A'))
 		{
-			position.y = CleanerHeight;
 			position = position - (CAMERA_SPEED / 100.f) * right;
 			target = position + view;
 		}
 		if (Application::IsKeyPressed('D'))
 		{
-			position.y = CleanerHeight;
 			position = position + (CAMERA_SPEED / 100.f) * right;
 			target = position + view;
 		}
 		if (Application::IsKeyPressed('W'))
 		{
-			position.y = CleanerHeight;
 			position = position + (CAMERA_SPEED / 100.f) * view;
 			target = position + view;
 		}
 		if (Application::IsKeyPressed('S'))
 		{
-			position.y = CleanerHeight;
 			position = position - (CAMERA_SPEED / 100.f) * view;
 			target = position + view;
 		}
@@ -135,7 +130,6 @@ void Camera2::Update(double dt)
 		{
 			Mtx44 rotation;
 			rotation.SetToRotation(dt * CAMERA_SPEED, right.x, right.y, right.z);
-			position.y = CleanerHeight;
 			view = rotation * view;
 			target = position + view;
 		}
@@ -143,7 +137,6 @@ void Camera2::Update(double dt)
 		{
 			Mtx44 rotation;
 			rotation.SetToRotation(-dt * CAMERA_SPEED, right.x, right.y, right.z);
-			position.y = CleanerHeight;
 			view = rotation * view;
 			target = position + view;
 		}

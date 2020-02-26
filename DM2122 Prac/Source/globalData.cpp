@@ -371,7 +371,7 @@ float globalData::getMoney()
 	return money;
 }
 
-void globalData::setMoney(float cash)
+void globalData::setMoney(int cash)
 {
 	money = cash;
 }

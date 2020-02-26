@@ -155,7 +155,7 @@ void CSalesCustomer::InitializeQuestions()
 	QuestionList[4].GoodAnswer = new CSalesGoodAnswer("It's an awesome car worth it's money.");
 	QuestionList[4].BadAnswer1 = new CSalesBadAnswer("Not worth your time.");
 	QuestionList[4].BadAnswer2 = new CSalesBadAnswer("Ask me only if you have the money");
-	QuestionList[4].NeutralAnswer = new CSalesNeutralAnswer("I don't I can answer that question.");
+	QuestionList[4].NeutralAnswer = new CSalesNeutralAnswer("I don't think I can answer that question.");
 	QuestionList[4].LeaveAnswer = new CSalesLeaveAnswer("I don't know what is this.");
 }
 

@@ -133,13 +133,15 @@ void Application::Run()
 			if (Isonlevel == true) {
 				break;
 			}
+			if (IsKeyPressed(VK_ESCAPE)) {
+				quit = true;
+				break;
+			}
 		} //Check if the ESC key had been pressed or if the window had been closed
 		scene->Exit();
 		delete scene;
 
-		if (IsKeyPressed(VK_ESCAPE)) {
-			quit = true;
-		}
+		
 	}
 }
 

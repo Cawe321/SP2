@@ -35,7 +35,21 @@ SceneText::SceneText()
 		Day2 = Vocation::getMainQuest(2);
 		Day3 = Vocation::getMainQuest(3);
 	}
-	
+	for (int i = 0; i < Day1.size(); i++)
+	{
+		if (Day1[i].job == VocationJob::CLEANER)
+			Day1Litter = Vocation::getLitterLocations(Day1[i].maxNumber);
+	}
+	for (int i = 0; i < Day2.size(); i++)
+	{
+		if (Day2[i].job == VocationJob::CLEANER)
+			Day2Litter = Vocation::getLitterLocations(Day2[i].maxNumber);
+	}
+	for (int i = 0; i < Day3.size(); i++)
+	{
+		if (Day3[i].job == VocationJob::CLEANER)
+			Day3Litter = Vocation::getLitterLocations(Day3[i].maxNumber);
+	}
 	BossOpinion = new Boss();
 	MechanicGameScore = new Mechanictask();
 	MechanicGame = false;
@@ -43,8 +57,6 @@ SceneText::SceneText()
 	hasmissed = false;
 
 	CleanerGame = true;
-	srand(20);
-	randomLitter = -20 + rand() % 21;
 
 	for (int i = 0; i < 10; i++) {
 		game[i] = '-';
@@ -77,7 +89,11 @@ void SceneText::Init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
-
+	if (CleanerGame == true)
+	{
+		camera.Init(Vector3(15, 0, 0), Vector3(0, 0, 0), Vector3(0, 1, 0));
+		camera.cameraLock = true;
+	}
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 1000.f);
 	projectionStack.LoadMatrix(projection);
@@ -199,8 +215,8 @@ void SceneText::Init()
 	meshList[GEO_CUSTOMERLOGO] = MeshBuilder::GenerateQuad("CustomerLogo", Color(0, 0, 0), 0.8f, 0.8f);
 	meshList[GEO_CUSTOMERLOGO]->textureID = LoadTGA("Image//customerlogo.tga");
 
-	//meshList[GEO_LITTER] = MeshBuilder::GenerateOBJ("Litter", "OBJ//Tissue.obj");
-	//meshList[GEO_LITTER]->textureID = LoadTGA("Image//Tissue.tga");
+	meshList[GEO_LITTER] = MeshBuilder::GenerateOBJ("Litter", "OBJ//Tissue.obj");
+	meshList[GEO_LITTER]->textureID = LoadTGA("Image//Tissue.tga");
 
 	// Cleaner Robot
 	meshList[CLEANER_TOP] = MeshBuilder::GenerateOBJ("CleanerTopBody", "OBJ//CleanerBot//CleanerTopBody.obj");
@@ -417,12 +433,12 @@ void SceneText::Init()
 void SceneText::Update(double dt)
 {
 	// Animations for models
-	if (rotateCleanerTop > -30.f)
-		rotateCleanerTop -= (float)(RSPEED * dt);
-	if (rotateCleanerTop < -30.f)					// does not work
-		rotateCleanerTop += (float)(RSPEED * dt);
+	//if (rotateCleanerTop > -30.f)
+	//	rotateCleanerTop -= (float)(RSPEED * dt);
+	//if (rotateCleanerTop < -30.f)					// does not work
+	//	rotateCleanerTop += (float)(RSPEED * dt);
 
-	rotateCleanerTop += (float)(RSPEED * dt);
+	//rotateCleanerTop += (float)(RSPEED * dt);
 	rotateCleanerWheels -= (float)(RSPEED * dt);
 	rotateCustomerRightArm -= (float)(RSPEED * dt);
 	if (LeftArmY < 5.0f && LeftArmZ < 2.0f)
@@ -519,6 +535,42 @@ void SceneText::Update(double dt)
 			if (rotateCleanerWheelsY > -25.f)
 				rotateCleanerWheelsY -= (float(RSPEED * dt));
 		}
+
+		for (int i = 0; i < Day1Litter.size(); i++)
+		{
+			LitterX = Day1Litter[i].x;
+			LitterY = Day1Litter[i].y;
+			LitterZ = Day1Litter[i].z;
+			float positionX = camera.position.x - 10;
+			float vacuum = 2.5;
+			if (positionX - vacuum > Day1Litter[i].x - 2 && positionX - vacuum < Day1Litter[i].x + 2
+				&& camera.position.z + vacuum > Day1Litter[i].z - 2 && camera.position.z + vacuum < Day1Litter[i].z + 2)
+			{
+
+				Day1Litter[i].x = 55;
+				Day1Litter[i].y = 0;
+				Day1Litter[i].z = 55;
+				//LitterX = positionX;
+				//LitterY = 3; // inside the cleaner bot
+				//LitterZ = camera.position.z;
+				//CleanerTask->Addscore(Day1);
+				/*
+				modelStack.PushMatrix();
+				modelStack.Translate(camera.position.x + 10, 3, camera.position.z);
+				RenderModel = true;
+				modelStack.PopMatrix();/
+				std::cout << "PICKED UP";
+			}
+			std::cout << LitterX << " " << LitterZ << std::endl;
+			std::cout << positionX << " " << camera.position.z<< std::endl;
+			/
+			modelStack.PushMatrix();
+			modelStack.Translate(Day1Litter[i].x, 3, Day1Litter[i].z);
+			RenderModel = true;
+			modelStack.PopMatrix();*/
+			}
+		}
+
 
 		//LitterLocations = ;
 		/*if (camera.position.x < randomLitter - 1 && camera.position.x >randomLitter + 1)
@@ -756,6 +808,7 @@ void SceneText::Render()
 			MechanicGame = false;
 		}
 	}
+	
 	else if(GameScene == true)
 	{
 		RenderSkybox();
@@ -784,6 +837,7 @@ void SceneText::Render()
 		//modelStack.Translate(0, -3, 0);
 		//RenderMesh(meshList[GEO_DICE], true);
 		//modelStack.PopMatrix();
+		
 		if (escapeanimation == false)
 		{
 			RenderSuspect();
@@ -817,23 +871,6 @@ void SceneText::Render()
 			RenderSuspect();
 			modelStack.PopMatrix();
 		}
-
-	if (CleanerGame == true)
-	{
-		modelStack.PushMatrix();
-		modelStack.Translate(camera.position.x, camera.position.y - 2, camera.position.z);
-		RenderCleanerRobot();
-		modelStack.PopMatrix();
-
-		modelStack.PushMatrix();
-		modelStack.Translate(randomLitter, 0, randomLitter);
-	//	RenderMesh(meshList[GEO_LITTER], true);
-		modelStack.PopMatrix();
-
-	//	for(int i = 0; i < 10 ; ++i)
-	//		RenderMesh(meshList[GEO_LITTER], true);
-	}
-
 
 		std::string TrackedTask;
 		Vocation::getVocation();
@@ -884,6 +921,18 @@ void SceneText::Render()
 		std::string time = std::to_string((int)std::stof(timeData->getinGameTime()));
 
 		RenderTextOnScreen(meshList[GEO_TEXT], time , Color(1, 0, 0), 2, 0, 29);
+		if (CleanerGame == true)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(camera.position.x - 10, camera.position.y -0.5, camera.position.z);
+			RenderCleanerRobot();
+			modelStack.PopMatrix();
+			for (int i = 0; i < Day1Litter.size(); ++i)
+			{
+				modelStack.Translate(Day1Litter[i].x, Day1Litter[i].y, Day1Litter[i].z);
+				RenderLitter();
+			}
+		}
 	}
 	else if (DayEnds == true)
 	{
@@ -1590,6 +1639,10 @@ void SceneText::Renderlevel()
 
 void SceneText::RenderLitter()
 {
+	modelStack.PushMatrix();;
+	RenderMesh(meshList[GEO_LITTER], true);
+	modelStack.PopMatrix();
+
 }
 
 void SceneText::RenderCar1()
@@ -1640,7 +1693,6 @@ void SceneText::RenderCar3()
 	RenderMesh(meshList[CAR3_BODY], true);
 	modelStack.PopMatrix();
 }
-	
 
 void SceneText::RenderCar4()
 {

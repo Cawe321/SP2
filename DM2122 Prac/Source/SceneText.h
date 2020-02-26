@@ -220,7 +220,12 @@ private:
 	std::vector<Vocation::Quest> Day1;
 	std::vector<Vocation::Quest> Day2;
 	std::vector<Vocation::Quest> Day3;
+
 	std::vector<Vector3> LitterLocations;
+	std::vector<Vector3> Day1Litter;
+	std::vector<Vector3> Day2Litter;
+	std::vector<Vector3> Day3Litter;
+	float LitterX, LitterY, LitterZ;
 
 	Mechanictask* MechanicGameScore;
 

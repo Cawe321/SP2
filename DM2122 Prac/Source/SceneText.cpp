@@ -1068,7 +1068,7 @@ void SceneText::Render()
 	if (BankOpen)
 	{
 		RenderObjectOnScreen(meshList[GEO_BANKMENU], 0.5, 0.4, 80);
-		RenderTextOnScreen(meshList[GEO_TEXT], "BANK: $" + std::to_string(Account->GetMoney()), Color(0, 1, 1), 2.5, 15.5, 17.5);
+		RenderTextOnScreen(meshList[GEO_TEXT], "BANK: $" + std::to_string(timeData->getMoney()), Color(0, 1, 1), 2.5, 15.5, 17.5);
 		RenderTextOnScreen(meshList[GEO_TEXT], "RESERVE A CAR", Color(0, 1, 1), 3, 7, 16);
 		int position = 0;
 		while (true) {

@@ -2,6 +2,7 @@
 #include "Vocation.h"
 #include <string>
 #include <vector>
+#include "CarSelection.h"
 class globalData
 {
 private:

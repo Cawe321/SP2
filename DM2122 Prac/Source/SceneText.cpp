@@ -824,56 +824,76 @@ void SceneText::Update(double dt)
 		}
 		if (Application::IsKeyPressed('W'))
 		{
-			rotatePlayerLeftArm += (float)(10.f * dt);
-			rotatePlayerRightArm -= (float)(10.f * dt);
-			rotatePlayerLeftLeg -= (float)(10.f * dt);
-			rotatePlayerRightLeg += (float)(10.f * dt);
 			Mtx44 rotation;
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { (float)(10.f * dt), 0, 0 };
 			Movement = rotation * Movement;
-			movePlayerX += Movement.x;
-			movePlayerZ += Movement.z;
+			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			if (CollisionCheck::TrueCollisionCheck(playerPos + Movement, 1, 1))
+			{
+				movePlayerX += Movement.x;
+				movePlayerZ += Movement.z;
+			}
+				rotatePlayerLeftArm += (float)(10.f * dt);
+				rotatePlayerRightArm -= (float)(10.f * dt);
+				rotatePlayerLeftLeg -= (float)(10.f * dt);
+				rotatePlayerRightLeg += (float)(10.f * dt);
+		
 		}
 		if (Application::IsKeyPressed('S'))
 		{
-			rotatePlayerLeftArm += (float)(10.f * dt);
-			rotatePlayerRightArm -= (float)(10.f * dt);
-			rotatePlayerLeftLeg -= (float)(10.f * dt);
-			rotatePlayerRightLeg += (float)(10.f * dt);
 			Mtx44 rotation;
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { (float)(10.f * dt), 0, 0 };
 			Movement = rotation * Movement;
-			movePlayerX -= Movement.x;
-			movePlayerZ -= Movement.z;
+			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			if (CollisionCheck::TrueCollisionCheck(playerPos - Movement, 1, 1))
+			{
+				movePlayerX -= Movement.x;
+				movePlayerZ -= Movement.z;
+			}
+				rotatePlayerLeftArm += (float)(10.f * dt);
+				rotatePlayerRightArm -= (float)(10.f * dt);
+				rotatePlayerLeftLeg -= (float)(10.f * dt);
+				rotatePlayerRightLeg += (float)(10.f * dt);
+
 		}
 		if (Application::IsKeyPressed('A'))
 		{
-			rotatePlayerLeftArm += (float)(10.f * dt);
-			rotatePlayerRightArm -= (float)(10.f * dt);
-			rotatePlayerLeftLeg -= (float)(10.f * dt);
-			rotatePlayerRightLeg += (float)(10.f * dt);
 			Mtx44 rotation;
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { 0, 0, (float)(10.f * dt) };
 			Movement = rotation * Movement;
-			movePlayerX -= Movement.x;
-			movePlayerZ -= Movement.z;
+			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			if (CollisionCheck::TrueCollisionCheck(playerPos - Movement, 1, 1))
+			{
+				movePlayerX -= Movement.x;
+				movePlayerZ -= Movement.z;
+			}
+				rotatePlayerLeftArm += (float)(10.f * dt);
+				rotatePlayerRightArm -= (float)(10.f * dt);
+				rotatePlayerLeftLeg -= (float)(10.f * dt);
+				rotatePlayerRightLeg += (float)(10.f * dt);
+	
 
 		}
 		if (Application::IsKeyPressed('D'))
 		{
-			rotatePlayerLeftArm += (float)(10.f * dt);
-			rotatePlayerRightArm -= (float)(10.f * dt);
-			rotatePlayerLeftLeg -= (float)(10.f * dt);
-			rotatePlayerRightLeg += (float)(10.f * dt);
 			Mtx44 rotation;
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { 0, 0, (float)(10.f * dt) };
 			Movement = rotation * Movement;
-			movePlayerX += Movement.x;
-			movePlayerZ += Movement.z;
+			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			if (CollisionCheck::TrueCollisionCheck(playerPos + Movement, 1, 1))
+			{
+				
+				movePlayerX += Movement.x;
+				movePlayerZ += Movement.z;
+			}
+			rotatePlayerLeftArm += (float)(10.f * dt);
+			rotatePlayerRightArm -= (float)(10.f * dt);
+			rotatePlayerLeftLeg -= (float)(10.f * dt);
+			rotatePlayerRightLeg += (float)(10.f * dt);
 		}
 		if (Application::IsKeyPressed(VK_LEFT))
 		{
@@ -2193,6 +2213,7 @@ void SceneText::RenderPlayer() // Facing x-axis
 {
 	modelStack.PushMatrix();
 	modelStack.Translate(movePlayerX, 0, movePlayerZ);
+	modelStack.Scale(0.5, 0.4, 0.5);
 	modelStack.Translate(5, 3.8, 0);
 	modelStack.Rotate(rotatePlayer, 0, 1, 0);
 	RenderMesh(meshList[PLAYER_BODY], true);

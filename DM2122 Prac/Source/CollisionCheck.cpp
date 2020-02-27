@@ -16,10 +16,15 @@ bool CollisionCheck::SquareCollisionCheck(Vector3 obj1, float obj1SizeX, float o
 	return collisionX && collisionZ;
 }
 
-bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float obj1SizeX, float obj1SizeZ, Vector3 obj2, float obj2SizeX, float obj2SizeZ)
+bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float sizeX, float sizeZ)
 {
 	// TO DO: FINISH THIS Uhsuafhc
-	return false;
+	// boundary check
+	if (obj1.x + sizeX >= 46 || obj1.x - sizeX <= -46)
+		return false;
+	if (obj1.z + sizeZ >= 46 || obj1.z - sizeZ <= -46)
+		return false;
+	return true;
 }
 
 

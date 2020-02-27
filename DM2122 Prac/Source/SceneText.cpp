@@ -902,6 +902,23 @@ void SceneText::Update(double dt)
 			}
 			std::cout << LitterX << " " << LitterZ << std::endl;
 			std::cout << positionX << " " << camera.position.z << std::endl;
+
+			//code for updating task lisk
+			/*Tasklist* temp;
+			BossOpinion->AddGoodwill(5);
+			if (dayData->getDay() == 1) {
+				temp = new Cleanertask(Day1);
+				Day1 = temp->Addscore(Day1);
+			}
+			else if (dayData->getDay() == 2) {
+				temp = new Cleanertask(Day2);
+				Day2 = temp->Addscore(Day2);
+			}
+			else if (dayData->getDay() == 3) {
+				temp = new Cleanertask(Day3);
+				Day3 = temp->Addscore(Day3);
+			}
+			delete temp;*/
 		}
 	}
 
@@ -913,15 +930,17 @@ void SceneText::Update(double dt)
 			if (salesCustomer->isCompleted() == 1)
 			{
 				Tasklist * temp;
-				temp = new Salesmantask(Day1);
 				BossOpinion->AddGoodwill(5);
 				if (dayData->getDay() == 1) {
+					temp = new Salesmantask(Day1);
 					Day1 = temp->Addscore(Day1);
 				}
 				else if (dayData->getDay() == 2) {
+					temp = new Salesmantask(Day2);
 					Day2 = temp->Addscore(Day2);
 				}
 				else if (dayData->getDay() == 3) {
+					temp = new Salesmantask(Day3);
 					Day3 = temp->Addscore(Day3);
 				}
 				delete temp;
@@ -1085,11 +1104,28 @@ void SceneText::Update(double dt)
 		}
 	}
 	CalculateFrameRate();
-	if (BossOpinion->GetGoodwill() < 0) {
+	if (BossOpinion->GetGoodwill() < 1) {
 		//Your Fired
 		FreezeMovement = true;
 		gameover = true;
 	}
+
+	//Code for updating task list for Bouncer game
+	/*Tasklist* temp;
+		BossOpinion->AddGoodwill(5);
+		if (dayData->getDay() == 1) {
+			temp = new Bouncertask(Day1);
+			Day1 = temp->Addscore(Day1);
+		}
+		else if (dayData->getDay() == 2) {
+			temp = new Bouncertask(Day2);
+			Day2 = temp->Addscore(Day2);
+		}
+		else if (dayData->getDay() == 3) {
+			temp = new Bouncertask(Day3);
+			Day3 = temp->Addscore(Day3);
+		}
+	delete temp;*/
 }
 
 void SceneText::Render()

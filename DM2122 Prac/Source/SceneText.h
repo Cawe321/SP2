@@ -392,6 +392,7 @@ private:
 
 	bool MechanicGame;
 	bool FreezeMovement;
+	bool hasreset;
 	bool gameover;
 	bool hasmissed;
  

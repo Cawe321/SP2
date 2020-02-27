@@ -57,6 +57,7 @@ SceneText::SceneText()
 	MechanicGame = false;
 	FreezeMovement = false;
 	hasmissed = false;
+	hasreset = false;
 
 	BankOpen = false;
 	NotEnough = false;
@@ -72,7 +73,7 @@ SceneText::SceneText()
 	Price = 0; //for me to render out the achievements
 	
 	escapeanimation = false;
-        secondescpaeanimation = false;
+	secondescpaeanimation = false;
 	thirdescapeanimation = false;
 	AchievementScene = false;
 	GameScene = true;
@@ -886,6 +887,12 @@ void SceneText::Update(double dt)
 	if (MechanicGame == true) {
 		// to make the keypress game
 		elapsed += dt;
+		if (hasreset == false) {
+			for (int i = 0; i < 10; i++) {
+				game[i] = '-';
+			}
+			hasreset = true;
+		}
 		if (Application::IsKeyPressed('W') && game[2] == 'W')
 		{
 			game[2] = '-';
@@ -1507,6 +1514,7 @@ void SceneText::Render()
 			BossOpinion->LoseGoodwill(5);
 			delete MechanicGameScore;
 			MechanicGameScore = new Mechanictask();
+			hasreset = false;
 		}
 
 		if (MechanicGameScore->GetPoints() == MECHANIC_GAME_MAX_SCORE) {
@@ -1532,6 +1540,7 @@ void SceneText::Render()
 			std::cout << timeData->getMoney();
 			delete MechanicGameScore;
 			MechanicGameScore = new Mechanictask();
+			hasreset = false;
 		}
 	}
 	
@@ -1687,15 +1696,17 @@ void SceneText::Render()
 			Tasklist* Task = new Salesmantask(Day1);
 			TrackedTask = Task->Taskstatus(Day1);
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
-
+			delete Task;
 
 			Tasklist* BouncerTask = new Bouncertask(Day1);
 			TrackedTask = BouncerTask->Taskstatus(Day1);
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
+			delete BouncerTask;
 
 			Tasklist* CleanerTask = new Cleanertask(Day1);
 			TrackedTask = CleanerTask->Taskstatus(Day1);
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 1);
+			delete CleanerTask;
 		}
 
 		else if(dayData->getDay() == 2)
@@ -2770,6 +2781,31 @@ void SceneText::Renderlevel()
 	modelStack.Rotate(-90, 0, 1, 0);
 	RenderText(meshList[GEO_TEXT], "Mechanic Bay", Color(0, 1, 0));
 	modelStack.PopMatrix();
+
+	if (dayData->getDay() == 1) {
+		for (int i = 0; i < Day1[3].maxNumber - Day1[3].currentNumber; i++) {
+			modelStack.PushMatrix();
+			modelStack.Translate(44, 0, 40 - (i * 2));
+			RenderCleanerRobot();
+			modelStack.PopMatrix();
+		}
+	}
+	else if (dayData->getDay() == 2) {
+		for (int i = 0; i < Day2[3].maxNumber - Day2[3].currentNumber; i++) {
+			modelStack.PushMatrix();
+			modelStack.Translate(44, 0, 40 - (i * 2));
+			RenderCleanerRobot();
+			modelStack.PopMatrix();
+		}
+	}
+	else if (dayData->getDay() == 3) {
+		for (int i = 0; i < Day3[3].maxNumber - Day3[3].currentNumber; i++) {
+			modelStack.PushMatrix();
+			modelStack.Translate(44, 0, 40 - (i * 2));
+			RenderCleanerRobot();
+			modelStack.PopMatrix();
+		}
+	}
 
 	if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(45, 0.5, 45)) < 10)) {
 		modelStack.PushMatrix();

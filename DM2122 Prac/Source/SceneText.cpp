@@ -1088,7 +1088,7 @@ void SceneText::Update(double dt)
 		light[0].position.y += (float)(LSPEED * dt);*/
 	if (Application::IsKeyPressed('I')) {
 		//Universal interaction key
-		if ((distancecalculator(camera.position, Vector3(45, 0.5, 45)) < 7)) {
+		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(45, 0.5, 45)) < 10)) {
 			MechanicGame = true;
 			FreezeMovement = true;
 		}
@@ -1497,7 +1497,7 @@ void SceneText::Render()
 		print = "  ";
 		print.push_back(game[2]);
 		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 1);
-		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 6, 3.9, 0);
+		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 4, 3.9, 0);
 
 
 		if (MechanicGameScore->GetStrike() > MECHANIC_GAME_MAX_LIVES) {
@@ -2771,7 +2771,7 @@ void SceneText::Renderlevel()
 	RenderText(meshList[GEO_TEXT], "Mechanic Bay", Color(0, 1, 0));
 	modelStack.PopMatrix();
 
-	if ((distancecalculator(camera.position, Vector3(45, 0.5, 45)) < 7)) {
+	if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(45, 0.5, 45)) < 10)) {
 		modelStack.PushMatrix();
 		//Scale, Translate, Rotate
 		modelStack.Translate(45, 3, 38);

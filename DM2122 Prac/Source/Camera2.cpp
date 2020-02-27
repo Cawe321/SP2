@@ -28,6 +28,7 @@ void Camera2::Update(double dt)
 	if (!cameraLock)
 	{
 		static const float CAMERA_SPEED = 50.f;
+
 		Vector3 view = (target - position).Normalized();
 		Vector3 right = view.Cross(up).Normalized();
 		right.y = 0;
@@ -97,15 +98,15 @@ void Camera2::Update(double dt)
 			Reset();
 		}
 	}
-
+	Vector3 view = (target - position).Normalized();
+	Vector3 right = view.Cross(up).Normalized();
+	right.y = 0;
+	right.Normalize();
+	up = right.Cross(view).Normalized();
 	if (cameraLock)
 	{
 		static const float CAMERA_SPEED = 50.f;
-		Vector3 view = (target - position).Normalized();
-		Vector3 right = view.Cross(up).Normalized();
-		right.y = 0;
-		right.Normalize();
-		up = right.Cross(view).Normalized();
+		
 		if (Application::IsKeyPressed('A'))
 		{
 			position = position - (CAMERA_SPEED / 100.f) * right;

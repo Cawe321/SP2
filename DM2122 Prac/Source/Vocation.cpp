@@ -163,15 +163,15 @@ bool Vocation::isCustomerCurious()
 {
 	if (Data->getJob()->getJob() == VocationJob::SALES)
 	{
-		int magicNo = rand() % 10;
-		if (magicNo < 2) // 20% Chance
+		int magicNo = rand() % 5000;
+		if (magicNo < 2) // 0.004% Chance
 			return true;
 		else return false;
 	}
 	else
 	{
-		int magicNo = rand() % 10;
-		if (magicNo < 1) // 10% Chance
+		int magicNo = rand() % 1000;
+		if (magicNo < 1) // 0.004% Chance
 			return true;
 		else return false;
 	}

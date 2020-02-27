@@ -989,7 +989,7 @@ void SceneText::Update(double dt)
 		{
 			if (salesCustomer->isCompleted() == 1)
 			{
-				Tasklist * temp;
+				Tasklist * temp = nullptr;
 				BossOpinion->AddGoodwill(5);
 				if (dayData->getDay() == 1) {
 					temp = new Salesmantask(Day1);

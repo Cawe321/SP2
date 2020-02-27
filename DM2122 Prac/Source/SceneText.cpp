@@ -85,7 +85,7 @@ SceneText::SceneText()
 	MechanicSalary = 11000;
 
 	// init values for customer
-	salesCustomer = nullptr; //new CSalesCustomer(Vector3(0,0,0))
+	salesCustomer = nullptr; //new CSalesCustomer
 	srand(time(NULL));
 	for (int i = 0; i < 10; i++)
 	{
@@ -93,6 +93,8 @@ SceneText::SceneText()
 		customerLocations[i].angle = rand() % 360;
 		customerLocations[i].customerType = rand() % 2;
 		customerLocations[i].inRange = false;
+		customerLocations[i].isCurious = false;
+		customerLocations[i].selected = false;
 	}
 
 	if (timeData->getJob()->getJob() == VocationJob::SALES)
@@ -790,8 +792,10 @@ void SceneText::Init()
 	//meshList[CAR11_WHEEL] = MeshBuilder::GenerateOBJ("Car11Wheel", "OBJ//Cars//Car11//PointyWheel.obj");
 	//meshList[CAR11_BODY]->textureID = LoadTGA("Image//CarsTexture//Car11//PointyCarTexture.tga");
 	
-	// init values
-	salesCustomer =  nullptr; //new CSalesCustomer(Vector3(0,0,0))
+
+	cameraLockToPlayer = true;
+	cameraY = 10;
+	cameraZ = -20;
 }
 
 void SceneText::Update(double dt)
@@ -806,66 +810,96 @@ void SceneText::Update(double dt)
 	rotateCustomerRightLeg -= (float)(10.f * dt);
 	
 
-	if (Application::IsKeyPressed('U'))
+	if (!FreezeMovement)
 	{
-		rotatePlayerLeftArm += (float)(10.f * dt);
-		rotatePlayerRightArm -= (float)(10.f * dt); 
-		rotatePlayerLeftLeg -= (float)(10.f * dt);
-		rotatePlayerRightLeg += (float)(10.f * dt);
-		Mtx44 rotation;
-		rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
-		Vector3 Movement = { (float)(10.f * dt), 0, 0 };
-		Movement = rotation * Movement;
-		movePlayerX += Movement.x;
-		movePlayerZ += Movement.z;
-	}
-	if (Application::IsKeyPressed('J'))
-	{
-		rotatePlayerLeftArm += (float)(10.f * dt);
-		rotatePlayerRightArm -= (float)(10.f * dt);
-		rotatePlayerLeftLeg -= (float)(10.f * dt);
-		rotatePlayerRightLeg += (float)(10.f * dt);
-		Mtx44 rotation;
-		rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
-		Vector3 Movement = { (float)(10.f * dt), 0, 0 };
-		Movement = rotation * Movement;
-		movePlayerX -= Movement.x;
-		movePlayerZ -= Movement.z;
-	}
-	if (Application::IsKeyPressed('H'))
-	{
-		rotatePlayerLeftArm += (float)(10.f * dt);
-		rotatePlayerRightArm -= (float)(10.f * dt);
-		rotatePlayerLeftLeg -= (float)(10.f * dt);
-		rotatePlayerRightLeg += (float)(10.f * dt);
-		Mtx44 rotation;
-		rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
-		Vector3 Movement = { 0, 0, (float)(10.f * dt) };
-		Movement = rotation * Movement;
-		movePlayerX -= Movement.x;
-		movePlayerZ -= Movement.z;
-		
-	}
-	if (Application::IsKeyPressed('K'))
-	{
-		rotatePlayerLeftArm += (float)(10.f * dt);
-		rotatePlayerRightArm -= (float)(10.f * dt);
-		rotatePlayerLeftLeg -= (float)(10.f * dt);
-		rotatePlayerRightLeg += (float)(10.f * dt);
-		Mtx44 rotation;
-		rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
-		Vector3 Movement = { 0, 0, (float)(10.f * dt) };
-		Movement = rotation * Movement;
-		movePlayerX += Movement.x;
-		movePlayerZ += Movement.z;
-	}
-	if (Application::IsKeyPressed('O'))
-	{
-		rotatePlayer += (float)(RSPEED * dt);
-	}
-	if (Application::IsKeyPressed('P'))
-	{
-		rotatePlayer -= (float)(RSPEED * dt);
+		if (cameraLockToPlayer);
+		{
+			Vector3 playerPos = { movePlayerX, 5, movePlayerZ };
+			Mtx44 rotation;
+			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+			Vector3 translation = { cameraZ, cameraY, 0 };
+			translation = rotation * translation;
+			camera.target = playerPos;
+			camera.position = playerPos + translation;
+		}
+		if (Application::IsKeyPressed('W'))
+		{
+			rotatePlayerLeftArm += (float)(10.f * dt);
+			rotatePlayerRightArm -= (float)(10.f * dt);
+			rotatePlayerLeftLeg -= (float)(10.f * dt);
+			rotatePlayerRightLeg += (float)(10.f * dt);
+			Mtx44 rotation;
+			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+			Vector3 Movement = { (float)(10.f * dt), 0, 0 };
+			Movement = rotation * Movement;
+			movePlayerX += Movement.x;
+			movePlayerZ += Movement.z;
+		}
+		if (Application::IsKeyPressed('S'))
+		{
+			rotatePlayerLeftArm += (float)(10.f * dt);
+			rotatePlayerRightArm -= (float)(10.f * dt);
+			rotatePlayerLeftLeg -= (float)(10.f * dt);
+			rotatePlayerRightLeg += (float)(10.f * dt);
+			Mtx44 rotation;
+			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+			Vector3 Movement = { (float)(10.f * dt), 0, 0 };
+			Movement = rotation * Movement;
+			movePlayerX -= Movement.x;
+			movePlayerZ -= Movement.z;
+		}
+		if (Application::IsKeyPressed('A'))
+		{
+			rotatePlayerLeftArm += (float)(10.f * dt);
+			rotatePlayerRightArm -= (float)(10.f * dt);
+			rotatePlayerLeftLeg -= (float)(10.f * dt);
+			rotatePlayerRightLeg += (float)(10.f * dt);
+			Mtx44 rotation;
+			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+			Vector3 Movement = { 0, 0, (float)(10.f * dt) };
+			Movement = rotation * Movement;
+			movePlayerX -= Movement.x;
+			movePlayerZ -= Movement.z;
+
+		}
+		if (Application::IsKeyPressed('D'))
+		{
+			rotatePlayerLeftArm += (float)(10.f * dt);
+			rotatePlayerRightArm -= (float)(10.f * dt);
+			rotatePlayerLeftLeg -= (float)(10.f * dt);
+			rotatePlayerRightLeg += (float)(10.f * dt);
+			Mtx44 rotation;
+			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+			Vector3 Movement = { 0, 0, (float)(10.f * dt) };
+			Movement = rotation * Movement;
+			movePlayerX += Movement.x;
+			movePlayerZ += Movement.z;
+		}
+		if (Application::IsKeyPressed(VK_LEFT))
+		{
+			rotatePlayer += (float)(RSPEED * dt);
+		}
+		if (Application::IsKeyPressed(VK_RIGHT))
+		{
+			rotatePlayer -= (float)(RSPEED * dt);
+		}
+		if (Application::IsKeyPressed(VK_UP))
+		{
+			cameraY += (float)(RSPEED / 4 * dt);
+		}
+		if (Application::IsKeyPressed(VK_DOWN))
+		{
+			cameraY -= (float)(RSPEED / 4 * dt);
+		}
+		if (Application::IsKeyPressed('N'))
+		{
+			if (cameraZ != 0)
+				cameraZ += (float)(RSPEED / 4 * dt);
+		}
+		if (Application::IsKeyPressed('M'))
+		{
+			cameraZ -= (float)(RSPEED / 4 * dt);
+		}
 	}
 
 	//for bouncer
@@ -1024,9 +1058,19 @@ void SceneText::Update(double dt)
 	
 	for (int i = 0; i < 10; i++)
 	{
-		if (CollisionCheck::DistanceCheck(camera.position, customerLocations[i].position) < 30)
+		Vector3 characterPosition = { movePlayerX, 0, movePlayerZ };
+		if (CollisionCheck::DistanceCheck(characterPosition, customerLocations[i].position) < 30 && salesCustomer == nullptr && !FreezeMovement && (customerLocations[i].isCurious == true || Vocation::isCustomerCurious() == true))
 		{
-			customerLocations[i].inRange = !!!!!!!!!(!true);
+			
+			customerLocations[i].isCurious = true;
+			customerLocations[i].inRange = true;
+			if (Application::IsKeyPressed('I'))
+			{
+				FreezeMovement = true;
+				customerLocations[i].selected = true;
+				salesCustomer = new CSalesCustomer;
+			}
+
 		}
 		else
 		{
@@ -1041,7 +1085,7 @@ void SceneText::Update(double dt)
 		{
 			if (salesCustomer->isCompleted() == 1)
 			{
-				Tasklist * temp = nullptr;
+				Tasklist* temp = nullptr;
 				BossOpinion->AddGoodwill(5);
 				if (dayData->getDay() == 1) {
 					temp = new Salesmantask(Day1);
@@ -1062,6 +1106,15 @@ void SceneText::Update(double dt)
 			}
 			delete salesCustomer;
 			salesCustomer = nullptr;
+			FreezeMovement = false;
+			for (int i = 0; i < 10; i++)
+			{
+				if (customerLocations[i].selected == true)
+				{
+					customerLocations[i].selected = false; // customer minigame has ended
+					customerLocations[i].isCurious = false; // customer is no longer curious since player has attended to him
+				}
+			}
 		}
 	}
 
@@ -1652,12 +1705,16 @@ void SceneText::Render()
 			{
 				RenderCustomer2();
 			}
-			modelStack.Translate(2.f, 5, 0);
-			modelStack.Scale(4, 4, 4);
+			if (customerLocations[i].inRange == true)
+			{
+				modelStack.Translate(2.f, 5, 0);
+				modelStack.Scale(1, 1, 1);
 
-			modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90 - customerLocations[i].angle, 0.f, 1.f, 0.f);
-			modelStack.Translate(-4, 0, 0);
-			RenderText(meshList[GEO_TEXT], "Sureeeee", Color(0, 1, 0));
+				modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90 - customerLocations[i].angle, 0.f, 1.f, 0.f);
+				modelStack.Translate(-9.5, 0, 0);
+				RenderText(meshList[GEO_TEXT], "Press I to interact", Color(0, 1, 0));
+			}
+
 			modelStack.PopMatrix();
 			modelStack.PopMatrix();
 		}
@@ -1969,6 +2026,7 @@ void SceneText::Exit()
 	Vocation::ConnectQuest(2, Day2);
 	Vocation::ConnectQuest(3, Day3);
 	timeData->saveGame();
+	Vocation::ClearJob(true);
 	// Cleanup VBO here
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	glDeleteProgram(m_programID);
@@ -3173,7 +3231,7 @@ void SceneText::RenderText(Mesh* mesh, std::string text, Color color)
 	for (unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 1.0f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 0.7f, 0, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 
@@ -3213,7 +3271,7 @@ void SceneText::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 	for (unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 0.7f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 1.f, 0, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 

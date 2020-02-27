@@ -325,6 +325,9 @@ private:
 	float LeftArmY = -1.8f;
 	float LeftArmZ = 0.0f;
 	
+	bool cameraLockToPlayer;
+	float cameraY;
+	float cameraZ;
 	float rotatePlayerHead = 0.0f;
 	float rotatePlayerLeftArm = 0.0f;
 	float rotatePlayerRightArm = 0.0f;
@@ -413,6 +416,8 @@ private:
 		int customerType;
 		float angle;
 		bool inRange;
+		bool isCurious;
+		bool selected;
 	};
 	customerPositioning customerLocations[10];
 

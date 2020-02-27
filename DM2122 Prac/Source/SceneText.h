@@ -48,7 +48,14 @@ class SceneText : public Scene
 		CLEANER_BOTTOM,
 		CLEANER_WHEEL,
 		CLEANER_WHEELJOINT,
-
+		
+		PLAYER_BODY,
+		PLAYER_HEAD,
+		PLAYER_SHOULDER,
+		PLAYER_ARM,
+		PLAYER_HAND,
+		PLAYER_LEG,
+		
 		CUSTOMER_BODY,
 		CUSTOMER_HEAD,
 		CUSTOMER_SHOULDER,
@@ -317,6 +324,16 @@ private:
 	float rotateCustomerRightLeg = 0.0f;
 	float LeftArmY = -1.8f;
 	float LeftArmZ = 0.0f;
+	
+	float rotatePlayerHead = 0.0f;
+	float rotatePlayerLeftArm = 0.0f;
+	float rotatePlayerRightArm = 0.0f;
+	float rotatePlayerLeftLeg = 0.0f;
+	float rotatePlayerRightLeg = 0.0f;
+	float movePlayerX = 0.0f;
+	float movePlayerZ = 0.0f;
+	float rotatePlayer = 0.0f;
+	
 	float rotatecar = 0.0f;
 	
 	float passedTime = 0.0f;

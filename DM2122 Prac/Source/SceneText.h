@@ -375,6 +375,7 @@ private:
 
 	bool MechanicGame;
 	bool FreezeMovement;
+	bool gameover;
 	bool hasmissed;
  
 	float rotateCleanerWheelsForward = 0.0f;

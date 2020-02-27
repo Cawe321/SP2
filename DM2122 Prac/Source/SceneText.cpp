@@ -61,6 +61,7 @@ SceneText::SceneText()
 	BankOpen = false;
 	NotEnough = false;
 	HasCars = false;
+	gameover = false;
 
 	CleanerGame = false;
 
@@ -913,8 +914,16 @@ void SceneText::Update(double dt)
 			{
 				Tasklist * temp;
 				temp = new Salesmantask(Day1);
-				Day1 = temp->Addscore(Day1);
 				BossOpinion->AddGoodwill(5);
+				if (dayData->getDay() == 1) {
+					Day1 = temp->Addscore(Day1);
+				}
+				else if (dayData->getDay() == 2) {
+					Day2 = temp->Addscore(Day2);
+				}
+				else if (dayData->getDay() == 3) {
+					Day3 = temp->Addscore(Day3);
+				}
 				delete temp;
 			}
 			else {
@@ -1078,6 +1087,8 @@ void SceneText::Update(double dt)
 	CalculateFrameRate();
 	if (BossOpinion->GetGoodwill() < 0) {
 		//Your Fired
+		FreezeMovement = true;
+		gameover = true;
 	}
 }
 
@@ -1159,7 +1170,7 @@ void SceneText::Render()
 		glUniform3fv(m_parameters[U_LIGHT3_POSITION], 1, &lightDirection_cameraspace.x);
 	}
 	// if it is spot light, pass in position and direction 
-	else if (light[1].type == Light::LIGHT_SPOT)
+	else if (light[3].type == Light::LIGHT_SPOT)
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * light[3].position;
 		glUniform3fv(m_parameters[U_LIGHT3_POSITION], 1, &lightPosition_cameraspace.x);
@@ -1277,7 +1288,6 @@ void SceneText::Render()
 	//	Position lightPosition_cameraspace = viewStack.Top() * light[8].position;
 	//	glUniform3fv(m_parameters[U_LIGHT8_POSITION], 1, &lightPosition_cameraspace.x);
 	//}
-
 	if (AchievementScene == true)
 	{
 
@@ -1304,6 +1314,16 @@ void SceneText::Render()
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], BouncerAchievements, Color(1, 0, 0), 3, 3.5f, 11);
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], SalesAchievements, Color(1, 0, 0), 3, 3.5f, 12);
 	
+	}
+	else if (gameover == true) {
+		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Your Fired!", Color(1, 0, 0), 6, 3, 9);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Due to a shocking display of gross", Color(1, 0, 0), 3, 2, 16);
+		RenderTextOnScreen(meshList[GEO_TEXT], "negligence and incompetence during", Color(1, 0, 0), 3, 2, 15);
+		RenderTextOnScreen(meshList[GEO_TEXT], "work hours, the management has seen ", Color(1, 0, 0), 3, 2, 14);
+		RenderTextOnScreen(meshList[GEO_TEXT], "fit to terminate you contract", Color(1, 0, 0), 3, 2, 13);
+		RenderTextOnScreen(meshList[GEO_TEXT], "effective immediately.", Color(1, 0, 0), 3, 2, 12);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Press Esc to vacate the building", Color(1, 0, 0), 3, 2, 10);
 	}
 	else if (MechanicGame == true) {
 		std::string print = "";
@@ -1336,7 +1356,7 @@ void SceneText::Render()
 		print = "  ";
 		print.push_back(game[2]);
 		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 1);
-		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 5, 3.9, 0);
+		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 6, 3.9, 0);
 
 
 		if (MechanicGameScore->GetStrike() > MECHANIC_GAME_MAX_LIVES) {
@@ -1351,8 +1371,19 @@ void SceneText::Render()
 		if (MechanicGameScore->GetPoints() == MECHANIC_GAME_MAX_SCORE) {
 			Tasklist* Temp;
 			Temp = new Mechanictask();
-			Day1 = Temp->Addscore(Day1);
 			BossOpinion->AddGoodwill(5);
+			if (dayData->getDay() == 1) {
+				Day1 = Temp->Addscore(Day1);
+			}
+			else if (dayData->getDay() == 2) {
+				Day2 = Temp->Addscore(Day2);
+			}
+			else if (dayData->getDay() == 3) {
+				Day3 = Temp->Addscore(Day3);
+			}
+			else {
+				std::cout << "Error Updating Score" ;
+			}
 			delete Temp;
 			FreezeMovement = false;
 			MechanicGame = false;
@@ -1625,7 +1656,7 @@ void SceneText::Render()
 	else if (DayEnds == true)
 	{
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
-		RenderTextOnScreen(meshList[GEO_TEXT], "Day 1 completed", Color(0, 1, 0), 3, 9, 10);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Day " + std::to_string(dayData->getDay()) + " completed", Color(0, 1, 0), 3, 9, 10);
     }
 
 

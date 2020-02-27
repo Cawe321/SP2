@@ -2344,14 +2344,14 @@ void SceneText::RenderSuspect()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 6.5, 0);
-	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
+	modelStack.Rotate(sin(rotateCustomerHead) * 20, 0, 1, 0);
 	RenderMesh(meshList[CUSTOMER_HEAD], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, -1.5);
 	modelStack.Rotate(15, 1, 0, 0);
-	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerLeftArm) * 20, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_SHOULDER], true); // Left Arm
 
 	modelStack.PushMatrix();
@@ -2370,7 +2370,7 @@ void SceneText::RenderSuspect()
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, 1.5);
 	modelStack.Rotate(-15, 1, 0, 0);
-	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerRightArm) * 20, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_SHOULDER], true); // Right Arm
 
 	modelStack.PushMatrix();
@@ -2387,13 +2387,13 @@ void SceneText::RenderSuspect()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, -0.5);
-	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerLeftLeg) * 20, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_LEG], true); // Left Leg
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, 0.5);
-	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerRightLeg) * 20, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_LEG], true); // Right Leg
 	modelStack.PopMatrix();
 
@@ -2413,14 +2413,14 @@ void SceneText::RenderSuspect2()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 6.5, 0);
-	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
+	modelStack.Rotate(sin(rotateCustomerHead) * 20, 0, 1, 0);
 	RenderMesh(meshList[SUSPECT1_HEAD], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, -1.5);
 	modelStack.Rotate(15, 1, 0, 0);
-	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerLeftArm) * 20, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT1_SHOULDER], true); // Left Arm
 
 	modelStack.PushMatrix();
@@ -2439,7 +2439,7 @@ void SceneText::RenderSuspect2()
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, 1.5);
 	modelStack.Rotate(-15, 1, 0, 0);
-	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerRightArm) * 20, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT1_SHOULDER], true); // Right Arm
 
 	modelStack.PushMatrix();
@@ -2456,13 +2456,13 @@ void SceneText::RenderSuspect2()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, -0.5);
-	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerLeftLeg) * 20, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT1_LEG], true); // Left Leg
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, 0.5);
-	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerRightLeg) * 20, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT1_LEG], true); // Right Leg
 	modelStack.PopMatrix();
 
@@ -2482,14 +2482,14 @@ void SceneText::RenderSuspect3()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 6.5, 0);
-	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
+	modelStack.Rotate(sin(rotateCustomerHead) * 20, 0, 1, 0);
 	RenderMesh(meshList[SUSPECT2_HEAD], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, -1.5);
 	modelStack.Rotate(15, 1, 0, 0);
-	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerLeftArm) * 20, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT2_SHOULDER], true); // Left Arm
 
 	modelStack.PushMatrix();
@@ -2508,7 +2508,7 @@ void SceneText::RenderSuspect3()
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, 1.5);
 	modelStack.Rotate(-15, 1, 0, 0);
-	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerRightArm) * 20, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT2_SHOULDER], true); // Right Arm
 
 	modelStack.PushMatrix();
@@ -2525,13 +2525,13 @@ void SceneText::RenderSuspect3()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, -0.5);
-	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerLeftLeg) * 20, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT2_LEG], true); // Left Leg
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, 0.5);
-	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
+	modelStack.Rotate(sin(rotateCustomerRightLeg) * 20, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT2_LEG], true); // Right Leg
 	modelStack.PopMatrix();
 	

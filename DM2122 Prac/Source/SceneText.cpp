@@ -2234,7 +2234,7 @@ void SceneText::RenderPlayer() // Facing x-axis
 {
 	std::cout << "X: " << movePlayerX << "\nY: " << movePlayerZ << "\n";
 	modelStack.PushMatrix();
-	modelStack.Translate(movePlayerX-2.5, 0, movePlayerZ);
+	modelStack.Translate(movePlayerX-2.5, -0.5f, movePlayerZ);
 	modelStack.Scale(0.5, 0.4, 0.5);
 	modelStack.Translate(5, 3.8, 0);
 	modelStack.Rotate(rotatePlayer, 0, 1, 0);

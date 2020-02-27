@@ -1,6 +1,7 @@
 #include "VocationJob.h"
 #include <time.h>
 #include "globalData.h"
+#include "CollisionCheck.h"
 // Prevent error of external objeects becoz they are static
 
 VocationJob* Vocation::Sales;
@@ -185,18 +186,24 @@ std::vector<Vector3> Vocation::getLitterLocations(int numberOfLitter)
 	int MAX_LENGTH = 100, MAX_WIDTH = 100;
 	for (int i = 0; i < numberOfLitter; i++)
 	{
-		Vector3 toPush;
-		toPush.x = (rand() % MAX_LENGTH) - (MAX_LENGTH / 2);
-		toPush.y = 0;
-		toPush.z = (rand() % MAX_WIDTH) - (MAX_WIDTH / 2);
-		toReturn.push_back(toPush);
+		Vector3 location = { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
+		while (!CollisionCheck::TrueCollisionCheck(location, 2.f, 2.f)) // loop until a good coordinate can be used
+		{
+			location = { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
+		}
+		toReturn.push_back(location);
 	}
 	return toReturn;
 }
 
 Vector3 Vocation::getCustomerLocation()
 {
-	return { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
+	Vector3 location = { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
+	while (!CollisionCheck::TrueCollisionCheck(location, 2.f, 2.f)) // loop until a good coordinate can be used
+	{
+		location = { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
+	}
+	return location;
 }
 
 void Vocation::setVocation(VocationJob* job)

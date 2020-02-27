@@ -1460,7 +1460,8 @@ void SceneText::Render()
 		RenderCustomer();
 		//RenderCustomer2();
 		Renderlevel();
-
+		RenderPlayer();
+		
 		//RenderCar1();
 		//RenderCar2();
 		//RenderCar3();

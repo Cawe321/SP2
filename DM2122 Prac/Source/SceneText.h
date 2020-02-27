@@ -410,6 +410,7 @@ private:
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();
 	void RenderCleanerRobot();
+	void RenderPlayer();
 	void RenderCustomer();
 	void RenderCustomer2();
 	void RenderSuspect();

@@ -1477,37 +1477,41 @@ void SceneText::Render()
 		
 		if (dayData->getDay() == 1)
 		{
-			if (thirdescapeanimation == false) //Day1
+		
+			if (Day1[2].currentNumber == 0)
 			{
-				RenderSuspect3();
-			}
+				if (thirdescapeanimation == false) //Day1
+				{
+					RenderSuspect3();
+				}
 
-			if (timeDisappeared <= 2 && thirdescapeanimation == true)
-			{
-				startingPosition = 15;
+				if (timeDisappeared <= 2 && thirdescapeanimation == true)
+				{
+					startingPosition = 15;
 
-				modelStack.PushMatrix();
-				modelStack.Translate(-20, 3.8f, startingPosition + timeDisappeared * 15);
-				RenderSuspect3();
-				modelStack.PopMatrix();
-			}
-			else if (timeDisappeared > 2 && timeDisappeared <= 5 && thirdescapeanimation == true)
-			{
-				middlePosition = -20;
+					modelStack.PushMatrix();
+					modelStack.Translate(-20, 3.8f, startingPosition + timeDisappeared * 15);
+					RenderSuspect3();
+					modelStack.PopMatrix();
+				}
+				else if (timeDisappeared > 2 && timeDisappeared <= 4 && thirdescapeanimation == true)
+				{
+					middlePosition = -20;
 
-				modelStack.PushMatrix();
-				modelStack.Translate(middlePosition + (timeDisappeared - 2) * 15 / 2, 3.8f, 44);
-				RenderSuspect3();
-				modelStack.PopMatrix();
-			}
-			else if (timeDisappeared > 5 && timeDisappeared <= 10 && thirdescapeanimation == true)
-			{
-				finalPosition = 34;
+					modelStack.PushMatrix();
+					modelStack.Translate(middlePosition + (timeDisappeared - 2) * 15 / 2, 3.8f, 45);
+					RenderSuspect3();
+					modelStack.PopMatrix();
+				}
+				else if (timeDisappeared > 4 && timeDisappeared <= 6 && thirdescapeanimation == true)
+				{
+					finalPosition = 40;
 
-				modelStack.PushMatrix();
-				modelStack.Translate(2, 3.8f, finalPosition + (timeDisappeared - 3) * 15 / 3);
-				RenderSuspect3();
-				modelStack.PopMatrix();
+					modelStack.PushMatrix();
+					modelStack.Translate(-2, 3.8f, finalPosition + (timeDisappeared - 3) * 15 / 2);
+					RenderSuspect3();
+					modelStack.PopMatrix();
+				}
 			}
 
 			std::string TrackedTask;

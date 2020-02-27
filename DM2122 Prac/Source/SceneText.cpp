@@ -1127,17 +1127,28 @@ void SceneText::Update(double dt)
 	}
 	if (AchievementScene == false)
 	{
-		if (Application::IsKeyPressed('X'))
+			if (dayData->getDay() == 3)
 		{
-			escapeanimation = true;
+			if (Application::IsKeyPressed('X')) // change to I
+			{
+				escapeanimation = true;
+			}
 		}
-		if (Application::IsKeyPressed('Z')) //change to I
+		
+		if (dayData->getDay() == 2)
 		{
-			secondescpaeanimation = true;
+			if (Application::IsKeyPressed('Z')) //change to I
+			{
+				secondescpaeanimation = true;
+			}
 		}
-		if (Application::IsKeyPressed('C')) //change to I
+		
+		if (dayData->getDay() == 1)
 		{
-			thirdescapeanimation = true;
+			if (Application::IsKeyPressed('C')) //change to I
+			{
+				thirdescapeanimation = true;
+			}
 		}
 	}
 	if (AchievementScene == false && GameScene == true && DayEnds == false)
@@ -1658,7 +1669,7 @@ void SceneText::Render()
 					startingPosition = 15;
 
 					modelStack.PushMatrix();
-					modelStack.Translate(-20, 3.8f, startingPosition + timeDisappeared * 15);
+					modelStack.Translate(-20, 1, startingPosition + timeDisappeared * 15);
 					RenderSuspect3();
 					modelStack.PopMatrix();
 				}
@@ -1667,7 +1678,7 @@ void SceneText::Render()
 					middlePosition = -20;
 
 					modelStack.PushMatrix();
-					modelStack.Translate(middlePosition + (timeDisappeared - 2) * 15 / 2, 3.8f, 45);
+					modelStack.Translate(middlePosition + (timeDisappeared - 2) * 15 / 2, 1, 45);
 					RenderSuspect3();
 					modelStack.PopMatrix();
 				}
@@ -1676,7 +1687,7 @@ void SceneText::Render()
 					finalPosition = 38;
 
 					modelStack.PushMatrix();
-					modelStack.Translate(-5, 3.8f, finalPosition + (timeDisappeared - 3) * 15 / 2);
+					modelStack.Translate(-5, 1, finalPosition + (timeDisappeared - 3) * 15 / 2);
 					RenderSuspect3();
 					modelStack.PopMatrix();
 				}
@@ -1710,7 +1721,7 @@ void SceneText::Render()
 				startingPosition = 0;
 
 				modelStack.PushMatrix();
-				modelStack.Translate(15, 3.8f, startingPosition + passedTime * 15);
+				modelStack.Translate(15, 1, startingPosition + passedTime * 15);
 				RenderSuspect2();
 				modelStack.PopMatrix();
 			}
@@ -1719,7 +1730,7 @@ void SceneText::Render()
 				middlePosition = 15;
 
 				modelStack.PushMatrix();
-				modelStack.Translate(middlePosition - (passedTime - 3) * 15 / 3, 3.8f, 45);
+				modelStack.Translate(middlePosition - (passedTime - 3) * 15 / 3, 1, 45);
 				RenderSuspect2();
 				modelStack.PopMatrix();
 			}
@@ -1728,7 +1739,7 @@ void SceneText::Render()
 				finalPosition = 30;
 
 				modelStack.PushMatrix();
-				modelStack.Translate(0, 3.8f, finalPosition + (passedTime - 2) * 15 / 4);
+				modelStack.Translate(0, 1, finalPosition + (passedTime - 2) * 15 / 4);
 				RenderSuspect2();
 				modelStack.PopMatrix();
 			}
@@ -1758,7 +1769,7 @@ void SceneText::Render()
 			startingPosition = 30;
 
 			modelStack.PushMatrix();
-			modelStack.Translate(15, 3.8, startingPosition + elapsedTime * 15);
+			modelStack.Translate(15, 1, startingPosition + elapsedTime * 15);
 			RenderSuspect();
 			modelStack.PopMatrix();
 		}
@@ -1767,7 +1778,7 @@ void SceneText::Render()
 			middlePosition = 15;
 
 			modelStack.PushMatrix();
-			modelStack.Translate(middlePosition - (elapsedTime - 1) * 15 / 3, 3.8, 45); //moving to the right
+			modelStack.Translate(middlePosition - (elapsedTime - 1) * 15 / 3, 1, 45); //moving to the right
 			RenderSuspect();
 			modelStack.PopMatrix();
 
@@ -1777,7 +1788,7 @@ void SceneText::Render()
 			finalPosition = 45;
 
 			modelStack.PushMatrix();
-			modelStack.Translate(5, 3.8, finalPosition + (elapsedTime - 3) * 15 / 3); // moving foward
+			modelStack.Translate(5, 1, finalPosition + (elapsedTime - 3) * 15 / 3); // moving foward
 			RenderSuspect();
 			modelStack.PopMatrix();
 		}
@@ -1796,16 +1807,34 @@ void SceneText::Render()
 		RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));
 		modelStack.PopMatrix();
 		
-		if (elapsedTime > 25 && elapsedTime <= 30) //if within 15 seconds
+		if (elapsedTime > 5 && elapsedTime <= 9 || passedTime > 7 && passedTime <= 10 || timeDisappeared > 6 && timeDisappeared <= 9) //if within 15 seconds
 		{
 				RenderBouncerTextBox();
-		
-				Tasklist* temp;
-				temp = new Bouncertask(Day1);
-				Day1 = temp->Addscore(Day1);
-				delete temp;
+
+				if (dayData->getDay() == 1)
+				{
+					Tasklist* temp;
+					temp = new Bouncertask(Day1);
+					Day1 = temp->Addscore(Day1);
+					delete temp;
+			    }
+				else if (dayData->getDay() == 2)
+				{
+					Tasklist* temp;
+					temp = new Bouncertask(Day2);
+					Day2 = temp->Addscore(Day2);
+					delete temp;
+				}
+				else if (dayData->getDay() == 3)
+				{
+					Tasklist* temp;
+					temp = new Bouncertask(Day3);
+					Day3 = temp->Addscore(Day3);
+					delete temp;
+				}
+
+				
 		}
-		
 		std::string time = std::to_string((int)std::stof(timeData->getinGameTime()));
 
 		RenderTextOnScreen(meshList[GEO_TEXT], time , Color(1, 0, 0), 2, 0, 29);
@@ -2293,26 +2322,25 @@ void SceneText::RenderCustomer2() // Facing x-axis
 
 void SceneText::RenderSuspect()
 {
-		modelStack.PushMatrix();
+	modelStack.PushMatrix();
 	
 	if (escapeanimation == false)
 	{
-		modelStack.Translate(0, 0, 30);
+		modelStack.Translate(15, 1, 30);
 	}
-	
-
+	modelStack.Scale(0.5, 0.4, 0.5);
 	RenderMesh(meshList[CUSTOMER_BODY], true);
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 6.5, 0);
-	modelStack.Rotate(sin(rotateCustomerHead) * 20, 0, 1, 0);
+	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
 	RenderMesh(meshList[CUSTOMER_HEAD], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, -1.5);
 	modelStack.Rotate(15, 1, 0, 0);
-	modelStack.Rotate(sin(rotateCustomerLeftArm) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_SHOULDER], true); // Left Arm
 
 	modelStack.PushMatrix();
@@ -2331,7 +2359,7 @@ void SceneText::RenderSuspect()
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, 1.5);
 	modelStack.Rotate(-15, 1, 0, 0);
-	modelStack.Rotate(sin(rotateCustomerRightArm) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_SHOULDER], true); // Right Arm
 
 	modelStack.PushMatrix();
@@ -2348,13 +2376,13 @@ void SceneText::RenderSuspect()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, -0.5);
-	modelStack.Rotate(sin(rotateCustomerLeftLeg) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_LEG], true); // Left Leg
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, 0.5);
-	modelStack.Rotate(sin(rotateCustomerRightLeg) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
 	RenderMesh(meshList[CUSTOMER_LEG], true); // Right Leg
 	modelStack.PopMatrix();
 
@@ -2367,21 +2395,21 @@ void SceneText::RenderSuspect2()
 
 	if (secondescpaeanimation == false)
 	{
-		modelStack.Translate(15, 3.8, 0);
+		modelStack.Translate(15, 1, 0);
 	}
-	
+	modelStack.Scale(0.5, 0.4, 0.5);
 	RenderMesh(meshList[SUSPECT1_BODY], true);
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 6.5, 0);
-	modelStack.Rotate(sin(rotateCustomerHead) * 20, 0, 1, 0);
+	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
 	RenderMesh(meshList[SUSPECT1_HEAD], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, -1.5);
 	modelStack.Rotate(15, 1, 0, 0);
-	modelStack.Rotate(sin(rotateCustomerLeftArm) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT1_SHOULDER], true); // Left Arm
 
 	modelStack.PushMatrix();
@@ -2400,7 +2428,7 @@ void SceneText::RenderSuspect2()
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, 1.5);
 	modelStack.Rotate(-15, 1, 0, 0);
-	modelStack.Rotate(sin(rotateCustomerRightArm) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT1_SHOULDER], true); // Right Arm
 
 	modelStack.PushMatrix();
@@ -2417,13 +2445,13 @@ void SceneText::RenderSuspect2()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, -0.5);
-	modelStack.Rotate(sin(rotateCustomerLeftLeg) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT1_LEG], true); // Left Leg
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, 0.5);
-	modelStack.Rotate(sin(rotateCustomerRightLeg) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT1_LEG], true); // Right Leg
 	modelStack.PopMatrix();
 
@@ -2433,24 +2461,24 @@ void SceneText::RenderSuspect2()
 void SceneText::RenderSuspect3()
 {
 	modelStack.PushMatrix();
-
+	
 	if (thirdescapeanimation == false)
 	{
-		modelStack.Translate(-20, 3.8, 15);
+		modelStack.Translate(-20, 1, 15);
 	}
-
+	modelStack.Scale(0.5, 0.4, 0.5);
 	RenderMesh(meshList[SUSPECT2_BODY], true);
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 6.5, 0);
-	modelStack.Rotate(sin(rotateCustomerHead) * 20, 0, 1, 0);
+	modelStack.Rotate(rotateCustomerHead, 0, 1, 0);
 	RenderMesh(meshList[SUSPECT2_HEAD], true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, -1.5);
 	modelStack.Rotate(15, 1, 0, 0);
-	modelStack.Rotate(sin(rotateCustomerLeftArm) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerLeftArm, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT2_SHOULDER], true); // Left Arm
 
 	modelStack.PushMatrix();
@@ -2469,7 +2497,7 @@ void SceneText::RenderSuspect3()
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 5.2, 1.5);
 	modelStack.Rotate(-15, 1, 0, 0);
-	modelStack.Rotate(sin(rotateCustomerRightArm) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerRightArm, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT2_SHOULDER], true); // Right Arm
 
 	modelStack.PushMatrix();
@@ -2486,16 +2514,16 @@ void SceneText::RenderSuspect3()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, -0.5);
-	modelStack.Rotate(sin(rotateCustomerLeftLeg) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerLeftLeg, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT2_LEG], true); // Left Leg
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, 0, 0.5);
-	modelStack.Rotate(sin(rotateCustomerRightLeg) * 20, 0, 0, 1);
+	modelStack.Rotate(rotateCustomerRightLeg, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT2_LEG], true); // Right Leg
 	modelStack.PopMatrix();
-
+	
 	modelStack.PopMatrix();
 }
 

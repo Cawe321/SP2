@@ -555,6 +555,25 @@ void SceneText::Init()
 	
 	meshList[CLEANER_WHEELJOINT] = MeshBuilder::GenerateOBJ("CleanerWheelJoint", "OBJ//CleanerBot//CleanerWheelJoint.obj");
 	meshList[CLEANER_WHEELJOINT]->textureID = LoadTGA("Image//CleanerRobot.tga");
+	
+	// Player
+	meshList[PLAYER_BODY] = MeshBuilder::GenerateOBJ("PlayerBody", "OBJ//Customer//CustomerBody.obj");
+	meshList[PLAYER_BODY]->textureID = LoadTGA("Image//Customer.tga");
+			 
+	meshList[PLAYER_HEAD] = MeshBuilder::GenerateOBJ("PlayerHead", "OBJ//Customer//CustomerHead.obj");
+	meshList[PLAYER_HEAD]->textureID = LoadTGA("Image//Customer.tga");
+			 
+	meshList[PLAYER_SHOULDER] = MeshBuilder::GenerateOBJ("PlayerShoulder", "OBJ//Customer//CustomerShoulder.obj");
+	meshList[PLAYER_SHOULDER]->textureID = LoadTGA("Image//Customer.tga");
+			
+	meshList[PLAYER_ARM] = MeshBuilder::GenerateOBJ("PlayerArm", "OBJ//Customer//CustomerArm.obj");
+	meshList[PLAYER_ARM]->textureID = LoadTGA("Image//Customer.tga");
+			
+	meshList[PLAYER_HAND] = MeshBuilder::GenerateOBJ("PlayerHand", "OBJ//Customer//CustomerHand.obj");
+	meshList[PLAYER_HAND]->textureID = LoadTGA("Image//Customer.tga");
+			
+	meshList[PLAYER_LEG] = MeshBuilder::GenerateOBJ("PlayerLeg", "OBJ//Customer//CustomerLeg.obj");
+	meshList[PLAYER_LEG]->textureID = LoadTGA("Image//Customer.tga");
 
 	// Customer
 	meshList[CUSTOMER_BODY] = MeshBuilder::GenerateOBJ("CustomerBody", "OBJ//Customer//CustomerBody.obj");
@@ -774,6 +793,47 @@ void SceneText::Update(double dt)
 	rotateCustomerLeftLeg += (float)(10.f * dt);
 	rotateCustomerRightLeg -= (float)(10.f * dt);
 	
+	if (Application::IsKeyPressed('U'))
+	{
+		rotatePlayerLeftArm += (float)(10.f * dt);
+		rotatePlayerRightArm -= (float)(10.f * dt); 
+		rotatePlayerLeftLeg -= (float)(10.f * dt);
+		rotatePlayerRightLeg += (float)(10.f * dt);
+		movePlayerX += (float)(10.f * dt);
+	}
+	if (Application::IsKeyPressed('J'))
+	{
+		rotatePlayerLeftArm += (float)(10.f * dt);
+		rotatePlayerRightArm -= (float)(10.f * dt);
+		rotatePlayerLeftLeg -= (float)(10.f * dt);
+		rotatePlayerRightLeg += (float)(10.f * dt);
+		movePlayerX -= (float)(10.0f * dt);
+	}
+	if (Application::IsKeyPressed('H'))
+	{
+		rotatePlayerLeftArm += (float)(10.f * dt);
+		rotatePlayerRightArm -= (float)(10.f * dt);
+		rotatePlayerLeftLeg -= (float)(10.f * dt);
+		rotatePlayerRightLeg += (float)(10.f * dt);
+		movePlayerZ -= (float)(10.f * dt);
+	}
+	if (Application::IsKeyPressed('K'))
+	{
+		rotatePlayerLeftArm += (float)(10.f * dt);
+		rotatePlayerRightArm -= (float)(10.f * dt);
+		rotatePlayerLeftLeg -= (float)(10.f * dt);
+		rotatePlayerRightLeg += (float)(10.f * dt);
+		movePlayerZ += (float)(10.f * dt);
+	}
+	if (Application::IsKeyPressed('O'))
+	{
+		rotatePlayer += (float)(RSPEED * dt);
+	}
+	if (Application::IsKeyPressed('P'))
+	{
+		rotatePlayer -= (float)(RSPEED * dt);
+	}
+
 	//for bouncer
 	if (escapeanimation == true)
 	{
@@ -1920,6 +1980,74 @@ void SceneText::RenderCleanerRobot() // Facing x-axis
 	
 	modelStack.PopMatrix();
 	
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderPlayer() // Facing x-axis
+{
+	modelStack.PushMatrix();
+	modelStack.Translate(movePlayerX, 0, movePlayerZ);
+	modelStack.Translate(5, 3.8, 0);
+	modelStack.Rotate(rotatePlayer, 0, 1, 0);
+	RenderMesh(meshList[PLAYER_BODY], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 6.5, 0);
+	modelStack.Rotate(sin(rotatePlayerHead) * 20, 0, 1, 0);
+	RenderMesh(meshList[PLAYER_HEAD], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, -1.5);
+	modelStack.Rotate(15, 1, 0, 0);
+	modelStack.Rotate(sin(rotatePlayerLeftArm) * 20, 0, 0, 1);
+	RenderMesh(meshList[PLAYER_SHOULDER], true); // Left Arm
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, LeftArmY, LeftArmZ);
+	RenderMesh(meshList[PLAYER_ARM], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[PLAYER_HAND], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 5.2, 1.5);
+	modelStack.Rotate(-15, 1, 0, 0);
+	modelStack.Rotate(sin(rotatePlayerRightArm) * 20, 0, 0, 1);
+	RenderMesh(meshList[PLAYER_SHOULDER], true); // Right Arm
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -1.8, 0);
+	RenderMesh(meshList[PLAYER_ARM], true);
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2.2, 0);
+	RenderMesh(meshList[PLAYER_HAND], true);
+
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, -0.5);
+	modelStack.Rotate(sin(rotatePlayerLeftLeg) * 20, 0, 0, 1);
+	RenderMesh(meshList[PLAYER_LEG], true); // Left Leg
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 0, 0.5);
+	modelStack.Rotate(sin(rotatePlayerRightLeg) * 20, 0, 0, 1);
+	RenderMesh(meshList[PLAYER_LEG], true); // Right Leg
+	modelStack.PopMatrix();
+
 	modelStack.PopMatrix();
 }
 

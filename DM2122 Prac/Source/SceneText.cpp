@@ -2775,7 +2775,7 @@ void SceneText::Renderlevel()
 	
 	modelStack.PushMatrix();
 	modelStack.Translate(-10, 0, 30);
-	modelStack.Scale(4, 4, 4);
+	modelStack.Scale(4, 8, 4);
 	RenderMesh(meshList[ITEM_INFORMATION_COUNTER], true);
 	modelStack.PopMatrix();
 

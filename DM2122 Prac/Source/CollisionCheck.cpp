@@ -16,10 +16,18 @@ bool CollisionCheck::SquareCollisionCheck(Vector3 obj1, float obj1SizeX, float o
 	return collisionX && collisionZ;
 }
 
-bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, Vector3 obj2)
+bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float obj1SizeX, float obj1SizeZ, Vector3 obj2, float obj2SizeX, float obj2SizeZ)
 {
-	// not done yet
+	// TO DO: FINISH THIS Uhsuafhc
 	return false;
+}
+
+
+
+float CollisionCheck::angleBetween2Coords(Vector3 obj1, Vector3 obj2)
+{
+	float angle = atan2(obj2.z - obj1.z, obj2.x - obj1.x) * (180 / 3.142);
+	return angle;
 }
 
 CollisionCheck::CollisionCheck()

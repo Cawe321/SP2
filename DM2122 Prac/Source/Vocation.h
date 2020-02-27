@@ -20,6 +20,7 @@ public:
 	static CSalesCustomer::CustomerType returnCustomerMood();
 	static bool isCustomerCurious();
 	static std::vector<Vector3> getLitterLocations(int numberOfLitter);
+	static Vector3 getCustomerLocation();
 	static void setVocation(VocationJob* work);
 	static void InitializeJob();
 	static void ClearJob(bool programEnd);

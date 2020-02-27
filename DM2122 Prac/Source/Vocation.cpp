@@ -194,6 +194,11 @@ std::vector<Vector3> Vocation::getLitterLocations(int numberOfLitter)
 	return toReturn;
 }
 
+Vector3 Vocation::getCustomerLocation()
+{
+	return { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
+}
+
 void Vocation::setVocation(VocationJob* job)
 {
 	Data->setJob(job);

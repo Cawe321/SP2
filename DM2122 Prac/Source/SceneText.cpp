@@ -814,7 +814,7 @@ void SceneText::Update(double dt)
 	{
 		if (cameraLockToPlayer);
 		{
-			Vector3 playerPos = { movePlayerX, 5, movePlayerZ };
+			Vector3 playerPos = { movePlayerX-2.5f, 5, movePlayerZ };
 			Mtx44 rotation;
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 translation = { cameraZ, cameraY, 0 };
@@ -1630,9 +1630,8 @@ void SceneText::Render()
 	
 	else if(GameScene == true)
 	{
+		
 		RenderSkybox();
-		RenderCustomer();
-		//RenderCustomer2();
 		Renderlevel();
 		RenderPlayer();
 		
@@ -2211,8 +2210,9 @@ void SceneText::RenderCleanerRobot() // Facing x-axis
 
 void SceneText::RenderPlayer() // Facing x-axis
 {
+	std::cout << "X: " << movePlayerX << "\nY: " << movePlayerZ << "\n";
 	modelStack.PushMatrix();
-	modelStack.Translate(movePlayerX, 0, movePlayerZ);
+	modelStack.Translate(movePlayerX-2.5, 0, movePlayerZ);
 	modelStack.Scale(0.5, 0.4, 0.5);
 	modelStack.Translate(5, 3.8, 0);
 	modelStack.Rotate(rotatePlayer, 0, 1, 0);
@@ -3252,7 +3252,7 @@ void SceneText::RenderText(Mesh* mesh, std::string text, Color color)
 	for (unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 0.7f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 1.f, 0, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 
@@ -3292,7 +3292,7 @@ void SceneText::RenderTextOnScreen(Mesh* mesh, std::string text, Color color, fl
 	for (unsigned i = 0; i < text.length(); ++i)
 	{
 		Mtx44 characterSpacing;
-		characterSpacing.SetToTranslation(i * 1.f, 0, 0); //1.0f is the spacing of each character, you may change this value
+		characterSpacing.SetToTranslation(i * 0.7f, 0, 0); //1.0f is the spacing of each character, you may change this value
 		Mtx44 MVP = projectionStack.Top() * viewStack.Top() * modelStack.Top() * characterSpacing;
 		glUniformMatrix4fv(m_parameters[U_MVP], 1, GL_FALSE, &MVP.a[0]);
 

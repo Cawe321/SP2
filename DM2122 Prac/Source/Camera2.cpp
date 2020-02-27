@@ -98,55 +98,7 @@ void Camera2::Update(double dt)
 			Reset();
 		}
 	}
-	Vector3 view = (target - position).Normalized();
-	Vector3 right = view.Cross(up).Normalized();
-	right.y = 0;
-	right.Normalize();
-	up = right.Cross(view).Normalized();
-	if (cameraLock)
-	{
-		static const float CAMERA_SPEED = 50.f;
-		
-		if (Application::IsKeyPressed('A'))
-		{
-			position = position - (CAMERA_SPEED / 100.f) * right;
-			target = position + view;
-		}
-		if (Application::IsKeyPressed('D'))
-		{
-			position = position + (CAMERA_SPEED / 100.f) * right;
-			target = position + view;
-		}
-		if (Application::IsKeyPressed('W'))
-		{
-			position = position + (CAMERA_SPEED / 100.f) * view;
-			target = position + view;
-		}
-		if (Application::IsKeyPressed('S'))
-		{
-			position = position - (CAMERA_SPEED / 100.f) * view;
-			target = position + view;
-		}
-		if (Application::IsKeyPressed(VK_UP))
-		{
-			Mtx44 rotation;
-			rotation.SetToRotation(dt * CAMERA_SPEED, right.x, right.y, right.z);
-			view = rotation * view;
-			target = position + view;
-		}
-		if (Application::IsKeyPressed(VK_DOWN))
-		{
-			Mtx44 rotation;
-			rotation.SetToRotation(-dt * CAMERA_SPEED, right.x, right.y, right.z);
-			view = rotation * view;
-			target = position + view;
-		}
 
-		if (Application::IsKeyPressed('R'))
-		{
-			Reset();
-		}
-	}
 }
 void Camera2::Reset()
 {

@@ -181,6 +181,7 @@ void StarterScene::Init()
 
 	meshList[GEO_TEXT] = MeshBuilder::GenerateText("text", 16, 16);
 	meshList[GEO_TEXT]->textureID = LoadTGA("Image//calibri.tga");
+	camera.cameraLock = true;
 }
 
 void StarterScene::Update(double dt)
@@ -260,7 +261,7 @@ void StarterScene::Update(double dt)
 	{
 		if (Vocation::getVocation() != VocationJob::NONE)
 		{
-			camera.cameraLock = true; // lock the camera from player interaction
+			
 			VocationScene = false;
 			EntranceScene = true;
 			camera.position = { 0, 30, -50 };
@@ -269,7 +270,7 @@ void StarterScene::Update(double dt)
 		if (Application::IsKeyPressed(VK_RETURN) && Vocation::getVocation() == VocationJob::NONE && globalTime - debounceTime > 0.2f) // enter key
 		{
 			SoundEngine->play2D("audio//bleep.wav", false);
-			camera.cameraLock = true; // lock the camera from player interaction
+			
 			VocationScene = false;
 			EntranceScene = true;
 			camera.position = { 0, 30, -50 };

@@ -808,6 +808,7 @@ void SceneText::Update(double dt)
 	rotateCustomerHead += (float)(0.5f * dt);
 	rotateCustomerLeftLeg += (float)(10.f * dt);
 	rotateCustomerRightLeg -= (float)(10.f * dt);
+	rotatecar += (float)(10.f * dt);
 	
 
 	if (!FreezeMovement)

@@ -11,7 +11,7 @@
 #include "Bouncertask.h"
 #include "Achievements.h"
 #include "CarSelection.h"
-
+#include "CollisionCheck.h"
 
 #define ROT_LIMIT 45.f;
 #define SCALE_LIMIT 5.f;
@@ -82,6 +82,17 @@ SceneText::SceneText()
 	CleanerSalary = 9000;
 	BouncerSalary = 12000;
 	MechanicSalary = 11000;
+
+	// init values for customer
+	salesCustomer = nullptr; //new CSalesCustomer(Vector3(0,0,0))
+	srand(time(NULL));
+	for (int i = 0; i < 10; i++)
+	{
+		customerLocations[i].position = Vocation::getCustomerLocation();
+		customerLocations[i].angle = rand() % 360;
+		customerLocations[i].customerType = rand() % 2;
+		customerLocations[i].inRange = false;
+	}
 
 	if (timeData->getJob()->getJob() == VocationJob::SALES)
 		SalesPersonSalary = SalesPersonSalary * 1.2;
@@ -793,13 +804,19 @@ void SceneText::Update(double dt)
 	rotateCustomerLeftLeg += (float)(10.f * dt);
 	rotateCustomerRightLeg -= (float)(10.f * dt);
 	
+
 	if (Application::IsKeyPressed('U'))
 	{
 		rotatePlayerLeftArm += (float)(10.f * dt);
 		rotatePlayerRightArm -= (float)(10.f * dt); 
 		rotatePlayerLeftLeg -= (float)(10.f * dt);
 		rotatePlayerRightLeg += (float)(10.f * dt);
-		movePlayerX += (float)(10.f * dt);
+		Mtx44 rotation;
+		rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+		Vector3 Movement = { (float)(10.f * dt), 0, 0 };
+		Movement = rotation * Movement;
+		movePlayerX += Movement.x;
+		movePlayerZ += Movement.z;
 	}
 	if (Application::IsKeyPressed('J'))
 	{
@@ -807,7 +824,12 @@ void SceneText::Update(double dt)
 		rotatePlayerRightArm -= (float)(10.f * dt);
 		rotatePlayerLeftLeg -= (float)(10.f * dt);
 		rotatePlayerRightLeg += (float)(10.f * dt);
-		movePlayerX -= (float)(10.0f * dt);
+		Mtx44 rotation;
+		rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+		Vector3 Movement = { (float)(10.f * dt), 0, 0 };
+		Movement = rotation * Movement;
+		movePlayerX -= Movement.x;
+		movePlayerZ -= Movement.z;
 	}
 	if (Application::IsKeyPressed('H'))
 	{
@@ -815,7 +837,13 @@ void SceneText::Update(double dt)
 		rotatePlayerRightArm -= (float)(10.f * dt);
 		rotatePlayerLeftLeg -= (float)(10.f * dt);
 		rotatePlayerRightLeg += (float)(10.f * dt);
-		movePlayerZ -= (float)(10.f * dt);
+		Mtx44 rotation;
+		rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+		Vector3 Movement = { 0, 0, (float)(10.f * dt) };
+		Movement = rotation * Movement;
+		movePlayerX -= Movement.x;
+		movePlayerZ -= Movement.z;
+		
 	}
 	if (Application::IsKeyPressed('K'))
 	{
@@ -823,7 +851,12 @@ void SceneText::Update(double dt)
 		rotatePlayerRightArm -= (float)(10.f * dt);
 		rotatePlayerLeftLeg -= (float)(10.f * dt);
 		rotatePlayerRightLeg += (float)(10.f * dt);
-		movePlayerZ += (float)(10.f * dt);
+		Mtx44 rotation;
+		rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+		Vector3 Movement = { 0, 0, (float)(10.f * dt) };
+		Movement = rotation * Movement;
+		movePlayerX += Movement.x;
+		movePlayerZ += Movement.z;
 	}
 	if (Application::IsKeyPressed('O'))
 	{
@@ -979,6 +1012,18 @@ void SceneText::Update(double dt)
 				Day3 = temp->Addscore(Day3);
 			}
 			delete temp;*/
+		}
+	}
+	
+	for (int i = 0; i < 10; i++)
+	{
+		if (CollisionCheck::DistanceCheck(camera.position, customerLocations[i].position) < 30)
+		{
+			customerLocations[i].inRange = !!!!!!!!!(!true);
+		}
+		else
+		{
+			customerLocations[i].inRange = false;
 		}
 	}
 
@@ -1572,6 +1617,32 @@ void SceneText::Render()
 		RenderGuardBot();
 		modelStack.PopMatrix();
 		
+		// Render Customer
+		for (int i = 0; i < 10; i++)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(customerLocations[i].position.x, customerLocations[i].position.y, customerLocations[i].position.z);
+			modelStack.PushMatrix();
+			modelStack.Rotate(customerLocations[i].angle, 0.f, 1.f, 0.f);
+			if (customerLocations[i].customerType == 0)
+			{
+				RenderCustomer();
+			}
+			else
+			{
+				RenderCustomer2();
+			}
+			modelStack.Translate(2.f, 5, 0);
+			modelStack.Scale(4, 4, 4);
+
+			modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90 - customerLocations[i].angle, 0.f, 1.f, 0.f);
+			modelStack.Translate(-4, 0, 0);
+			RenderText(meshList[GEO_TEXT], "Sureeeee", Color(0, 1, 0));
+			modelStack.PopMatrix();
+			modelStack.PopMatrix();
+		}
+
+
 		if (dayData->getDay() == 1)
 		{
 		
@@ -2091,6 +2162,7 @@ void SceneText::RenderPlayer() // Facing x-axis
 void SceneText::RenderCustomer() // Facing x-axis
 {
 	modelStack.PushMatrix();
+	modelStack.Scale(0.5, 0.4, 0.5);
 	modelStack.Translate(5, 3.8, 0);
 	RenderMesh(meshList[CUSTOMER_BODY], true);
 	
@@ -2157,6 +2229,7 @@ void SceneText::RenderCustomer() // Facing x-axis
 void SceneText::RenderCustomer2() // Facing x-axis
 {
 	modelStack.PushMatrix();
+	modelStack.Scale(0.5, 0.4, 0.5);
 	modelStack.Translate(5, 3.8, 0);
 	RenderMesh(meshList[CUSTOMER2_BODY], true);
 	

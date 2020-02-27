@@ -406,6 +406,14 @@ private:
 	Cleanertask* CleanerScore;
 
 	CSalesCustomer* salesCustomer;
+	struct customerPositioning
+	{
+		Vector3 position;
+		int customerType;
+		float angle;
+		bool inRange;
+	};
+	customerPositioning customerLocations[10];
 
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();

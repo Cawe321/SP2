@@ -57,6 +57,7 @@ SceneText::SceneText()
 	MechanicGame = false;
 	FreezeMovement = false;
 	hasmissed = false;
+	hasreset = false;
 
 	BankOpen = false;
 	NotEnough = false;
@@ -72,7 +73,7 @@ SceneText::SceneText()
 	Price = 0; //for me to render out the achievements
 	
 	escapeanimation = false;
-        secondescpaeanimation = false;
+	secondescpaeanimation = false;
 	thirdescapeanimation = false;
 	AchievementScene = false;
 	GameScene = true;
@@ -886,6 +887,12 @@ void SceneText::Update(double dt)
 	if (MechanicGame == true) {
 		// to make the keypress game
 		elapsed += dt;
+		if (hasreset == false) {
+			for (int i = 0; i < 10; i++) {
+				game[i] = '-';
+			}
+			hasreset = true;
+		}
 		if (Application::IsKeyPressed('W') && game[2] == 'W')
 		{
 			game[2] = '-';
@@ -1088,7 +1095,7 @@ void SceneText::Update(double dt)
 		light[0].position.y += (float)(LSPEED * dt);*/
 	if (Application::IsKeyPressed('I')) {
 		//Universal interaction key
-		if ((distancecalculator(camera.position, Vector3(45, 0.5, 45)) < 7)) {
+		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(45, 0.5, 45)) < 10)) {
 			MechanicGame = true;
 			FreezeMovement = true;
 		}
@@ -1127,17 +1134,28 @@ void SceneText::Update(double dt)
 	}
 	if (AchievementScene == false)
 	{
-		if (Application::IsKeyPressed('X'))
+			if (dayData->getDay() == 3)
 		{
-			escapeanimation = true;
+			if (Application::IsKeyPressed('X')) // change to I
+			{
+				escapeanimation = true;
+			}
 		}
-		if (Application::IsKeyPressed('Z')) //change to I
+		
+		if (dayData->getDay() == 2)
 		{
-			secondescpaeanimation = true;
+			if (Application::IsKeyPressed('Z')) //change to I
+			{
+				secondescpaeanimation = true;
+			}
 		}
-		if (Application::IsKeyPressed('C')) //change to I
+		
+		if (dayData->getDay() == 1)
 		{
-			thirdescapeanimation = true;
+			if (Application::IsKeyPressed('C')) //change to I
+			{
+				thirdescapeanimation = true;
+			}
 		}
 	}
 	if (AchievementScene == false && GameScene == true && DayEnds == false)
@@ -1497,7 +1515,7 @@ void SceneText::Render()
 		print = "  ";
 		print.push_back(game[2]);
 		RenderTextOnScreen(meshList[GEO_TEXT], print, Color(1, 0, 0), 5, 2, 1);
-		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 6, 3.9, 0);
+		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 4, 3.9, 0);
 
 
 		if (MechanicGameScore->GetStrike() > MECHANIC_GAME_MAX_LIVES) {
@@ -1507,6 +1525,7 @@ void SceneText::Render()
 			BossOpinion->LoseGoodwill(5);
 			delete MechanicGameScore;
 			MechanicGameScore = new Mechanictask();
+			hasreset = false;
 		}
 
 		if (MechanicGameScore->GetPoints() == MECHANIC_GAME_MAX_SCORE) {
@@ -1532,6 +1551,7 @@ void SceneText::Render()
 			std::cout << timeData->getMoney();
 			delete MechanicGameScore;
 			MechanicGameScore = new Mechanictask();
+			hasreset = false;
 		}
 	}
 	
@@ -1658,7 +1678,7 @@ void SceneText::Render()
 					startingPosition = 15;
 
 					modelStack.PushMatrix();
-					modelStack.Translate(-20, 3.8f, startingPosition + timeDisappeared * 15);
+					modelStack.Translate(-20, 1, startingPosition + timeDisappeared * 15);
 					RenderSuspect3();
 					modelStack.PopMatrix();
 				}
@@ -1667,7 +1687,7 @@ void SceneText::Render()
 					middlePosition = -20;
 
 					modelStack.PushMatrix();
-					modelStack.Translate(middlePosition + (timeDisappeared - 2) * 15 / 2, 3.8f, 45);
+					modelStack.Translate(middlePosition + (timeDisappeared - 2) * 15 / 2, 1, 45);
 					RenderSuspect3();
 					modelStack.PopMatrix();
 				}
@@ -1676,7 +1696,7 @@ void SceneText::Render()
 					finalPosition = 38;
 
 					modelStack.PushMatrix();
-					modelStack.Translate(-5, 3.8f, finalPosition + (timeDisappeared - 3) * 15 / 2);
+					modelStack.Translate(-5, 1, finalPosition + (timeDisappeared - 3) * 15 / 2);
 					RenderSuspect3();
 					modelStack.PopMatrix();
 				}
@@ -1687,15 +1707,17 @@ void SceneText::Render()
 			Tasklist* Task = new Salesmantask(Day1);
 			TrackedTask = Task->Taskstatus(Day1);
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
-
+			delete Task;
 
 			Tasklist* BouncerTask = new Bouncertask(Day1);
 			TrackedTask = BouncerTask->Taskstatus(Day1);
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
+			delete BouncerTask;
 
 			Tasklist* CleanerTask = new Cleanertask(Day1);
 			TrackedTask = CleanerTask->Taskstatus(Day1);
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 1);
+			delete CleanerTask;
 		}
 
 		else if(dayData->getDay() == 2)
@@ -1710,7 +1732,7 @@ void SceneText::Render()
 				startingPosition = 0;
 
 				modelStack.PushMatrix();
-				modelStack.Translate(15, 3.8f, startingPosition + passedTime * 15);
+				modelStack.Translate(15, 1, startingPosition + passedTime * 15);
 				RenderSuspect2();
 				modelStack.PopMatrix();
 			}
@@ -1719,7 +1741,7 @@ void SceneText::Render()
 				middlePosition = 15;
 
 				modelStack.PushMatrix();
-				modelStack.Translate(middlePosition - (passedTime - 3) * 15 / 3, 3.8f, 45);
+				modelStack.Translate(middlePosition - (passedTime - 3) * 15 / 3, 1, 45);
 				RenderSuspect2();
 				modelStack.PopMatrix();
 			}
@@ -1728,7 +1750,7 @@ void SceneText::Render()
 				finalPosition = 30;
 
 				modelStack.PushMatrix();
-				modelStack.Translate(0, 3.8f, finalPosition + (passedTime - 2) * 15 / 4);
+				modelStack.Translate(0, 1, finalPosition + (passedTime - 2) * 15 / 4);
 				RenderSuspect2();
 				modelStack.PopMatrix();
 			}
@@ -1758,7 +1780,7 @@ void SceneText::Render()
 			startingPosition = 30;
 
 			modelStack.PushMatrix();
-			modelStack.Translate(15, 3.8, startingPosition + elapsedTime * 15);
+			modelStack.Translate(15, 1, startingPosition + elapsedTime * 15);
 			RenderSuspect();
 			modelStack.PopMatrix();
 		}
@@ -1767,7 +1789,7 @@ void SceneText::Render()
 			middlePosition = 15;
 
 			modelStack.PushMatrix();
-			modelStack.Translate(middlePosition - (elapsedTime - 1) * 15 / 3, 3.8, 45); //moving to the right
+			modelStack.Translate(middlePosition - (elapsedTime - 1) * 15 / 3, 1, 45); //moving to the right
 			RenderSuspect();
 			modelStack.PopMatrix();
 
@@ -1777,7 +1799,7 @@ void SceneText::Render()
 			finalPosition = 45;
 
 			modelStack.PushMatrix();
-			modelStack.Translate(5, 3.8, finalPosition + (elapsedTime - 3) * 15 / 3); // moving foward
+			modelStack.Translate(5, 1, finalPosition + (elapsedTime - 3) * 15 / 3); // moving foward
 			RenderSuspect();
 			modelStack.PopMatrix();
 		}
@@ -1796,16 +1818,34 @@ void SceneText::Render()
 		RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));
 		modelStack.PopMatrix();
 		
-		if (elapsedTime > 25 && elapsedTime <= 30) //if within 15 seconds
+		if (elapsedTime > 5 && elapsedTime <= 9 || passedTime > 7 && passedTime <= 10 || timeDisappeared > 6 && timeDisappeared <= 9) //if within 15 seconds
 		{
 				RenderBouncerTextBox();
-		
-				Tasklist* temp;
-				temp = new Bouncertask(Day1);
-				Day1 = temp->Addscore(Day1);
-				delete temp;
+
+				if (dayData->getDay() == 1)
+				{
+					Tasklist* temp;
+					temp = new Bouncertask(Day1);
+					Day1 = temp->Addscore(Day1);
+					delete temp;
+			    }
+				else if (dayData->getDay() == 2)
+				{
+					Tasklist* temp;
+					temp = new Bouncertask(Day2);
+					Day2 = temp->Addscore(Day2);
+					delete temp;
+				}
+				else if (dayData->getDay() == 3)
+				{
+					Tasklist* temp;
+					temp = new Bouncertask(Day3);
+					Day3 = temp->Addscore(Day3);
+					delete temp;
+				}
+
+				
 		}
-		
 		std::string time = std::to_string((int)std::stof(timeData->getinGameTime()));
 
 		RenderTextOnScreen(meshList[GEO_TEXT], time , Color(1, 0, 0), 2, 0, 29);
@@ -2293,14 +2333,13 @@ void SceneText::RenderCustomer2() // Facing x-axis
 
 void SceneText::RenderSuspect()
 {
-		modelStack.PushMatrix();
+	modelStack.PushMatrix();
 	
 	if (escapeanimation == false)
 	{
-		modelStack.Translate(0, 0, 30);
+		modelStack.Translate(15, 1, 30);
 	}
-	
-
+	modelStack.Scale(0.5, 0.4, 0.5);
 	RenderMesh(meshList[CUSTOMER_BODY], true);
 
 	modelStack.PushMatrix();
@@ -2367,9 +2406,9 @@ void SceneText::RenderSuspect2()
 
 	if (secondescpaeanimation == false)
 	{
-		modelStack.Translate(15, 3.8, 0);
+		modelStack.Translate(15, 1, 0);
 	}
-	
+	modelStack.Scale(0.5, 0.4, 0.5);
 	RenderMesh(meshList[SUSPECT1_BODY], true);
 
 	modelStack.PushMatrix();
@@ -2433,12 +2472,12 @@ void SceneText::RenderSuspect2()
 void SceneText::RenderSuspect3()
 {
 	modelStack.PushMatrix();
-
+	
 	if (thirdescapeanimation == false)
 	{
-		modelStack.Translate(-20, 3.8, 15);
+		modelStack.Translate(-20, 1, 15);
 	}
-
+	modelStack.Scale(0.5, 0.4, 0.5);
 	RenderMesh(meshList[SUSPECT2_BODY], true);
 
 	modelStack.PushMatrix();
@@ -2495,7 +2534,7 @@ void SceneText::RenderSuspect3()
 	modelStack.Rotate(sin(rotateCustomerRightLeg) * 20, 0, 0, 1);
 	RenderMesh(meshList[SUSPECT2_LEG], true); // Right Leg
 	modelStack.PopMatrix();
-
+	
 	modelStack.PopMatrix();
 }
 
@@ -2771,7 +2810,32 @@ void SceneText::Renderlevel()
 	RenderText(meshList[GEO_TEXT], "Mechanic Bay", Color(0, 1, 0));
 	modelStack.PopMatrix();
 
-	if ((distancecalculator(camera.position, Vector3(45, 0.5, 45)) < 7)) {
+	if (dayData->getDay() == 1) {
+		for (int i = 0; i < Day1[3].maxNumber - Day1[3].currentNumber; i++) {
+			modelStack.PushMatrix();
+			modelStack.Translate(44, 0, 40 - (i * 2));
+			RenderCleanerRobot();
+			modelStack.PopMatrix();
+		}
+	}
+	else if (dayData->getDay() == 2) {
+		for (int i = 0; i < Day2[3].maxNumber - Day2[3].currentNumber; i++) {
+			modelStack.PushMatrix();
+			modelStack.Translate(44, 0, 40 - (i * 2));
+			RenderCleanerRobot();
+			modelStack.PopMatrix();
+		}
+	}
+	else if (dayData->getDay() == 3) {
+		for (int i = 0; i < Day3[3].maxNumber - Day3[3].currentNumber; i++) {
+			modelStack.PushMatrix();
+			modelStack.Translate(44, 0, 40 - (i * 2));
+			RenderCleanerRobot();
+			modelStack.PopMatrix();
+		}
+	}
+
+	if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(45, 0.5, 45)) < 10)) {
 		modelStack.PushMatrix();
 		//Scale, Translate, Rotate
 		modelStack.Translate(45, 3, 38);

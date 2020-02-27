@@ -1602,10 +1602,10 @@ void SceneText::Render()
 				}
 				else if (timeDisappeared > 4 && timeDisappeared <= 6 && thirdescapeanimation == true)
 				{
-					finalPosition = 40;
+					finalPosition = 38;
 
 					modelStack.PushMatrix();
-					modelStack.Translate(-2, 3.8f, finalPosition + (timeDisappeared - 3) * 15 / 2);
+					modelStack.Translate(-5, 3.8f, finalPosition + (timeDisappeared - 3) * 15 / 2);
 					RenderSuspect3();
 					modelStack.PopMatrix();
 				}

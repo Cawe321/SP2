@@ -809,8 +809,7 @@ void SceneText::Update(double dt)
 
 	if (!FreezeMovement)
 	{
-		if (cameraLockToPlayer);
-		{
+		camera.cameraLock = true;
 			Vector3 playerPos = { movePlayerX-2.5f, 5, movePlayerZ };
 			Mtx44 rotation;
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
@@ -818,14 +817,14 @@ void SceneText::Update(double dt)
 			translation = rotation * translation;
 			camera.target = playerPos;
 			camera.position = playerPos + translation;
-		}
+		
 		if (Application::IsKeyPressed('W'))
 		{
 			Mtx44 rotation;
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { (float)(10.f * dt), 0, 0 };
 			Movement = rotation * Movement;
-			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			Vector3 playerPos = { movePlayerX-2.5f, 0, movePlayerZ };
 			if (CollisionCheck::TrueCollisionCheck(playerPos + Movement, 1, 1))
 			{
 				movePlayerX += Movement.x;
@@ -843,7 +842,7 @@ void SceneText::Update(double dt)
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { (float)(10.f * dt), 0, 0 };
 			Movement = rotation * Movement;
-			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			Vector3 playerPos = { movePlayerX-2.5f, 0, movePlayerZ };
 			if (CollisionCheck::TrueCollisionCheck(playerPos - Movement, 1, 1))
 			{
 				movePlayerX -= Movement.x;
@@ -861,7 +860,7 @@ void SceneText::Update(double dt)
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { 0, 0, (float)(10.f * dt) };
 			Movement = rotation * Movement;
-			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			Vector3 playerPos = { movePlayerX-2.5f, 0, movePlayerZ };
 			if (CollisionCheck::TrueCollisionCheck(playerPos - Movement, 1, 1))
 			{
 				movePlayerX -= Movement.x;
@@ -880,7 +879,7 @@ void SceneText::Update(double dt)
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { 0, 0, (float)(10.f * dt) };
 			Movement = rotation * Movement;
-			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			Vector3 playerPos = { movePlayerX-2.5f, 0, movePlayerZ };
 			if (CollisionCheck::TrueCollisionCheck(playerPos + Movement, 1, 1))
 			{
 				

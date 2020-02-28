@@ -59,7 +59,7 @@ SceneText::SceneText()
 	hasmissed = false;
 	hasreset = false;
 
-	BankOpen = true;
+	BankOpen = false;
 	NotEnough = false;
 	HasCars = false;
 	gameover = false;
@@ -1040,8 +1040,8 @@ void SceneText::Update(double dt)
 			LitterX = Day1Litter[i].x;
 			LitterY = Day1Litter[i].y;
 			LitterZ = Day1Litter[i].z;
-			if (camera.position.x + 20 > Day1Litter[i].x - 2 && camera.position.x + 20 < Day1Litter[i].x + 2
-				&& camera.position.z > Day1Litter[i].z - 2 && camera.position.z < Day1Litter[i].z + 2)
+			if (movePlayerX - 2.5 > Day1Litter[i].x - 2 && movePlayerX - 2.5 < Day1Litter[i].x + 2
+				&& movePlayerZ > Day1Litter[i].z - 2 && movePlayerZ < Day1Litter[i].z + 2)
 			{
 				Day1Litter[i].x = 55;
 				Day1Litter[i].y = 0;
@@ -1070,7 +1070,7 @@ void SceneText::Update(double dt)
 				Day1Litter[i].z = Day1Litter[i].z;
 			}
 			std::cout << LitterX << " " << LitterZ << std::endl;
-			std::cout << camera.position.x + 20<< " " << camera.position.z << std::endl;
+			std::cout << movePlayerX-2.5 << " " << movePlayerZ << std::endl;
 
 			//code for updating task lisk
 		}
@@ -2043,14 +2043,16 @@ void SceneText::Render()
 		if (CleanerGame == true)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(camera.position.x + 20, 0, camera.position.z);
-			modelStack.Translate(moveX, 0, moveZ);
+			modelStack.Translate(movePlayerX-2.5, 0, movePlayerZ);
+			modelStack.Rotate(rotatePlayer, 0.f, 1.f, 0.f);
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
 			for (int i = 0; i < Day1Litter.size(); ++i)
 			{
-				modelStack.Translate(Day1Litter[i].x, Day1Litter[i].y, Day1Litter[i].z);
-				RenderLitter();
+				modelStack.PushMatrix();
+					modelStack.Translate(Day1Litter[i].x, Day1Litter[i].y, Day1Litter[i].z);
+					RenderLitter();
+				modelStack.PopMatrix();
 			}
 		}
 	}

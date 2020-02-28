@@ -361,6 +361,10 @@ private:
 	bool AchievementScene;
 	bool GameScene;
 	bool DayEnds;
+	
+	bool CarAchievement1;
+	bool CarAchievement2;
+	bool CarAchievement3;
         
 	globalData* timeData = globalData::instance();
 	globalData* dayData = globalData::instance();

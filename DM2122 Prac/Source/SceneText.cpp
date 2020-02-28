@@ -1518,7 +1518,7 @@ void SceneText::Render()
 	//}
 	if (AchievementScene == true)
 	{
-
+                Tasklist* Task = nullptr;
 		TotalBouncerTask = Day1[2].maxNumber + Day2[2].maxNumber + Day2[2].maxNumber; //algo for this needs to be tested once the minigame is done
 		CurrentBouncerTask = Day1[2].currentNumber + Day2[2].currentNumber + Day2[2].currentNumber;
 
@@ -1556,11 +1556,77 @@ void SceneText::Render()
 		SalesAchievements = Salestext->salespersonAchievements(CurrentSalespersonTask);
 		
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
+		
+                if (dayData->getDay() == 1)
+		{
 
+			std::string TrackedTask;
+			Vocation::getVocation();
+			Task = new Salesmantask(Day1);
+			TrackedTask = Task->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 10);
+
+
+			Task = new Bouncertask(Day1);
+			TrackedTask = Task->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 11);
+
+			Task = new Cleanertask(Day1);
+			TrackedTask = Task->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 13);
+
+			Task = new Mechanictask(Day1);
+			TrackedTask = Task->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 14);
+		}
+		else if (dayData->getDay() == 2)
+		{
+			std::string TrackedTask;
+			Vocation::getVocation();
+			Task = new Salesmantask(Day2);
+			TrackedTask = Task->Taskstatus(Day2);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 10);
+
+
+			Task = new Bouncertask(Day2);
+			TrackedTask = Task->Taskstatus(Day2);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 11);
+
+			Task = new Cleanertask(Day2);
+			TrackedTask = Task->Taskstatus(Day2);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 13);
+
+			Task = new Mechanictask(Day2);
+			TrackedTask = Task->Taskstatus(Day2);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 14);
+		}
+		else if (dayData->getDay() == 3)
+		{
+			std::string TrackedTask;
+			Vocation::getVocation();
+			Task = new Salesmantask(Day3);
+			TrackedTask = Task->Taskstatus(Day3);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 10);
+
+
+			Task = new Bouncertask(Day3);
+			TrackedTask = Task->Taskstatus(Day3);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 11);
+
+			Task = new Cleanertask(Day3);
+			TrackedTask = Task->Taskstatus(Day3);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 13);
+
+			Task = new Mechanictask(Day3);
+			TrackedTask = Task->Taskstatus(Day3);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 14);
+		}
+		
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], CarAchievements, Color(1, 0, 0), 3.f, 3.5f, 10);
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], BouncerAchievements, Color(1, 0, 0), 3, 3.5f, 11);
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], SalesAchievements, Color(1, 0, 0), 3, 3.5f, 12);
-	
+		
+	           delete Task;
 	}
 	else if (gameover == true) {
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
@@ -1807,22 +1873,7 @@ void SceneText::Render()
 				}
 			}
 
-			std::string TrackedTask;
-			Vocation::getVocation();
-			Tasklist* Task = new Salesmantask(Day1);
-			TrackedTask = Task->Taskstatus(Day1);
-			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
-			delete Task;
-
-			Tasklist* BouncerTask = new Bouncertask(Day1);
-			TrackedTask = BouncerTask->Taskstatus(Day1);
-			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
-			delete BouncerTask;
-
-			Tasklist* CleanerTask = new Cleanertask(Day1);
-			TrackedTask = CleanerTask->Taskstatus(Day1);
-			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 1);
-			delete CleanerTask;
+			
 			
 			if (dialogueTime > 1 && dialogueTime <= 3)
 			{
@@ -1886,12 +1937,7 @@ void SceneText::Render()
 
 			
 
-			//Day2 
-			std::string TrackedTask2;
-			Vocation::getVocation();
-			Tasklist* BouncerTask2 = new Bouncertask(Day2);
-			TrackedTask2 = BouncerTask2->Taskstatus(Day2);
-			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
+		
 			
 			
                         if (dialogueTime > 1 && dialogueTime <= 3)
@@ -1956,12 +2002,7 @@ void SceneText::Render()
 		}
 
 
-		//Day3
-		std::string TrackedTask3;
-		Vocation::getVocation();
-		Tasklist* BouncerTask3 = new Bouncertask(Day3);
-		TrackedTask3 = BouncerTask3->Taskstatus(Day3);
-		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4);
+		
 			
 			if (dialogueTime > 1 && dialogueTime <= 3)
 		{

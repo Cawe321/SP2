@@ -517,12 +517,6 @@ void SceneText::Init()
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_BACK]->textureID = LoadTGA("Image//back.tga");
 
-	meshList[GEO_CHAR] = MeshBuilder::GenerateQuad("char", Color(1, 1, 1), 1.f, 1.f);
-	meshList[GEO_CHAR]->textureID = LoadTGA("Image//char.tga");
-
-	meshList[GEO_DICE] = MeshBuilder::GenerateOBJ("Dice","OBJ//doorman.obj");
-	meshList[GEO_DICE]->textureID = LoadTGA("Image//doorman.tga");
-
 	meshList[GEO_LIGHTSPHERE] = MeshBuilder::GenerateSphere("lightBall", Color(1.f, 1.f, 1.f), 9, 36, 1.f);
 
 	meshList[GEO_BANKMENU] = MeshBuilder::GenerateQuad("BankMenu", Color(0, 1, 0), 1, 1);

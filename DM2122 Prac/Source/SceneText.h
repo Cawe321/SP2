@@ -125,6 +125,7 @@ class SceneText : public Scene
 		ITEM_BENCH_3,
 		ITEM_BENCH_4,
 		ITEM_FLOOR,
+		GEO_ENTRANCE,
 
 		CAR1_BODY,
 		CAR1_STEERINGWHEEL,

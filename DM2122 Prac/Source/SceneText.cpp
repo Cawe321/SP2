@@ -503,7 +503,7 @@ void SceneText::Init()
 	meshList[GEO_LEFT]->textureID = LoadTGA("Image//left.tga");
 
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1.f, 1.f);
-	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//right.tga");
+	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//RT.tga");
 
 	meshList[GEO_TOP] = MeshBuilder::GenerateQuad("top", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_TOP]->textureID = LoadTGA("Image//top.tga");
@@ -721,6 +721,8 @@ void SceneText::Init()
 	meshList[ITEM_BENCH] = MeshBuilder::GenerateOBJ("Bench", "OBJ//Background_Items//Bench.obj");
 	meshList[ITEM_BENCH]->textureID = LoadTGA("Image//background_items//Bench.tga");
 	meshList[ITEM_FLOOR] = MeshBuilder::GenerateCuboid("Floor", Color(1, 1, 1), 1.f, 1.f, 1.f);
+	meshList[GEO_ENTRANCE] = MeshBuilder::GenerateOBJ("Entrance", "OBJ//carshowentrance.obj");
+	meshList[GEO_ENTRANCE]->textureID = LoadTGA("Image//carshowentrance.tga");
 
 	// Cars
 	meshList[CAR1_BODY] = MeshBuilder::GenerateOBJ("Car1Body", "OBJ//Cars//Car1//Car1Body.obj");
@@ -1779,11 +1781,6 @@ void SceneText::Render()
 		RenderMesh(meshList[ITEM_LIGHTBULB], false);
 		modelStack.PopMatrix();*/
 
-		//modelStack.PushMatrix();
-		//modelStack.Translate(0, -3, 0);
-		//RenderMesh(meshList[GEO_DICE], true);
-		//modelStack.PopMatrix();
-		
 		modelStack.PushMatrix();
 		modelStack.Translate(-45, 0, -27);
 		modelStack.Rotate(90.f, 0, 1, 0);
@@ -1931,14 +1928,8 @@ void SceneText::Render()
 				RenderSuspect2();
 				modelStack.PopMatrix();
 			}
-
-
 			
-
-		
-			
-			
-                        if (dialogueTime > 1 && dialogueTime <= 3)
+            if (dialogueTime > 1 && dialogueTime <= 3)
 			{
 
 				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
@@ -3012,6 +3003,7 @@ void SceneText::Renderlevel()
 	RenderText(meshList[GEO_TEXT], "Mechanic Bay", Color(0, 1, 0));
 	modelStack.PopMatrix();
 
+
 	if (dayData->getDay() == 1) {
 		for (int i = 0; i < Day1[3].maxNumber - Day1[3].currentNumber; i++) {
 			if(!CleanerGame)
@@ -3059,7 +3051,14 @@ void SceneText::Renderlevel()
 		modelStack.Rotate(-90, 0, 1, 0);
 		RenderText(meshList[GEO_TEXT], "the Mechanic Game", Color(0, 1, 0));
 		modelStack.PopMatrix();
+
 	}
+	modelStack.PushMatrix();
+	modelStack.Translate(0, -2, 50);
+	modelStack.Rotate(270, 0, 1, 0);
+	modelStack.Scale(5, 5, 5);
+	RenderMesh(meshList[GEO_ENTRANCE], true);
+	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-7, 0.5, 20);

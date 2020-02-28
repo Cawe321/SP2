@@ -357,6 +357,9 @@ private:
 	int CleanerSalary;
 	int BouncerSalary;
 	int MechanicSalary;
+	
+	float distanceCheckX = -45.f;
+	float suspectCheck;
 
 	bool AchievementScene;
 	bool GameScene;

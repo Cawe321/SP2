@@ -2920,26 +2920,35 @@ void SceneText::Renderlevel()
 
 	if (dayData->getDay() == 1) {
 		for (int i = 0; i < Day1[3].maxNumber - Day1[3].currentNumber; i++) {
+			if(!CleanerGame)
+			{
 			modelStack.PushMatrix();
 			modelStack.Translate(44, 0, 40 - (i * 2));
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
+			}
 		}
 	}
 	else if (dayData->getDay() == 2) {
 		for (int i = 0; i < Day2[3].maxNumber - Day2[3].currentNumber; i++) {
+			if(!CleanerGame)
+			{
 			modelStack.PushMatrix();
 			modelStack.Translate(44, 0, 40 - (i * 2));
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
+			}
 		}
 	}
 	else if (dayData->getDay() == 3) {
 		for (int i = 0; i < Day3[3].maxNumber - Day3[3].currentNumber; i++) {
+			if(!CleanerGame)
+			{
 			modelStack.PushMatrix();
 			modelStack.Translate(44, 0, 40 - (i * 2));
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
+			}
 		}
 	}
 

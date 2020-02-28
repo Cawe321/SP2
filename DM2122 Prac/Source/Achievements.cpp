@@ -4,23 +4,29 @@
 Achievements::Achievements()
 {
 	output = "";
+	data = globalData::instance();
 }
 
-std::string Achievements::carAchievements(int price)
+std::string Achievements::carAchievements(int carno)
 {
-	if (price == 15000)
+	if (data->owncar(carno) == true)
 	{
-		output = "CheapSkate Achieved!";
+		if (carno == 1)
+		{
+			output = "CheapSkate Achieved!";
+		}
+		else if (carno == 3)
+		{
+			output = "Playing it Safe Achieved!";
+		}
+		else if (carno == 6)
+		{
+			output = "Crazy Rich!";
+		}
 	}
-	else if(price == 90000)
-	{
-		output = "Playing it Safe Achieved!";
-	}
-	else if (price == 225000)
-	{
-		output = "Crazy Rich!";
-	}
-	else if (price == 0)
+	
+	
+	else 
 	{
 		output = "I Rather Walk Achieved!";
 	}

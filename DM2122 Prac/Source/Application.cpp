@@ -40,7 +40,7 @@ void resize_callback(GLFWwindow* window, int w, int h)
 bool Application::IsKeyPressed(unsigned short key)
 {
 	
-    return ((GetAsyncKeyState(key) & 0x8001) != 0);
+    return ((GetAsyncKeyState(key) & 0x8000) != 0);
 }
 
 bool Application::Isonlevel = false;

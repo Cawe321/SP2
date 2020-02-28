@@ -1312,6 +1312,19 @@ void SceneText::Update(double dt)
 		FreezeMovement = true;
 		gameover = true;
 	}
+	
+	//if (movePlayerX - distanceCheckX < 5 )
+	//{
+		//RenderTextOnScreen(meshList[GEO_TEXT], "press V", Color(1, 0, 0), 5, 10, 5);
+		//if (Application::IsKeyPressed('V'))
+		//{
+			//dialogueTime += 10 * dt;
+			//if (std::stoi(timeData->getinGameTime()) == 0)
+			//{
+				//dialogueTime = 0;
+			//}
+		//}
+	//}
 
 	//Code for updating task list for Bouncer game
 	/*Tasklist* temp;
@@ -1783,6 +1796,14 @@ void SceneText::Render()
 			TrackedTask = CleanerTask->Taskstatus(Day1);
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 1);
 			delete CleanerTask;
+			
+			//if (dialogueTime > 1 && dialogueTime <= 3)
+			//{
+
+				//RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
+				//RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Hey new guy look out for any baddies kay? Heard one of them is a human!", Color(1, 0, 0), 3, 1, 4, 25, false);
+
+			//}
 		}
 
 		else if(dayData->getDay() == 2)
@@ -2201,7 +2222,7 @@ void SceneText::RenderPlayer() // Facing x-axis
 {
 	std::cout << "X: " << movePlayerX << "\nY: " << movePlayerZ << "\n";
 	modelStack.PushMatrix();
-	modelStack.Translate(movePlayerX-2.5, 0, movePlayerZ);
+	modelStack.Translate(movePlayerX-2.5, -0.5f, movePlayerZ);
 	modelStack.Scale(0.5, 0.4, 0.5);
 	modelStack.Translate(5, 3.8, 0);
 	modelStack.Rotate(rotatePlayer, 0, 1, 0);

@@ -34,6 +34,36 @@ bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float sizeX, float sizeZ)
 		return false;
 	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(37.5f, 1, -47.f), 4, 15.25f)) // bench 4
 		return false;
+	if (DistanceCheck(obj1, Vector3(5.f, 0, 30.f)) < 4.5f + sizeX) // information counter
+		return false;
+	if (DistanceCheck(obj1, Vector3(-10, 0, 30)) < 3 + sizeX) // display car
+		return false;
+	if (DistanceCheck(obj1, Vector3(1, 0, 35)) < 0.25f + sizeX) // information stand
+		return false;
+	for (int i = 20; i >= -30; i -= 10)
+	{
+		if (DistanceCheck(obj1, Vector3(-5, 0, i)) < 0.25f + sizeX) // information stand
+			return false;
+		if (DistanceCheck(obj1, Vector3(5, 0, i)) < 0.25f + sizeX) // information stand
+			return false;
+	}
+	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(-20.f, 0, -40), 17.f, 12.7f))
+		return false;
+	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(-20.5, 0, -29), 14.5, 13))
+		return false;
+	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(-16, 0, -16), 7, 6)) 
+		return false;
+	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(-16, 0, -4), 10.5, 27))
+		return false;
+	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(4.4f, 0, -11), 8.f, 8.f)) 
+		return false;
+	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(6.5f, 0, -1), 12.2f, 12.f))
+		return false;
+	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(11.f, 0, 14.f), 5.f, 8.f))
+		return false;
+	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(7.f, 0, 19.5f), 8.f, 7.f))
+		return false;
+
 	return true;
 }
 

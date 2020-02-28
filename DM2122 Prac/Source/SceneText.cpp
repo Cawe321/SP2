@@ -1189,14 +1189,19 @@ void SceneText::Update(double dt)
 		//to do: switch light type to SPOT and pass the information to
 		light[0].type = Light::LIGHT_SPOT;
 	}*/
-	if (AchievementScene == false && GameScene == true && DayEnds == false)
-	{
-		if (Application::IsKeyPressed(VK_RETURN))
+	if (MechanicGame == false && salesCustomer == nullptr) {
+		if (AchievementScene == false && GameScene == true && DayEnds == false)
 		{
-			AchievementScene = true;
-			GameScene = false;
+			if (Application::IsKeyPressed(VK_RETURN))
+			{
+				AchievementScene = true;
+				GameScene = false;
 
+			}
 		}
+	}
+	if (Application::IsKeyPressed(VK_RETURN) && MechanicGame == true)
+	{
 	}
 	if (AchievementScene == true && GameScene == false)
 	{
@@ -1206,6 +1211,7 @@ void SceneText::Update(double dt)
 			GameScene = true;
 		}
 	}
+
 	if (AchievementScene == false)
 	{
 			if (dayData->getDay() == 3)
@@ -1332,35 +1338,32 @@ void SceneText::Render()
 
 	viewStack.LoadIdentity();
 	viewStack.LookAt(camera.position.x, camera.position.y, camera.position.z, camera.target.x, camera.target.y, camera.target.z, camera.up.x, camera.up.y, camera.up.z);
-	modelStack.LoadIdentity();
-		// passing the light direction if it is a direction light	
-		if (light[0].type == Light::LIGHT_DIRECTIONAL)
-		{
-			Vector3 lightDir(light[0].position.x, light[0].position.y, light[0].position.z);
-			Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
-			glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
-		}
-		// if it is spot light, pass in position and direction 
-		else if (light[0].type == Light::LIGHT_SPOT)
-		{
-			Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
-			glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
-			Vector3 spotDirection_cameraspace = viewStack.Top() * light[0].spotDirection;
-			glUniform3fv(m_parameters[U_LIGHT0_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
-		}
-		else if (light[0].type == Light::LIGHT_POINT)
-		{
-			// default is point light (only position since point light is 360 degrees)
-			Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
-			glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
-		}
+	modelStack.LoadIdentity();	
+	if (light[0].type == Light::LIGHT_DIRECTIONAL)
+	{
+		Vector3 lightDir(light[0].position.x, light[0].position.y, light[0].position.z);
+		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
+		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightDirection_cameraspace.x);
+	}
+	else if (light[0].type == Light::LIGHT_SPOT)
+	{
+		Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
+		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+		Vector3 spotDirection_cameraspace = viewStack.Top() * light[0].spotDirection;
+		glUniform3fv(m_parameters[U_LIGHT0_SPOTDIRECTION], 1, &spotDirection_cameraspace.x);
+	}
+	else if (light[0].type == Light::LIGHT_POINT)
+	{
+		Position lightPosition_cameraspace = viewStack.Top() * light[0].position;
+		glUniform3fv(m_parameters[U_LIGHT0_POSITION], 1, &lightPosition_cameraspace.x);
+	}
+
 	if (light[1].type == Light::LIGHT_DIRECTIONAL)
 	{
 		Vector3 lightDir(light[1].position.x, light[1].position.y, light[1].position.z);
 		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
 		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightDirection_cameraspace.x);
 	}
-	// if it is spot light, pass in position and direction 
 	else if (light[1].type == Light::LIGHT_SPOT)
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * light[1].position;
@@ -1370,7 +1373,6 @@ void SceneText::Render()
 	}
 	else
 	{
-		// default is point light (only position since point light is 360 degrees)
 		Position lightPosition_cameraspace = viewStack.Top() * light[1].position;
 		glUniform3fv(m_parameters[U_LIGHT1_POSITION], 1, &lightPosition_cameraspace.x);
 	}
@@ -1381,7 +1383,6 @@ void SceneText::Render()
 		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
 		glUniform3fv(m_parameters[U_LIGHT2_POSITION], 1, &lightDirection_cameraspace.x);
 	}
-	// if it is spot light, pass in position and direction 
 	else if (light[2].type == Light::LIGHT_SPOT)
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * light[2].position;
@@ -1391,7 +1392,6 @@ void SceneText::Render()
 	}
 	else
 	{
-		// default is point light (only position since point light is 360 degrees)
 		Position lightPosition_cameraspace = viewStack.Top() * light[2].position;
 		glUniform3fv(m_parameters[U_LIGHT2_POSITION], 1, &lightPosition_cameraspace.x);
 	}
@@ -1402,7 +1402,6 @@ void SceneText::Render()
 		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
 		glUniform3fv(m_parameters[U_LIGHT3_POSITION], 1, &lightDirection_cameraspace.x);
 	}
-	// if it is spot light, pass in position and direction 
 	else if (light[3].type == Light::LIGHT_SPOT)
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * light[3].position;
@@ -1412,7 +1411,6 @@ void SceneText::Render()
 	}
 	else
 	{
-		// default is point light (only position since point light is 360 degrees)
 		Position lightPosition_cameraspace = viewStack.Top() * light[3].position;
 		glUniform3fv(m_parameters[U_LIGHT3_POSITION], 1, &lightPosition_cameraspace.x);
 	}
@@ -1423,7 +1421,6 @@ void SceneText::Render()
 		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
 		glUniform3fv(m_parameters[U_LIGHT4_POSITION], 1, &lightDirection_cameraspace.x);
 	}
-	// if it is spot light, pass in position and direction 
 	else if (light[4].type == Light::LIGHT_SPOT)
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * light[4].position;
@@ -1433,18 +1430,15 @@ void SceneText::Render()
 	}
 	else
 	{
-		// default is point light (only position since point light is 360 degrees)
 		Position lightPosition_cameraspace = viewStack.Top() * light[4].position;
 		glUniform3fv(m_parameters[U_LIGHT4_POSITION], 1, &lightPosition_cameraspace.x);
 	}
-
 	if (light[5].type == Light::LIGHT_DIRECTIONAL)
 	{
 		Vector3 lightDir(light[5].position.x, light[5].position.y, light[5].position.z);
 		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
 		glUniform3fv(m_parameters[U_LIGHT5_POSITION], 1, &lightDirection_cameraspace.x);
 	}
-	// if it is spot light, pass in position and direction 
 	else if (light[5].type == Light::LIGHT_SPOT)
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * light[5].position;
@@ -1454,18 +1448,15 @@ void SceneText::Render()
 	}
 	else
 	{
-		// default is point light (only position since point light is 360 degrees)
 		Position lightPosition_cameraspace = viewStack.Top() * light[5].position;
 		glUniform3fv(m_parameters[U_LIGHT5_POSITION], 1, &lightPosition_cameraspace.x);
 	}
-
 	if (light[6].type == Light::LIGHT_DIRECTIONAL)
 	{
 		Vector3 lightDir(light[6].position.x, light[6].position.y, light[6].position.z);
 		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
 		glUniform3fv(m_parameters[U_LIGHT6_POSITION], 1, &lightDirection_cameraspace.x);
 	}
-	// if it is spot light, pass in position and direction 
 	else if (light[6].type == Light::LIGHT_SPOT)
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * light[6].position;
@@ -1475,7 +1466,6 @@ void SceneText::Render()
 	}
 	else
 	{
-		// default is point light (only position since point light is 360 degrees)
 		Position lightPosition_cameraspace = viewStack.Top() * light[6].position;
 		glUniform3fv(m_parameters[U_LIGHT6_POSITION], 1, &lightPosition_cameraspace.x);
 	}
@@ -1485,8 +1475,7 @@ void SceneText::Render()
 		Vector3 lightDir(light[7].position.x, light[7].position.y, light[7].position.z);
 		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
 		glUniform3fv(m_parameters[U_LIGHT7_POSITION], 1, &lightDirection_cameraspace.x);
-	}
-	// if it is spot light, pass in position and direction 
+	} 
 	else if (light[7].type == Light::LIGHT_SPOT)
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * light[7].position;
@@ -1496,7 +1485,6 @@ void SceneText::Render()
 	}
 	else
 	{
-		// default is point light (only position since point light is 370 degrees)
 		Position lightPosition_cameraspace = viewStack.Top() * light[7].position;
 		glUniform3fv(m_parameters[U_LIGHT7_POSITION], 1, &lightPosition_cameraspace.x);
 	}

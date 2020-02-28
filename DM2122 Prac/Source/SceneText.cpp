@@ -1173,6 +1173,23 @@ void SceneText::Update(double dt)
 			MechanicGame = true;
 			FreezeMovement = true;
 		}
+		if (AchievementScene == false)
+	{
+			if (dayData->getDay() == 3)
+		{
+				escapeanimation = true;	
+		}
+		
+		if (dayData->getDay() == 2)
+		{
+				secondescpaeanimation = true;	
+		}
+		
+		if (dayData->getDay() == 1)
+		{
+				thirdescapeanimation = true;	
+		}
+	}
 	}
 	/*if (Application::IsKeyPressed('Q'))
 	{
@@ -1212,32 +1229,7 @@ void SceneText::Update(double dt)
 		}
 	}
 
-	if (AchievementScene == false)
-	{
-			if (dayData->getDay() == 3)
-		{
-			if (Application::IsKeyPressed('X')) // change to I
-			{
-				escapeanimation = true;
-			}
-		}
-		
-		if (dayData->getDay() == 2)
-		{
-			if (Application::IsKeyPressed('Z')) //change to I
-			{
-				secondescpaeanimation = true;
-			}
-		}
-		
-		if (dayData->getDay() == 1)
-		{
-			if (Application::IsKeyPressed('C')) //change to I
-			{
-				thirdescapeanimation = true;
-			}
-		}
-	}
+	
 	if (AchievementScene == false && GameScene == true && DayEnds == false)
 	{
 		timeData->setinGameTime(std::stof(timeData->getinGameTime()) - dt);
@@ -1313,19 +1305,9 @@ void SceneText::Update(double dt)
 		gameover = true;
 	}
 	
-		if (movePlayerX - distanceCheckX < 5 )
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "press V", Color(1, 0, 0), 5, 10, 5);
+	
 
-		if (Application::IsKeyPressed('V'))
-		{
-			dialogueTime += 10 * dt;
-			if (std::stoi(timeData->getinGameTime()) == 0)
-			{
-				dialogueTime = 0;
-			}
-		}
-	}
+		
 
 	//Code for updating task list for Bouncer game
 	/*Tasklist* temp;
@@ -1668,7 +1650,8 @@ void SceneText::Render()
 		//RenderCar9();
 		//RenderCar10(); // need wheels
 		//RenderCar11(); // need wheels
-
+		
+                
 		
 		/*modelStack.PushMatrix();
 		modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);

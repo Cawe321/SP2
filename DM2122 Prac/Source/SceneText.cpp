@@ -59,7 +59,7 @@ SceneText::SceneText()
 	hasmissed = false;
 	hasreset = false;
 
-	BankOpen = false;
+	BankOpen = true;
 	NotEnough = false;
 	HasCars = false;
 	gameover = false;
@@ -1080,7 +1080,27 @@ void SceneText::Update(double dt)
 			//code for updating task lisk
 		}
 	}
-	
+	for (int i = 0; i < 10; i++)
+	{
+		Vector3 characterPosition = { movePlayerX, 0, movePlayerZ };
+		if (CollisionCheck::DistanceCheck(characterPosition, customerLocations[i].position) < 15 && salesCustomer == nullptr && !FreezeMovement && (customerLocations[i].isCurious == true || Vocation::isCustomerCurious() == true))
+		{
+
+			customerLocations[i].isCurious = true;
+			customerLocations[i].inRange = true;
+			if (Application::IsKeyPressed('I'))
+			{
+				FreezeMovement = true;
+				customerLocations[i].selected = true;
+				salesCustomer = new CSalesCustomer;
+			}
+
+		}
+		else
+		{
+			customerLocations[i].inRange = false;
+		}
+	}
 	if (salesCustomer != nullptr)
 	{
 		salesCustomer->CustomerUpdate(dt);

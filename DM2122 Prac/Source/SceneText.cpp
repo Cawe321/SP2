@@ -127,8 +127,8 @@ void SceneText::Init()
 	camera.Init(Vector3(0, 0, 10), Vector3(0, 0, 0), Vector3(0, 1, 0));
 	if (CleanerGame == true)
 	{
-		camera.Init(Vector3(15, 0, 0), Vector3(0, 0, 0), Vector3(0, 1, 0));
-		camera.cameraLock = true;
+		camera.Init(Vector3(0, 0, 15), Vector3(0, 0, 0), Vector3(0, 1, 0));
+		camera.cleaner = true;
 	}
 	Mtx44 projection;
 	projection.SetToPerspective(45.f, 4.f / 3.f, 0.1f, 1000.f);
@@ -1006,21 +1006,25 @@ void SceneText::Update(double dt)
 
 	if (CleanerGame == true)
 	{
-		camera.position.x = 50;
-		camera.position.y = 10;
 		if (Application::IsKeyPressed(VK_LEFT))
+		{
 			rotateCleanerTop += (float)(RSPEED * dt);
-		if (Application::IsKeyPressed(VK_RIGHT))
+			rotateCleaner += (float)(RSPEED * dt) / 2;
+		}
+		if (Application::IsKeyPressed(VK_RIGHT)) 
+		{
 			rotateCleanerTop -= (float)(RSPEED * dt);
+			rotateCleaner -= (float)(RSPEED * dt) / 2;
+		}
 		if (Application::IsKeyPressed('W'))
 		{
 			rotateCleanerWheelsForward += (float)(RSPEED * dt);
-			moveX -= (float)(15.f * dt);
+			/*moveZ -= (float)(15.f * dt);*/
 		}
 		if (Application::IsKeyPressed('S'))
 		{
 			rotateCleanerWheelsForward -= (float)(RSPEED * dt);
-			moveX += (float)(15.f * dt);
+			/*moveZ += (float)(15.f * dt);*/
 		}
 		rotateCleanerWheelsForward -= (float)(RSPEED * dt);
 		if (Application::IsKeyPressed('A'))
@@ -1040,26 +1044,15 @@ void SceneText::Update(double dt)
 			LitterX = Day1Litter[i].x;
 			LitterY = Day1Litter[i].y;
 			LitterZ = Day1Litter[i].z;
-			float positionX = camera.position.x - 10;
-			float vacuum = 2.5;
-			if (positionX - vacuum > Day1Litter[i].x - 2 && positionX - vacuum < Day1Litter[i].x + 2
-				&& camera.position.z + vacuum > Day1Litter[i].z - 2 && camera.position.z + vacuum < Day1Litter[i].z + 2)
+			if (camera.position.x + 20> Day1Litter[i].x - 2 && camera.position.x + 20< Day1Litter[i].x + 2
+				&& camera.position.z > Day1Litter[i].z - 2 && camera.position.z < Day1Litter[i].z + 2)
 			{
 
 				Day1Litter[i].x = 55;
 				Day1Litter[i].y = 0;
 				Day1Litter[i].z = 55;
-				//LitterX = positionX;
-				//LitterY = 3; // inside the cleaner bot
-				//LitterZ = camera.position.z;
-				//CleanerTask->Addscore(Day1);
 				std::cout << "PICKED UP";
-			}
-			std::cout << LitterX << " " << LitterZ << std::endl;
-			std::cout << positionX << " " << camera.position.z << std::endl;
-
-			//code for updating task lisk
-			/*Tasklist* temp;
+			Tasklist* temp = nullptr;
 			BossOpinion->AddGoodwill(5);
 			if (dayData->getDay() == 1) {
 				temp = new Cleanertask(Day1);
@@ -1073,7 +1066,12 @@ void SceneText::Update(double dt)
 				temp = new Cleanertask(Day3);
 				Day3 = temp->Addscore(Day3);
 			}
-			delete temp;*/
+			delete temp;
+			}
+			std::cout << LitterX << " " << LitterZ << std::endl;
+			std::cout << camera.position.x + 20<< " " << camera.position.z << std::endl;
+
+			//code for updating task lisk
 		}
 	}
 	
@@ -1637,7 +1635,8 @@ void SceneText::Render()
 		
 		RenderSkybox();
 		Renderlevel();
-		RenderPlayer();
+		if (!CleanerGame)
+			RenderPlayer();
 		
 		//RenderCar1();
 		//RenderCar2();
@@ -1960,7 +1959,8 @@ void SceneText::Render()
 		if (CleanerGame == true)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(camera.position.x - 10, camera.position.y -0.5, camera.position.z);
+			modelStack.Translate(camera.position.x + 20, 0, camera.position.z);
+			modelStack.Translate(moveX, 0, moveZ);
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
 			for (int i = 0; i < Day1Litter.size(); ++i)
@@ -2176,7 +2176,7 @@ void SceneText::RenderSkybox()
 void SceneText::RenderCleanerRobot() // Facing x-axis
 {
 	modelStack.PushMatrix();
-	modelStack.Rotate(180, 0, 1, 0);
+	modelStack.Rotate(rotateCleaner, 0, 1, 0);
 	modelStack.Translate(0, 0.4, 0);
 	RenderMesh(meshList[CLEANER_BOTTOM], true);
 	

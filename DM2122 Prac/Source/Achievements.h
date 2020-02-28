@@ -1,9 +1,12 @@
 #pragma once
 #include <string>
+#include "globalData.h"
+
 class Achievements
 {
 private:
 	std::string output;
+	globalData* data;
 public:
 	Achievements();
 	std::string carAchievements(int price);

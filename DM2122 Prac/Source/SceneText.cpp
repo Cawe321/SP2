@@ -1300,6 +1300,7 @@ void SceneText::Update(double dt)
 			else if (timeData->Deposit(Selection))
 			{
 				timeData->buycar(no);
+				Price = no;
 			}
 			else
 			{

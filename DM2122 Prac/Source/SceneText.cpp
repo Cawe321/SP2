@@ -59,7 +59,7 @@ SceneText::SceneText()
 	hasmissed = false;
 	hasreset = false;
 
-	BankOpen = false;
+	BankOpen = true;
 	NotEnough = false;
 	HasCars = false;
 	gameover = false;
@@ -516,12 +516,6 @@ void SceneText::Init()
 
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_BACK]->textureID = LoadTGA("Image//back.tga");
-
-	meshList[GEO_CHAR] = MeshBuilder::GenerateQuad("char", Color(1, 1, 1), 1.f, 1.f);
-	meshList[GEO_CHAR]->textureID = LoadTGA("Image//char.tga");
-
-	meshList[GEO_DICE] = MeshBuilder::GenerateOBJ("Dice","OBJ//doorman.obj");
-	meshList[GEO_DICE]->textureID = LoadTGA("Image//doorman.tga");
 
 	meshList[GEO_LIGHTSPHERE] = MeshBuilder::GenerateSphere("lightBall", Color(1.f, 1.f, 1.f), 9, 36, 1.f);
 
@@ -1004,27 +998,28 @@ void SceneText::Update(double dt)
 	}
 	// end for keypress game
 
+	
+	if (Application::IsKeyPressed('F'))
+		CleanerGame = true;
 	if (CleanerGame == true)
 	{
 		if (Application::IsKeyPressed(VK_LEFT))
 		{
 			rotateCleanerTop += (float)(RSPEED * dt);
-			rotateCleaner += (float)(RSPEED * dt) / 2;
+			rotateCleaner += (float)(RSPEED * dt);
 		}
 		if (Application::IsKeyPressed(VK_RIGHT)) 
 		{
 			rotateCleanerTop -= (float)(RSPEED * dt);
-			rotateCleaner -= (float)(RSPEED * dt) / 2;
+			rotateCleaner -= (float)(RSPEED * dt);
 		}
 		if (Application::IsKeyPressed('W'))
-		{
+		{	
 			rotateCleanerWheelsForward += (float)(RSPEED * dt);
-			/*moveZ -= (float)(15.f * dt);*/
 		}
 		if (Application::IsKeyPressed('S'))
-		{
+		{	
 			rotateCleanerWheelsForward -= (float)(RSPEED * dt);
-			/*moveZ += (float)(15.f * dt);*/
 		}
 		rotateCleanerWheelsForward -= (float)(RSPEED * dt);
 		if (Application::IsKeyPressed('A'))
@@ -1044,29 +1039,34 @@ void SceneText::Update(double dt)
 			LitterX = Day1Litter[i].x;
 			LitterY = Day1Litter[i].y;
 			LitterZ = Day1Litter[i].z;
-			if (camera.position.x + 20> Day1Litter[i].x - 2 && camera.position.x + 20< Day1Litter[i].x + 2
+			if (camera.position.x + 20 > Day1Litter[i].x - 2 && camera.position.x + 20 < Day1Litter[i].x + 2
 				&& camera.position.z > Day1Litter[i].z - 2 && camera.position.z < Day1Litter[i].z + 2)
 			{
-
 				Day1Litter[i].x = 55;
 				Day1Litter[i].y = 0;
 				Day1Litter[i].z = 55;
 				std::cout << "PICKED UP";
-			Tasklist* temp = nullptr;
-			BossOpinion->AddGoodwill(5);
-			if (dayData->getDay() == 1) {
-				temp = new Cleanertask(Day1);
-				Day1 = temp->Addscore(Day1);
-			}
-			else if (dayData->getDay() == 2) {
-				temp = new Cleanertask(Day2);
-				Day2 = temp->Addscore(Day2);
-			}
-			else if (dayData->getDay() == 3) {
-				temp = new Cleanertask(Day3);
-				Day3 = temp->Addscore(Day3);
+				Tasklist* temp = nullptr;
+				BossOpinion->AddGoodwill(5);
+				if (dayData->getDay() == 1) {
+					temp = new Cleanertask(Day1);
+					Day1 = temp->Addscore(Day1);
+				}
+				else if (dayData->getDay() == 2) {
+					temp = new Cleanertask(Day2);
+					Day2 = temp->Addscore(Day2);
+				}
+				else if (dayData->getDay() == 3) {
+					temp = new Cleanertask(Day3);
+					Day3 = temp->Addscore(Day3);
 			}
 			delete temp;
+			}
+			else 
+			{
+				Day1Litter[i].x = Day1Litter[i].x;
+				Day1Litter[i].y = Day1Litter[i].y;
+				Day1Litter[i].z = Day1Litter[i].z;
 			}
 			std::cout << LitterX << " " << LitterZ << std::endl;
 			std::cout << camera.position.x + 20<< " " << camera.position.z << std::endl;
@@ -1074,13 +1074,12 @@ void SceneText::Update(double dt)
 			//code for updating task lisk
 		}
 	}
-	
 	for (int i = 0; i < 10; i++)
 	{
 		Vector3 characterPosition = { movePlayerX, 0, movePlayerZ };
-		if (CollisionCheck::DistanceCheck(characterPosition, customerLocations[i].position) < 30 && salesCustomer == nullptr && !FreezeMovement && (customerLocations[i].isCurious == true || Vocation::isCustomerCurious() == true))
+		if (CollisionCheck::DistanceCheck(characterPosition, customerLocations[i].position) < 15 && salesCustomer == nullptr && !FreezeMovement && (customerLocations[i].isCurious == true || Vocation::isCustomerCurious() == true))
 		{
-			
+
 			customerLocations[i].isCurious = true;
 			customerLocations[i].inRange = true;
 			if (Application::IsKeyPressed('I'))
@@ -1096,7 +1095,6 @@ void SceneText::Update(double dt)
 			customerLocations[i].inRange = false;
 		}
 	}
-
 	if (salesCustomer != nullptr)
 	{
 		salesCustomer->CustomerUpdate(dt);
@@ -1187,6 +1185,18 @@ void SceneText::Update(double dt)
 		{
 				thirdescapeanimation = true;	
 		}
+	}
+		if (movePlayerX - distanceCheckX < 5 )
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "press V", Color(1, 0, 0), 5, 10, 5);
+
+		
+			dialogueTime += 10 * dt;
+			if (std::stoi(timeData->getinGameTime()) == 0)
+			{
+				dialogueTime = 0;
+			}
+		
 	}
 	}
 	/*if (Application::IsKeyPressed('Q'))
@@ -1288,6 +1298,7 @@ void SceneText::Update(double dt)
 			else if (timeData->Deposit(Selection))
 			{
 				timeData->buycar(no);
+				Price = no;
 			}
 			else
 			{
@@ -1505,7 +1516,7 @@ void SceneText::Render()
 	//}
 	if (AchievementScene == true)
 	{
-
+                Tasklist* Task = nullptr;
 		TotalBouncerTask = Day1[2].maxNumber + Day2[2].maxNumber + Day2[2].maxNumber; //algo for this needs to be tested once the minigame is done
 		CurrentBouncerTask = Day1[2].currentNumber + Day2[2].currentNumber + Day2[2].currentNumber;
 
@@ -1543,11 +1554,77 @@ void SceneText::Render()
 		SalesAchievements = Salestext->salespersonAchievements(CurrentSalespersonTask);
 		
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
+		
+                if (dayData->getDay() == 1)
+		{
 
+			std::string TrackedTask;
+			Vocation::getVocation();
+			Task = new Salesmantask(Day1);
+			TrackedTask = Task->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 10);
+
+
+			Task = new Bouncertask(Day1);
+			TrackedTask = Task->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 11);
+
+			Task = new Cleanertask(Day1);
+			TrackedTask = Task->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 13);
+
+			Task = new Mechanictask(Day1);
+			TrackedTask = Task->Taskstatus(Day1);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 14);
+		}
+		else if (dayData->getDay() == 2)
+		{
+			std::string TrackedTask;
+			Vocation::getVocation();
+			Task = new Salesmantask(Day2);
+			TrackedTask = Task->Taskstatus(Day2);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 10);
+
+
+			Task = new Bouncertask(Day2);
+			TrackedTask = Task->Taskstatus(Day2);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 11);
+
+			Task = new Cleanertask(Day2);
+			TrackedTask = Task->Taskstatus(Day2);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 13);
+
+			Task = new Mechanictask(Day2);
+			TrackedTask = Task->Taskstatus(Day2);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 14);
+		}
+		else if (dayData->getDay() == 3)
+		{
+			std::string TrackedTask;
+			Vocation::getVocation();
+			Task = new Salesmantask(Day3);
+			TrackedTask = Task->Taskstatus(Day3);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 10);
+
+
+			Task = new Bouncertask(Day3);
+			TrackedTask = Task->Taskstatus(Day3);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 11);
+
+			Task = new Cleanertask(Day3);
+			TrackedTask = Task->Taskstatus(Day3);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 13);
+
+			Task = new Mechanictask(Day3);
+			TrackedTask = Task->Taskstatus(Day3);
+			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 14);
+		}
+		
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], CarAchievements, Color(1, 0, 0), 3.f, 3.5f, 10);
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], BouncerAchievements, Color(1, 0, 0), 3, 3.5f, 11);
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], SalesAchievements, Color(1, 0, 0), 3, 3.5f, 12);
-	
+		
+	           delete Task;
 	}
 	else if (gameover == true) {
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
@@ -1745,9 +1822,21 @@ void SceneText::Render()
 
 		if (dayData->getDay() == 1)
 		{
-		
+		       suspectCheck = -20;
 			if (Day1[2].currentNumber == 0)
 			{
+				if (movePlayerX - suspectCheck < 5 && thirdescapeanimation == false)
+				{
+					modelStack.PushMatrix();
+					modelStack.Translate(-20.f, 5, 15);
+					modelStack.Scale(4, 4, 4);
+					
+				
+					modelStack.Translate(-4, 0, 0);
+					RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
+					modelStack.PopMatrix();
+				}
+
 				if (thirdescapeanimation == false) //Day1
 				{
 					RenderSuspect3();
@@ -1782,22 +1871,7 @@ void SceneText::Render()
 				}
 			}
 
-			std::string TrackedTask;
-			Vocation::getVocation();
-			Tasklist* Task = new Salesmantask(Day1);
-			TrackedTask = Task->Taskstatus(Day1);
-			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 0);
-			delete Task;
-
-			Tasklist* BouncerTask = new Bouncertask(Day1);
-			TrackedTask = BouncerTask->Taskstatus(Day1);
-			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 2);
-			delete BouncerTask;
-
-			Tasklist* CleanerTask = new Cleanertask(Day1);
-			TrackedTask = CleanerTask->Taskstatus(Day1);
-			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 1);
-			delete CleanerTask;
+			
 			
 			if (dialogueTime > 1 && dialogueTime <= 3)
 			{
@@ -1810,6 +1884,21 @@ void SceneText::Render()
 
 		else if(dayData->getDay() == 2)
 		{
+			suspectCheck = 15;
+			
+			if (movePlayerX - suspectCheck < 5 && secondescpaeanimation == false)
+			{
+				modelStack.PushMatrix();
+				modelStack.Translate(15.f, 5, 0);
+				modelStack.Scale(4, 4, 4);
+
+
+				//modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90 - 0, 0.f, 1.f, 0.f);
+				modelStack.Translate(-4, 0, 0);
+				RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
+				modelStack.PopMatrix();
+			}
+			
 			if (secondescpaeanimation == false) //Day2
 			{
 				RenderSuspect2();
@@ -1846,12 +1935,7 @@ void SceneText::Render()
 
 			
 
-			//Day2 
-			std::string TrackedTask2;
-			Vocation::getVocation();
-			Tasklist* BouncerTask2 = new Bouncertask(Day2);
-			TrackedTask2 = BouncerTask2->Taskstatus(Day2);
-			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
+		
 			
 			
                         if (dialogueTime > 1 && dialogueTime <= 3)
@@ -1866,6 +1950,21 @@ void SceneText::Render()
 		}
 		else if (dayData->getDay() == 3)
 		{
+		suspectCheck = 15;
+			
+		if (movePlayerX - suspectCheck < 5 && escapeanimation == false)
+		{
+			modelStack.PushMatrix();
+			modelStack.Translate(15, 5, 30);
+			modelStack.Scale(4, 4, 4);
+
+
+			//modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90 - 0, 0.f, 1.f, 0.f);
+			modelStack.Translate(-4, 0, 0);
+			RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
+			modelStack.PopMatrix();
+		}	
+			
 		if (escapeanimation == false)
 		{
 			RenderSuspect();
@@ -1901,12 +2000,7 @@ void SceneText::Render()
 		}
 
 
-		//Day3
-		std::string TrackedTask3;
-		Vocation::getVocation();
-		Tasklist* BouncerTask3 = new Bouncertask(Day3);
-		TrackedTask3 = BouncerTask3->Taskstatus(Day3);
-		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4);
+		
 			
 			if (dialogueTime > 1 && dialogueTime <= 3)
 		{
@@ -2920,26 +3014,35 @@ void SceneText::Renderlevel()
 
 	if (dayData->getDay() == 1) {
 		for (int i = 0; i < Day1[3].maxNumber - Day1[3].currentNumber; i++) {
+			if(!CleanerGame)
+			{
 			modelStack.PushMatrix();
 			modelStack.Translate(44, 0, 40 - (i * 2));
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
+			}
 		}
 	}
 	else if (dayData->getDay() == 2) {
 		for (int i = 0; i < Day2[3].maxNumber - Day2[3].currentNumber; i++) {
+			if(!CleanerGame)
+			{
 			modelStack.PushMatrix();
 			modelStack.Translate(44, 0, 40 - (i * 2));
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
+			}
 		}
 	}
 	else if (dayData->getDay() == 3) {
 		for (int i = 0; i < Day3[3].maxNumber - Day3[3].currentNumber; i++) {
+			if(!CleanerGame)
+			{
 			modelStack.PushMatrix();
 			modelStack.Translate(44, 0, 40 - (i * 2));
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
+			}
 		}
 	}
 

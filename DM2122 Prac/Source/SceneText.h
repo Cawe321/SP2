@@ -357,6 +357,9 @@ private:
 	int CleanerSalary;
 	int BouncerSalary;
 	int MechanicSalary;
+	
+	float distanceCheckX = -45.f;
+	float suspectCheck;
 
 	bool AchievementScene;
 	bool GameScene;
@@ -407,6 +410,7 @@ private:
 	float rotateCleanerWheelsY = 0.0f; 
 	float rotateCleanerTop = 0.0f;
 	float rotateCleanerWheels = 0.0f;
+	float rotateCleaner = 0.0f;
 	int randomLitter;
 	float moveX = 0.0f;
 	float moveZ = 0.0f;

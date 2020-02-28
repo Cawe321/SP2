@@ -1004,27 +1004,28 @@ void SceneText::Update(double dt)
 	}
 	// end for keypress game
 
+	
+	if (Application::IsKeyPressed('F'))
+		CleanerGame = true;
 	if (CleanerGame == true)
 	{
 		if (Application::IsKeyPressed(VK_LEFT))
 		{
 			rotateCleanerTop += (float)(RSPEED * dt);
-			rotateCleaner += (float)(RSPEED * dt) / 2;
+			rotateCleaner += (float)(RSPEED * dt);
 		}
 		if (Application::IsKeyPressed(VK_RIGHT)) 
 		{
 			rotateCleanerTop -= (float)(RSPEED * dt);
-			rotateCleaner -= (float)(RSPEED * dt) / 2;
+			rotateCleaner -= (float)(RSPEED * dt);
 		}
 		if (Application::IsKeyPressed('W'))
-		{
+		{	
 			rotateCleanerWheelsForward += (float)(RSPEED * dt);
-			/*moveZ -= (float)(15.f * dt);*/
 		}
 		if (Application::IsKeyPressed('S'))
-		{
+		{	
 			rotateCleanerWheelsForward -= (float)(RSPEED * dt);
-			/*moveZ += (float)(15.f * dt);*/
 		}
 		rotateCleanerWheelsForward -= (float)(RSPEED * dt);
 		if (Application::IsKeyPressed('A'))
@@ -1044,29 +1045,34 @@ void SceneText::Update(double dt)
 			LitterX = Day1Litter[i].x;
 			LitterY = Day1Litter[i].y;
 			LitterZ = Day1Litter[i].z;
-			if (camera.position.x + 20> Day1Litter[i].x - 2 && camera.position.x + 20< Day1Litter[i].x + 2
+			if (camera.position.x + 20 > Day1Litter[i].x - 2 && camera.position.x + 20 < Day1Litter[i].x + 2
 				&& camera.position.z > Day1Litter[i].z - 2 && camera.position.z < Day1Litter[i].z + 2)
 			{
-
 				Day1Litter[i].x = 55;
 				Day1Litter[i].y = 0;
 				Day1Litter[i].z = 55;
 				std::cout << "PICKED UP";
-			Tasklist* temp = nullptr;
-			BossOpinion->AddGoodwill(5);
-			if (dayData->getDay() == 1) {
-				temp = new Cleanertask(Day1);
-				Day1 = temp->Addscore(Day1);
-			}
-			else if (dayData->getDay() == 2) {
-				temp = new Cleanertask(Day2);
-				Day2 = temp->Addscore(Day2);
-			}
-			else if (dayData->getDay() == 3) {
-				temp = new Cleanertask(Day3);
-				Day3 = temp->Addscore(Day3);
+				Tasklist* temp = nullptr;
+				BossOpinion->AddGoodwill(5);
+				if (dayData->getDay() == 1) {
+					temp = new Cleanertask(Day1);
+					Day1 = temp->Addscore(Day1);
+				}
+				else if (dayData->getDay() == 2) {
+					temp = new Cleanertask(Day2);
+					Day2 = temp->Addscore(Day2);
+				}
+				else if (dayData->getDay() == 3) {
+					temp = new Cleanertask(Day3);
+					Day3 = temp->Addscore(Day3);
 			}
 			delete temp;
+			}
+			else 
+			{
+				Day1Litter[i].x = Day1Litter[i].x;
+				Day1Litter[i].y = Day1Litter[i].y;
+				Day1Litter[i].z = Day1Litter[i].z;
 			}
 			std::cout << LitterX << " " << LitterZ << std::endl;
 			std::cout << camera.position.x + 20<< " " << camera.position.z << std::endl;
@@ -1075,28 +1081,6 @@ void SceneText::Update(double dt)
 		}
 	}
 	
-	for (int i = 0; i < 10; i++)
-	{
-		Vector3 characterPosition = { movePlayerX, 0, movePlayerZ };
-		if (CollisionCheck::DistanceCheck(characterPosition, customerLocations[i].position) < 30 && salesCustomer == nullptr && !FreezeMovement && (customerLocations[i].isCurious == true || Vocation::isCustomerCurious() == true))
-		{
-			
-			customerLocations[i].isCurious = true;
-			customerLocations[i].inRange = true;
-			if (Application::IsKeyPressed('I'))
-			{
-				FreezeMovement = true;
-				customerLocations[i].selected = true;
-				salesCustomer = new CSalesCustomer;
-			}
-
-		}
-		else
-		{
-			customerLocations[i].inRange = false;
-		}
-	}
-
 	if (salesCustomer != nullptr)
 	{
 		salesCustomer->CustomerUpdate(dt);

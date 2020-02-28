@@ -187,7 +187,7 @@ std::vector<Vector3> Vocation::getLitterLocations(int numberOfLitter)
 	for (int i = 0; i < numberOfLitter; i++)
 	{
 		Vector3 location = { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
-		while (!CollisionCheck::TrueCollisionCheck(location, 2.f, 2.f)) // loop until a good coordinate can be used
+		while (!CollisionCheck::NonCharacterCollisionCheck(location, 2.f, 2.f)) // loop until a good coordinate can be used
 		{
 			location = { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
 		}
@@ -199,7 +199,7 @@ std::vector<Vector3> Vocation::getLitterLocations(int numberOfLitter)
 Vector3 Vocation::getCustomerLocation()
 {
 	Vector3 location = { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
-	while (!CollisionCheck::TrueCollisionCheck(location, 2.f, 2.f)) // loop until a good coordinate can be used
+	while (!CollisionCheck::NonCharacterCollisionCheck(location, 2.f, 2.f)) // loop until a good coordinate can be used
 	{
 		location = { rand() % 96 - (float)48, -0.5f, rand() % 96 - (float)48 };
 	}

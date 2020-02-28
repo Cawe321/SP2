@@ -40,6 +40,8 @@ bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float sizeX, float sizeZ)
 		return false;
 	if (DistanceCheck(obj1, Vector3(1, 0, 35)) < 0.25f + sizeX) // information stand
 		return false;
+	if (DistanceCheck(obj1, Vector3(45, 0, 45)) < 0.25f + sizeX) // information stand
+		return false;
 	for (int i = 20; i >= -30; i -= 10)
 	{
 		if (DistanceCheck(obj1, Vector3(-5, 0, i)) < 0.25f + sizeX) // information stand
@@ -63,7 +65,20 @@ bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float sizeX, float sizeZ)
 		return false;
 	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(7.f, 0, 19.5f), 8.f, 7.f))
 		return false;
+	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(-45.f, 0, -45.f), 2.f, 5.f))
+		return false;
 
+	return true;
+}
+
+bool CollisionCheck::NonCharacterCollisionCheck(Vector3 obj1, float obj1SizeX, float obj1SizeZ)
+{
+	if (!TrueCollisionCheck(obj1, obj1SizeX, obj1SizeZ))
+		return false;
+	if (DistanceCheck(obj1, Vector3(45, 0, 45)) < 10) 
+		return false;
+	if (DistanceCheck(obj1, Vector3(-45, 0, -40)) < 20)
+		return false;
 	return true;
 }
 

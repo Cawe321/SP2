@@ -1313,18 +1313,19 @@ void SceneText::Update(double dt)
 		gameover = true;
 	}
 	
-	//if (movePlayerX - distanceCheckX < 5 )
-	//{
-		//RenderTextOnScreen(meshList[GEO_TEXT], "press V", Color(1, 0, 0), 5, 10, 5);
-		//if (Application::IsKeyPressed('V'))
-		//{
-			//dialogueTime += 10 * dt;
-			//if (std::stoi(timeData->getinGameTime()) == 0)
-			//{
-				//dialogueTime = 0;
-			//}
-		//}
-	//}
+		if (movePlayerX - distanceCheckX < 5 )
+	{
+		RenderTextOnScreen(meshList[GEO_TEXT], "press V", Color(1, 0, 0), 5, 10, 5);
+
+		if (Application::IsKeyPressed('V'))
+		{
+			dialogueTime += 10 * dt;
+			if (std::stoi(timeData->getinGameTime()) == 0)
+			{
+				dialogueTime = 0;
+			}
+		}
+	}
 
 	//Code for updating task list for Bouncer game
 	/*Tasklist* temp;
@@ -1816,13 +1817,13 @@ void SceneText::Render()
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 0, 1);
 			delete CleanerTask;
 			
-			//if (dialogueTime > 1 && dialogueTime <= 3)
-			//{
+			if (dialogueTime > 1 && dialogueTime <= 3)
+			{
 
-				//RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
-				//RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Hey new guy look out for any baddies kay? Heard one of them is a human!", Color(1, 0, 0), 3, 1, 4, 25, false);
+				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
+				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "Hey new guy look out for any baddies kay? Heard one of them is a human!", Color(1, 0, 0), 3, 1, 4, 25, false);
 
-			//}
+			}
 		}
 
 		else if(dayData->getDay() == 2)
@@ -1869,7 +1870,15 @@ void SceneText::Render()
 			Tasklist* BouncerTask2 = new Bouncertask(Day2);
 			TrackedTask2 = BouncerTask2->Taskstatus(Day2);
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask2, Color(0, 1, 0), 2, 0, 3);
+			
+			
+                        if (dialogueTime > 1 && dialogueTime <= 3)
+			{
 
+				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
+				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "I heard that some rogue robot is around. Watch out", Color(1, 0, 0), 3, 1, 4, 25, false);
+
+			}
 
 			
 		}
@@ -1916,6 +1925,14 @@ void SceneText::Render()
 		Tasklist* BouncerTask3 = new Bouncertask(Day3);
 		TrackedTask3 = BouncerTask3->Taskstatus(Day3);
 		RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask3, Color(0, 1, 0), 2, 0, 4);
+			
+			if (dialogueTime > 1 && dialogueTime <= 3)
+		{
+
+			RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "This is bad, I heard from the boss that this dude disguised himself! I can't tell where he is", Color(1, 0, 0), 3, 1, 4, 25, false);
+
+		}
         }
 
 		modelStack.PushMatrix();

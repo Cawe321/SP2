@@ -1170,35 +1170,31 @@ void SceneText::Update(double dt)
 			MechanicGame = true;
 			FreezeMovement = true;
 		}
-		if (AchievementScene == false)
+		if (AchievementScene == false && MechanicGame == false && salesCustomer == nullptr && CleanerGame == false)
 	{
-			if (dayData->getDay() == 3)
-		{
+			if (dayData->getDay() == 3 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10))
+		    {
 				escapeanimation = true;	
-		}
+		    }
 		
-		if (dayData->getDay() == 2)
-		{
+		    if (dayData->getDay() == 2 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 0)) < 10))
+		    {
 				secondescpaeanimation = true;	
-		}
+		    }
 		
-		if (dayData->getDay() == 1)
-		{
+		    if (dayData->getDay() == 1 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-20, 1.5, 15)) < 10))
+		    {
 				thirdescapeanimation = true;	
-		}
+		    }
 	}
-		if (movePlayerX - distanceCheckX < 5 )
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "press V", Color(1, 0, 0), 5, 10, 5);
-
+			if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-45, 0.5, -27)) < 20))
+	    {
 		
 			dialogueTime += 10 * dt;
-			if (std::stoi(timeData->getinGameTime()) == 0)
-			{
-				dialogueTime = 0;
-			}
-		
-	}
+			GuardBotInteraction = false;
+
+	
+	    }
 	}
 	/*if (Application::IsKeyPressed('Q'))
 	{
@@ -1786,6 +1782,11 @@ void SceneText::Render()
 		RenderGuardBot();
 		modelStack.PopMatrix();
 		
+		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-45, 0.5, -27)) < 20) && GuardBotInteraction == true)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "press I", Color(1, 0, 0), 5, 5, 5);
+		}
+		
 		// Render Customer
 		for (int i = 0; i < 10; i++)
 		{
@@ -1818,14 +1819,14 @@ void SceneText::Render()
 
 		if (dayData->getDay() == 1)
 		{
-		       suspectCheck = -20;
+		       
 			if (Day1[2].currentNumber == 0)
 			{
-				if (movePlayerX - suspectCheck < 5 && thirdescapeanimation == false)
+				if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-20, 1.5, 15)) < 10) && thirdescapeanimation == false)
 				{
 					modelStack.PushMatrix();
 					modelStack.Translate(-20.f, 5, 15);
-					modelStack.Scale(4, 4, 4);
+					modelStack.Scale(1.5f, 1.5f, 1.5f);
 					
 				
 					modelStack.Translate(-4, 0, 0);
@@ -1869,7 +1870,7 @@ void SceneText::Render()
 
 			
 			
-			if (dialogueTime > 1 && dialogueTime <= 3)
+			if (dialogueTime > 1 && dialogueTime <= 2)
 			{
 
 				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
@@ -1880,16 +1881,16 @@ void SceneText::Render()
 
 		else if(dayData->getDay() == 2)
 		{
-			suspectCheck = 15;
 			
-			if (movePlayerX - suspectCheck < 5 && secondescpaeanimation == false)
+			
+			if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 0)) < 10) && secondescpaeanimation == false)
 			{
 				modelStack.PushMatrix();
 				modelStack.Translate(15.f, 5, 0);
-				modelStack.Scale(4, 4, 4);
+				modelStack.Scale(1, 1, 1);
 
 
-				//modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90 - 0, 0.f, 1.f, 0.f);
+				
 				modelStack.Translate(-4, 0, 0);
 				RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
 				modelStack.PopMatrix();
@@ -1928,21 +1929,20 @@ void SceneText::Render()
 				modelStack.PopMatrix();
 			}
 			
-            if (dialogueTime > 1 && dialogueTime <= 3)
+                        if (dialogueTime > 1 && dialogueTime <= 2)
 			{
 
 				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
 				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "I heard that some rogue robot is around. Watch out", Color(1, 0, 0), 3, 1, 4, 25, false);
 
 			}
-
 			
 		}
 		else if (dayData->getDay() == 3)
 		{
-		suspectCheck = 15;
+		
 			
-		if (movePlayerX - suspectCheck < 5 && escapeanimation == false)
+		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10) && escapeanimation == false)
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(15, 5, 30);
@@ -1992,11 +1992,11 @@ void SceneText::Render()
 
 		
 			
-			if (dialogueTime > 1 && dialogueTime <= 3)
+			if (dialogueTime > 1 && dialogueTime <= 2)
 		{
 
 			RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "This is bad, I heard from the boss that this dude disguised himself! I can't tell where he is", Color(1, 0, 0), 3, 1, 4, 25, false);
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "This time the dude is wearing a purple shirt", Color(1, 0, 0), 3, 1, 4, 25, false);
 
 		}
         }

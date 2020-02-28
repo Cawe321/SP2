@@ -1533,6 +1533,25 @@ void SceneText::Render()
 		std::string CarAchievements;
 		Achievements* Cartext = new Achievements();
 		CarAchievements = Cartext->carAchievements(Price);
+		
+		if (CarAchievements == "CheapSkate Achieved!" && CarAchievement2 == false && CarAchievement3 == false)
+		{
+			CarAchievement1 = true;
+			CarAchievement2 = false;
+			CarAchievement3 = false;
+		}
+		else if (CarAchievements == "Playing it Safe Achieved!" && CarAchievement1 == false && CarAchievement3 == false)
+		{
+			CarAchievement2 = true;
+			CarAchievement1 = false;
+			CarAchievement3 = false;
+		}
+		else if (CarAchievements == "Crazy Rich!" && CarAchievement1 == false && CarAchievement2 == false)
+		{
+			CarAchievement3 = true;
+			CarAchievement1 = false;
+			CarAchievement2 = false;
+		}
 
 		std::string BouncerAchievements;
 		Achievements* Bouncertext = new Achievements();

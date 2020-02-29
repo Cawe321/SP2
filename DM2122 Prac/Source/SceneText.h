@@ -359,7 +359,7 @@ private:
 	int BouncerSalary;
 	int MechanicSalary;
 	
-	
+	bool GuardBotInteraction;
 	
 
 	bool AchievementScene;

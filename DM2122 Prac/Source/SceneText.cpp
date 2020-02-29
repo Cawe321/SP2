@@ -67,7 +67,6 @@ SceneText::SceneText()
 
 
 	BankOpen = false;
-	NotEnough = false;
 	HasCars = false;
 	gameover = false;
 
@@ -85,6 +84,7 @@ SceneText::SceneText()
 	thirdescapeanimation = false;
 	AchievementScene = false;
 	GameScene = true;
+	GuardBotInteraction = true
 	
 	no = 1;
 	SalesPersonSalary = 1000;
@@ -1362,16 +1362,14 @@ void SceneText::Update(double dt)
 	}
 
 	debounceTime += dt;
-	if (Application::IsKeyPressed('I') && salesCustomer == nullptr)
+		if (Application::IsKeyPressed('I') && salesCustomer == nullptr)
 	{
 		FreezeMovement = true;
 		BankOpen = true;
 	}
 	if (BankOpen == true)
 	{
-		
 		BankOpen = true;
-		IsReserved = true;
 		if (Application::IsKeyPressed(VK_LEFT) && debounceTime > 0.2f) {
 			debounceTime = 0;
 			Selection->Up();
@@ -1396,10 +1394,11 @@ void SceneText::Update(double dt)
 				Price = no;
 				IsReserved = true;
 			}
-			else 
+			else
 			{
-				IsReserved = false;
+				NotEnough = true; 
 			}
+			
 		}
 	}
 	CalculateFrameRate();
@@ -2239,10 +2238,24 @@ void SceneText::Render()
 		}
 		position = 0;
 		RenderTextOnScreen(meshList[GEO_TEXT], "Reserve " + Selection->PrintSelection(Selection) + "?", Color(0, 1, 1), 2.5, 3, 6);
-		if (IsReserved)
+		if (IsOwned && debounceTime < 0.7)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "Already own " + Selection->PrintSelection(Selection), Color(0, 1, 1), 2.5, 3, 5);
+			if (Application::IsKeyPressed(VK_LEFT) || Application::IsKeyPressed(VK_RIGHT))
+				IsOwned = false;
+		}
+		if (IsReserved && debounceTime < 0.7)
+		{
 			RenderTextOnScreen(meshList[GEO_TEXT], "Reserved " + Selection->PrintSelection(Selection), Color(0, 1, 1), 2.5, 3, 5);
-		if (!IsReserved && Selection->GetIndicator()->GetPrice() < timeData->getMoney())
+			if (Application::IsKeyPressed(VK_LEFT) || Application::IsKeyPressed(VK_RIGHT))
+				IsReserved = false;
+		}
+		if (NotEnough && debounceTime < 0.7)
+		{
 			RenderTextOnScreen(meshList[GEO_TEXT], "Not enough money", Color(0, 1, 1), 2.5, 3, 5);
+			if (Application::IsKeyPressed(VK_LEFT) || Application::IsKeyPressed(VK_RIGHT))
+				NotEnough = false;
+		}
 		//Selection->Printing(); // for checking
 		if (Application::IsKeyPressed('I'))
 		{
@@ -2250,7 +2263,6 @@ void SceneText::Render()
 			FreezeMovement = false;
 		}
 	}
-	
 }
 
 void SceneText::Exit()

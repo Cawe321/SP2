@@ -1997,21 +1997,21 @@ void SceneText::Render()
 		{
 				RenderBouncerTextBox();
 				BossOpinion->AddGoodwill(5);
-				if (dayData->getDay() == 1)
+				if (dayData->getDay() == 1 && Day1[2].currentNumber != 1)
 				{
 					Tasklist* temp;
 					temp = new Bouncertask(Day1);
 					Day1 = temp->Addscore(Day1);
 					delete temp;
 			    }
-				else if (dayData->getDay() == 2)
+				else if (dayData->getDay() == 2 && Day2[2].currentNumber != 1)
 				{
 					Tasklist* temp;
 					temp = new Bouncertask(Day2);
 					Day2 = temp->Addscore(Day2);
 					delete temp;
 				}
-				else if (dayData->getDay() == 3)
+				else if (dayData->getDay() == 3 && Day3[2].currentNumber != 1)
 				{
 					Tasklist* temp;
 					temp = new Bouncertask(Day3);

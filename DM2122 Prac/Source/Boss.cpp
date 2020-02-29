@@ -2,7 +2,9 @@
 
 Boss::Boss()
 {
-	Goodwill = 50;
+	data = globalData::instance();
+	if (!(data->isLoaded()))
+		data->setGoodWill(50); // dont set if save found is found
 }
 
 Boss::~Boss()
@@ -12,28 +14,28 @@ Boss::~Boss()
 void Boss::AddGoodwill(int input)
 {
 	//input is a rough measure of how well a previous task was done
-	Goodwill = Goodwill + input;
-	if (Goodwill >= 100) {
-		Goodwill = 100;
+	data->setGoodWill(data->getGoodWill() + input);
+	if (data->getGoodWill() >= 100) {
+		data->setGoodWill(100);
 	}
 }
 
 void Boss::LoseGoodwill(int input)
 {
 	//input is a rough measure of how poorly a previous task was done
-	Goodwill = Goodwill - input;
+	data->setGoodWill(data->getGoodWill() - input);
 }
 
 int Boss::GetGoodwill()
 {
-	return Goodwill;
+	return data->getGoodWill();
 }
 
 float Boss::getmodifier()
 {
 	int ModifiableGoodwill;
 	float ModifiableValue = 0;
-	ModifiableGoodwill = Goodwill - 50;
+	ModifiableGoodwill = data->getGoodWill() - 50;
 	if (ModifiableGoodwill > 0) {
 		if (ModifiableGoodwill < 10) {
 			return 1;
@@ -67,6 +69,6 @@ std::string Boss::PrintGoodwill()
 {
 	std::string print;
 	print = "Boss's Goodwill: ";
-	print.append(std::to_string(Goodwill));
+	print.append(std::to_string(data->getGoodWill()));
 	return print;
 }

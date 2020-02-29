@@ -117,13 +117,14 @@ void globalData::saveGame()
 	if (car6bought)
 		saveCars = saveCars + "Car6\n";
 
+	std::string saveGoodwill = "Goodwill:" + std::to_string(Goodwill) + "\n";
 
 	std::ofstream out;
 	out.open("saveFile.txt");
 	if (out.is_open())
 	{
 		out << "Futuristic MotorShow Save File\n"; // first line
-		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest + saveCars;
+		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest + saveCars + saveGoodwill;
 		out.close();
 	}
 	else
@@ -134,7 +135,7 @@ void globalData::saveGame()
 			out.open("saveFile.txt"); // loop until it's open
 		}
 		out << "Futuristic MotorShow Save File\n"; // first line
-		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest + saveCars;
+		out << saveDay + saveTime + saveJob + saveMoney + saveDay1Quest + saveDay2Quest + saveDay3Quest + saveCars + saveGoodwill;
 		out.close();
 	}
 }
@@ -162,6 +163,10 @@ void globalData::loadGame()
 			else if (line.substr(0, 5) == "Time:")
 			{
 				inGameTime = line.substr(5, line.length() - 5);
+			}
+			else if (line.substr(0, 9) == "Goodwill:")
+			{
+				Goodwill = std::stoi(line.substr(9, line.length() - 9));
 			}
 			else if (line.substr(0, 9) == "Vocation:")
 			{
@@ -344,6 +349,16 @@ void globalData::loadGame()
 		Loaded = true;
 		myfile.close();
 	}
+}
+
+int globalData::getGoodWill()
+{
+	return Goodwill;
+}
+
+void globalData::setGoodWill(int Will)
+{
+	Goodwill = Will;
 }
 
 void globalData::buycar(int a)

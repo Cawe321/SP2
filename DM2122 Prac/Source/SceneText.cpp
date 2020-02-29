@@ -79,10 +79,10 @@ SceneText::SceneText()
 	GameScene = true;
 	
 	no = 1;
-	SalesPersonSalary = 10000;
-	CleanerSalary = 9000;
-	BouncerSalary = 12000;
-	MechanicSalary = 11000;
+	SalesPersonSalary = 1000;
+	CleanerSalary = 500;
+	BouncerSalary = 1000;
+	MechanicSalary = 1000;
 
 	// init values for customer
 	salesCustomer = nullptr; //new CSalesCustomer
@@ -1042,44 +1042,86 @@ void SceneText::Update(double dt)
 				rotateCleanerWheelsY -= (float(RSPEED * dt));
 		}
 
-		for (int i = 0; i < Day1Litter.size(); i++)
-		{
-			LitterX = Day1Litter[i].x;
-			LitterY = Day1Litter[i].y;
-			LitterZ = Day1Litter[i].z;
-			if (movePlayerX - 2.5 > Day1Litter[i].x - 2 && movePlayerX - 2.5 < Day1Litter[i].x + 2
-				&& movePlayerZ > Day1Litter[i].z - 2 && movePlayerZ < Day1Litter[i].z + 2)
+		if (dayData->getDay() == 1) {
+			for (int i = 0; i < Day1Litter.size(); i++)
 			{
-				Day1Litter[i].x = 55;
-				Day1Litter[i].y = 0;
-				Day1Litter[i].z = 55;
-				std::cout << "PICKED UP";
-				Tasklist* temp = nullptr;
-				BossOpinion->AddGoodwill(5);
-				if (dayData->getDay() == 1) {
+				LitterX = Day1Litter[i].x;
+				LitterY = Day1Litter[i].y;
+				LitterZ = Day1Litter[i].z;
+				if (movePlayerX - 2.5 > Day1Litter[i].x - 2 && movePlayerX - 2.5 < Day1Litter[i].x + 2
+					&& movePlayerZ > Day1Litter[i].z - 2 && movePlayerZ < Day1Litter[i].z + 2)
+				{
+					Day1Litter[i].x = 55;
+					Day1Litter[i].y = 0;
+					Day1Litter[i].z = 55;
+					Tasklist* temp = nullptr;
+					BossOpinion->AddGoodwill(5);
 					temp = new Cleanertask(Day1);
 					Day1 = temp->Addscore(Day1);
+					timeData->setMoney(CleanerSalary);
+					delete temp;
 				}
-				else if (dayData->getDay() == 2) {
+				else
+				{
+					Day1Litter[i].x = Day1Litter[i].x;
+					Day1Litter[i].y = Day1Litter[i].y;
+					Day1Litter[i].z = Day1Litter[i].z;
+				}
+			}
+		}
+		else if (dayData->getDay() == 2) {
+			for (int i = 0; i < Day2Litter.size(); i++)
+			{
+				LitterX = Day2Litter[i].x;
+				LitterY = Day2Litter[i].y;
+				LitterZ = Day2Litter[i].z;
+				if (movePlayerX - 2.5 > Day2Litter[i].x - 2 && movePlayerX - 2.5 < Day2Litter[i].x + 2
+					&& movePlayerZ > Day2Litter[i].z - 2 && movePlayerZ < Day2Litter[i].z + 2)
+				{
+					Day2Litter[i].x = 55;
+					Day2Litter[i].y = 0;
+					Day2Litter[i].z = 55;
+					Tasklist* temp = nullptr;
+					BossOpinion->AddGoodwill(5);
 					temp = new Cleanertask(Day2);
 					Day2 = temp->Addscore(Day2);
+					timeData->setMoney(CleanerSalary);
+					delete temp;
 				}
-				else if (dayData->getDay() == 3) {
+				else
+				{
+					Day2Litter[i].x = Day2Litter[i].x;
+					Day2Litter[i].y = Day2Litter[i].y;
+					Day2Litter[i].z = Day2Litter[i].z;
+				}
+			}
+		}
+		else if (dayData->getDay() == 3) {
+			for (int i = 0; i < Day3Litter.size(); i++)
+			{
+				LitterX = Day3Litter[i].x;
+				LitterY = Day3Litter[i].y;
+				LitterZ = Day3Litter[i].z;
+				if (movePlayerX - 2.5 > Day3Litter[i].x - 2 && movePlayerX - 2.5 < Day3Litter[i].x + 2
+					&& movePlayerZ > Day3Litter[i].z - 2 && movePlayerZ < Day3Litter[i].z + 2)
+				{
+					Day3Litter[i].x = 55;
+					Day3Litter[i].y = 0;
+					Day3Litter[i].z = 55;
+					Tasklist* temp = nullptr;
+					BossOpinion->AddGoodwill(5);
 					temp = new Cleanertask(Day3);
 					Day3 = temp->Addscore(Day3);
+					timeData->setMoney(CleanerSalary);
+					delete temp;
+				}
+				else
+				{
+					Day3Litter[i].y = Day3Litter[i].y;
+					Day3Litter[i].z = Day3Litter[i].z;
+					Day3Litter[i].x = Day3Litter[i].x;
+				}						 
 			}
-			delete temp;
-			}
-			else 
-			{
-				Day1Litter[i].x = Day1Litter[i].x;
-				Day1Litter[i].y = Day1Litter[i].y;
-				Day1Litter[i].z = Day1Litter[i].z;
-			}
-			std::cout << LitterX << " " << LitterZ << std::endl;
-			std::cout << movePlayerX-2.5 << " " << movePlayerZ << std::endl;
-
-			//code for updating task lisk
 		}
 	}
 	for (int i = 0; i < 10; i++)
@@ -1115,14 +1157,17 @@ void SceneText::Update(double dt)
 				if (dayData->getDay() == 1) {
 					temp = new Salesmantask(Day1);
 					Day1 = temp->Addscore(Day1);
+					timeData->setMoney(SalesPersonSalary);
 				}
 				else if (dayData->getDay() == 2) {
 					temp = new Salesmantask(Day2);
 					Day2 = temp->Addscore(Day2);
+					timeData->setMoney(SalesPersonSalary);
 				}
 				else if (dayData->getDay() == 3) {
 					temp = new Salesmantask(Day3);
 					Day3 = temp->Addscore(Day3);
+					timeData->setMoney(SalesPersonSalary);
 				}
 				delete temp;
 			}
@@ -1273,6 +1318,11 @@ void SceneText::Update(double dt)
 	}
 
 	debounceTime += dt;
+	if (Application::IsKeyPressed('I') && salesCustomer == nullptr)
+	{
+		FreezeMovement = true;
+		BankOpen = true;
+	}
 	if (BankOpen == true)
 	{
 		
@@ -1290,25 +1340,22 @@ void SceneText::Update(double dt)
 			if (no != 6 )
 				no++;
 		}
-		if (Application::IsKeyPressed(VK_RETURN) && debounceTime > 0.2f) {
+		if (Application::IsKeyPressed(VK_SPACE) && debounceTime > 0.2f) {
 			debounceTime = 0;
-			;
 			if (timeData->owncar(no))
 			{
-				int i = 3;
-				// maybe something happens if the player owns the car
-				
+				IsOwned = true;
 			}
 			else if (timeData->Deposit(Selection))
 			{
 				timeData->buycar(no);
 				Price = no;
+				IsReserved = true;
 			}
-			else
+			else 
 			{
 				IsReserved = false;
 			}
-				
 		}
 	}
 	CalculateFrameRate();
@@ -2000,6 +2047,7 @@ void SceneText::Render()
 					Tasklist* temp;
 					temp = new Bouncertask(Day1);
 					Day1 = temp->Addscore(Day1);
+					timeData->setMoney(BouncerSalary);
 					delete temp;
 					BossOpinion->AddGoodwill(5);
 			    }
@@ -2008,6 +2056,7 @@ void SceneText::Render()
 					Tasklist* temp;
 					temp = new Bouncertask(Day2);
 					Day2 = temp->Addscore(Day2);
+					timeData->setMoney(BouncerSalary);
 					delete temp;
 					BossOpinion->AddGoodwill(5);
 				}
@@ -2016,6 +2065,7 @@ void SceneText::Render()
 					Tasklist* temp;
 					temp = new Bouncertask(Day3);
 					Day3 = temp->Addscore(Day3);
+					timeData->setMoney(BouncerSalary);
 					delete temp;
 					BossOpinion->AddGoodwill(5);
 				}
@@ -2120,18 +2170,22 @@ void SceneText::Render()
 			RenderTextOnScreen(meshList[GEO_TEXT], Selection->PrintName(position), Color(0, 1, 1), 2.5, 4, 16 - position);
 			RenderTextOnScreen(meshList[GEO_TEXT], "$" + Selection->PrintPrice(position), Color(0, 1, 1), 2.5, 21, 16 - position);
 			position++;
-			if (position > 11) {
+			if (position > 5) {
 				break;
 			}
 		}
 		position = 0;
+		RenderTextOnScreen(meshList[GEO_TEXT], "Reserve " + Selection->PrintSelection(Selection) + "?", Color(0, 1, 1), 2.5, 3, 6);
 		if (IsReserved)
-			RenderTextOnScreen(meshList[GEO_TEXT], "Reserve " + Selection->PrintSelection(Selection) + "?", Color(0, 1, 1), 2.5, 3, 3.5);
-		if (!IsReserved && Application::IsKeyPressed(VK_RETURN))
-			RenderTextOnScreen(meshList[GEO_TEXT], "Not enough money", Color(0, 1, 1), 2.5, 3, 3.5);
-
+			RenderTextOnScreen(meshList[GEO_TEXT], "Reserved " + Selection->PrintSelection(Selection), Color(0, 1, 1), 2.5, 3, 5);
+		if (!IsReserved && Selection->GetIndicator()->GetPrice() < timeData->getMoney())
+			RenderTextOnScreen(meshList[GEO_TEXT], "Not enough money", Color(0, 1, 1), 2.5, 3, 5);
 		//Selection->Printing(); // for checking
-
+		if (Application::IsKeyPressed('I'))
+		{
+			BankOpen = false;
+			FreezeMovement = false;
+		}
 	}
 	
 }

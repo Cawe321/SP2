@@ -1916,7 +1916,7 @@ void SceneText::Render()
 				modelStack.PopMatrix();
 			}
 			
-                        if (dialogueTime > 1 && dialogueTime <= 2)
+            if (dialogueTime > 1 && dialogueTime <= 2)
 			{
 
 				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
@@ -1979,7 +1979,7 @@ void SceneText::Render()
 
 		
 			
-			if (dialogueTime > 1 && dialogueTime <= 2)
+		if (dialogueTime > 1 && dialogueTime <= 2)
 		{
 
 			RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
@@ -1996,13 +1996,13 @@ void SceneText::Render()
 		if (elapsedTime > 5 && elapsedTime <= 9 || passedTime > 7 && passedTime <= 10 || timeDisappeared > 6 && timeDisappeared <= 9) //if within 15 seconds
 		{
 				RenderBouncerTextBox();
-				BossOpinion->AddGoodwill(5);
 				if (dayData->getDay() == 1 && Day1[2].currentNumber != 1)
 				{
 					Tasklist* temp;
 					temp = new Bouncertask(Day1);
 					Day1 = temp->Addscore(Day1);
 					delete temp;
+					BossOpinion->AddGoodwill(5);
 			    }
 				else if (dayData->getDay() == 2 && Day2[2].currentNumber != 1)
 				{
@@ -2010,6 +2010,7 @@ void SceneText::Render()
 					temp = new Bouncertask(Day2);
 					Day2 = temp->Addscore(Day2);
 					delete temp;
+					BossOpinion->AddGoodwill(5);
 				}
 				else if (dayData->getDay() == 3 && Day3[2].currentNumber != 1)
 				{
@@ -2017,6 +2018,7 @@ void SceneText::Render()
 					temp = new Bouncertask(Day3);
 					Day3 = temp->Addscore(Day3);
 					delete temp;
+					BossOpinion->AddGoodwill(5);
 				}
 
 				

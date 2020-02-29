@@ -17,12 +17,12 @@ bool CollisionCheck::SquareCollisionCheck(Vector3 obj1, float obj1SizeX, float o
 
 bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float sizeX, float sizeZ)
 {
-	// TO DO: FINISH THIS Uhsuafhc
+	obj1.x += 2.5; // center
 	// boundary check
 	
 	if (obj1.x + sizeX >= 50 || obj1.x - sizeX <= -50 || obj1.z + sizeX >= 50 || obj1.z - sizeX <= -50)
 		return false;
-	if (obj1.z + sizeZ >= 50 || obj1.z - sizeZ <= -50 || obj1.x + sizeZ >= 50 || obj1.x - sizeZ <= -50)
+	if (obj1.z + sizeZ >= 46 || obj1.z - sizeZ <= -50 || obj1.x + sizeZ >= 46 || obj1.x - sizeZ <= -50)
 		return false;
 	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(-41, 1, -14), 4, 49)) // item booths
 		return false;
@@ -44,9 +44,9 @@ bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float sizeX, float sizeZ)
 		return false;
 	for (int i = 20; i >= -30; i -= 10)
 	{
-		if (DistanceCheck(obj1, Vector3(-5, 0, i)) < 0.25f + sizeX) // information stand
+		if (DistanceCheck(obj1, Vector3(-5, 0, i)) < (sizeX)) // information stand
 			return false;
-		if (DistanceCheck(obj1, Vector3(5, 0, i)) < 0.25f + sizeX) // information stand
+		if (DistanceCheck(obj1, Vector3(5, 0, i)) < (sizeX)) // information stand
 			return false;
 	}
 	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(-20.f, 0, -40), 17.f, 12.7f))

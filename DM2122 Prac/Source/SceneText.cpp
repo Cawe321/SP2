@@ -909,7 +909,7 @@ void SceneText::Update(double dt)
 		}
 		if (Application::IsKeyPressed('N'))
 		{
-			if (cameraZ != 0)
+			if (cameraZ < -1)
 				cameraZ += (float)(RSPEED / 4 * dt);
 		}
 		if (Application::IsKeyPressed('M'))

@@ -302,6 +302,14 @@ private:
 	/*unsigned m_indexBuffer;*/
 	Mesh* meshList[NUM_GEOMETRY];
 	
+	irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
+	
+	irrklang::ISound* LoadingMusic;
+	irrklang::ISound* CleanerSound;
+	irrklang::ISound* MechanicSound;
+	float CleanerDebounce;
+	bool DayEndedSound;
+
     int TotalBouncerTask;
 	int CurrentBouncerTask;
 
@@ -434,6 +442,7 @@ private:
 	void RenderMesh(Mesh* mesh, bool enableLight);
 	void RenderSkybox();
 	void RenderCleanerRobot();
+	void RenderCleanerRobotWithoutRotation();
 	void RenderPlayer();
 	void RenderCustomer();
 	void RenderCustomer2();

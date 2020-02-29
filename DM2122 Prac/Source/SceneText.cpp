@@ -19,6 +19,7 @@
 
 SceneText::SceneText()
 {
+	LoadingMusic = soundEngine->play2D("audio\\elevator.mp3", true, false, true);
 	for (int i = 0; i < NUM_GEOMETRY; ++i)
 	{
 		meshList[i] = NULL;
@@ -59,12 +60,19 @@ SceneText::SceneText()
 	hasmissed = false;
 	hasreset = false;
 
+
+	CleanerSound = nullptr;
+	MechanicSound = nullptr;
+	DayEndedSound = false;
+
+
 	BankOpen = false;
 	NotEnough = false;
 	HasCars = false;
 	gameover = false;
 
 	CleanerGame = false;
+	CleanerDebounce = 0;
 
 	for (int i = 0; i < 10; i++) {
 		game[i] = '-';
@@ -792,6 +800,9 @@ void SceneText::Init()
 	cameraLockToPlayer = true;
 	cameraY = 10;
 	cameraZ = -20;
+
+	LoadingMusic->stop();
+	LoadingMusic->drop();
 }
 
 void SceneText::Update(double dt)
@@ -909,7 +920,7 @@ void SceneText::Update(double dt)
 		}
 		if (Application::IsKeyPressed('N'))
 		{
-			if (cameraZ < -1)
+			if (cameraZ < -15)
 				cameraZ += (float)(RSPEED / 4 * dt);
 		}
 		if (Application::IsKeyPressed('M'))
@@ -937,6 +948,10 @@ void SceneText::Update(double dt)
 	if (MechanicGame == true) {
 		// to make the keypress game
 		elapsed += dt;
+		if (MechanicSound == nullptr)
+		{
+			MechanicSound = soundEngine->play2D("audio\\Mechanic.wav", true, false, true);
+		}
 		if (hasreset == false) {
 			for (int i = 0; i < 10; i++) {
 				game[i] = '-';
@@ -952,21 +967,25 @@ void SceneText::Update(double dt)
 		else if (Application::IsKeyPressed('W') && game[2] == 'W')
 		{
 			game[2] = '-';
+			soundEngine->play2D("audio\\bleep.mp3", false);
 			MechanicGameScore->AddPoints();
 		}
 		else if (Application::IsKeyPressed('A') && game[2] == 'A')
 		{
 			game[2] = '-';
+			soundEngine->play2D("audio\\bleep.mp3", false);
 			MechanicGameScore->AddPoints();
 		}
 		else if (Application::IsKeyPressed('S') && game[2] == 'S')
 		{
 			game[2] = '-';
+			soundEngine->play2D("audio\\bleep.mp3", false);
 			MechanicGameScore->AddPoints();
 		}
 		else if (Application::IsKeyPressed('D') && game[2] == 'D')
 		{
 			game[2] = '-';
+			soundEngine->play2D("audio\\bleep.mp3", false);
 			MechanicGameScore->AddPoints();
 		}
 
@@ -1006,9 +1025,22 @@ void SceneText::Update(double dt)
 	}
 	// end for keypress game
 
-	
-	if (Application::IsKeyPressed('F'))
+	CleanerDebounce += dt;
+	if (Application::IsKeyPressed('F') && CleanerDebounce > 0.2f)
+	{
+		CleanerDebounce = 0;
 		CleanerGame = !CleanerGame; // swap
+		if (CleanerGame && CleanerSound == nullptr)
+		{
+			CleanerSound = soundEngine->play2D("audio\\Cleaner.mp3", true, false, true);
+		}
+		else if (!CleanerGame && CleanerSound != nullptr)
+		{
+			CleanerSound->stop();
+			CleanerSound->drop();
+			CleanerSound = nullptr;
+		}
+	}
 	if (CleanerGame == true)
 	{
 		if (Application::IsKeyPressed(VK_LEFT))
@@ -1134,6 +1166,7 @@ void SceneText::Update(double dt)
 			customerLocations[i].inRange = true;
 			if (Application::IsKeyPressed('I'))
 			{
+				soundEngine->play2D("audio\\bleep.wav", false);
 				FreezeMovement = true;
 				customerLocations[i].selected = true;
 				salesCustomer = new CSalesCustomer;
@@ -1224,18 +1257,21 @@ void SceneText::Update(double dt)
 		}
 		if (AchievementScene == false && MechanicGame == false && salesCustomer == nullptr && CleanerGame == false)
 	{
-			if (dayData->getDay() == 3 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10))
+			if (dayData->getDay() == 3 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10) && !escapeanimation)
 		    {
+				soundEngine->play2D("audio\\scream.mp3", false);
 				escapeanimation = true;	
 		    }
 		
-		    if (dayData->getDay() == 2 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 0)) < 10))
+		    if (dayData->getDay() == 2 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 0)) < 10) && !secondescpaeanimation)
 		    {
+				soundEngine->play2D("audio\\scream.mp3", false);
 				secondescpaeanimation = true;	
 		    }
 		
-		    if (dayData->getDay() == 1 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-20, 1.5, 15)) < 10))
+		    if (dayData->getDay() == 1 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-20, 1.5, 15)) < 10) && !thirdescapeanimation)
 		    {
+				soundEngine->play2D("audio\\scream.mp3", false);
 				thirdescapeanimation = true;	
 		    }
 	}
@@ -1303,8 +1339,14 @@ void SceneText::Update(double dt)
 	}
 	if (DayEnds == true && GameScene == false && AchievementScene == false)
 	{
+		if (!DayEndedSound)
+		{
+			DayEndedSound = true;
+			soundEngine->play2D("audio\\finish.mp3", false);
+		}
 		if (Application::IsKeyPressed(VK_LBUTTON))
 		{
+			DayEndedSound = false;
 			DayEnds = false;
 			GameScene = true;
 			dayData->NextDay();
@@ -1706,7 +1748,7 @@ void SceneText::Render()
 		RenderTextOnScreen(meshList[GEO_TEXT], "^", Color(0, 1, 0), 4, 3.9, 0);
 
 
-		if (MechanicGameScore->GetStrike() > MECHANIC_GAME_MAX_LIVES) {
+		if (MechanicGameScore->GetStrike() >= MECHANIC_GAME_MAX_LIVES) {
 			//You Lose
 			FreezeMovement = false;
 			MechanicGame = false;
@@ -1714,12 +1756,28 @@ void SceneText::Render()
 			delete MechanicGameScore;
 			MechanicGameScore = new Mechanictask();
 			hasreset = false;
+			if (MechanicSound != nullptr)
+			{
+				MechanicSound->stop();
+				MechanicSound->drop();
+				MechanicSound = nullptr;
+				soundEngine->play2D("audio\\fail.mp3", false);
+			}
+
 		}
 
 		if (MechanicGameScore->GetPoints() == MECHANIC_GAME_MAX_SCORE) {
 			Tasklist* Temp;
 			Temp = new Mechanictask();
 			BossOpinion->AddGoodwill(5);
+			if (MechanicSound != nullptr)
+			{
+				MechanicSound->stop();
+				MechanicSound->drop();
+				MechanicSound = nullptr;
+				soundEngine->play2D("audio\\yay.mp3", false);
+			}
+
 			if (dayData->getDay() == 1) {
 				Day1 = Temp->Addscore(Day1);
 			}
@@ -2307,7 +2365,7 @@ void SceneText::RenderSkybox()
 void SceneText::RenderCleanerRobot() // Facing x-axis
 {
 	modelStack.PushMatrix();
-	modelStack.Rotate(rotateCleaner, 0, 1, 0);
+	//modelStack.Rotate(rotateCleaner, 0, 1, 0);
 	modelStack.Translate(0, 0.4, 0);
 	RenderMesh(meshList[CLEANER_BOTTOM], true);
 	
@@ -2365,6 +2423,70 @@ void SceneText::RenderCleanerRobot() // Facing x-axis
 	
 	modelStack.PopMatrix();
 	
+	modelStack.PopMatrix();
+}
+
+void SceneText::RenderCleanerRobotWithoutRotation() // Facing x-axis
+{
+	modelStack.PushMatrix();
+	//modelStack.Rotate(rotateCleaner, 0, 1, 0);
+	modelStack.Translate(0, 0.4, 0);
+	RenderMesh(meshList[CLEANER_BOTTOM], true);
+
+	modelStack.PushMatrix();
+	//modelStack.Rotate(rotateCleanerTop, 0, 1, 0);
+	modelStack.Translate(0, 0.55, 0);
+	RenderMesh(meshList[CLEANER_TOP], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0.65, 0.1, -0.8);
+	//modelStack.Rotate(rotateCleanerWheelsY, 0, 1, 0);
+	//modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
+	RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Front Left
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CLEANER_WHEEL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0.65, 0.1, 0.8);
+	//modelStack.Rotate(rotateCleanerWheelsY, 0, 1, 0);
+	//modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
+	RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Front Right
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CLEANER_WHEEL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(-0.8, 0.1, -0.8);
+	//modelStack.Rotate(rotateCleanerWheelsY, 0, 1, 0);
+	//modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
+	RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Back Left
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CLEANER_WHEEL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(-0.8, 0.1, 0.8);
+	//modelStack.Rotate(rotateCleanerWheelsY, 0, 1, 0);
+	//modelStack.Rotate(rotateCleanerWheels, 0, 0, 1);
+	RenderMesh(meshList[CLEANER_WHEELJOINT], true); // Back Right
+
+	modelStack.PushMatrix();
+	RenderMesh(meshList[CLEANER_WHEEL], true);
+	modelStack.PopMatrix();
+
+	modelStack.PopMatrix();
+
 	modelStack.PopMatrix();
 }
 
@@ -3069,7 +3191,7 @@ void SceneText::Renderlevel()
 			{
 			modelStack.PushMatrix();
 			modelStack.Translate(44, 0, 40 - (i * 2));
-			RenderCleanerRobot();
+			RenderCleanerRobotWithoutRotation();
 			modelStack.PopMatrix();
 			}
 		}
@@ -3080,7 +3202,7 @@ void SceneText::Renderlevel()
 			{
 			modelStack.PushMatrix();
 			modelStack.Translate(44, 0, 40 - (i * 2));
-			RenderCleanerRobot();
+			RenderCleanerRobotWithoutRotation();
 			modelStack.PopMatrix();
 			}
 		}
@@ -3091,7 +3213,7 @@ void SceneText::Renderlevel()
 			{
 			modelStack.PushMatrix();
 			modelStack.Translate(44, 0, 40 - (i * 2));
-			RenderCleanerRobot();
+			RenderCleanerRobotWithoutRotation();
 			modelStack.PopMatrix();
 			}
 		}

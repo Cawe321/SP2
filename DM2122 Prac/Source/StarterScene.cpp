@@ -520,6 +520,7 @@ void StarterScene::Exit()
 		if (meshList[i] != NULL)
 			delete meshList[i];
 	}
+	delete SoundEngine;
 	// Cleanup VBO here
 	glDeleteVertexArrays(1, &m_vertexArrayID);
 	glDeleteProgram(m_programID);

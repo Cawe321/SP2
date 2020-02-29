@@ -1156,6 +1156,42 @@ void SceneText::Update(double dt)
 			}
 		}
 	}
+	if (Application::IsKeyPressed('I')) {
+		//Universal interaction key
+		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(45, 0.5, 45)) < 10)) {
+			MechanicGame = true;
+			FreezeMovement = true;
+		}
+		if (AchievementScene == false && MechanicGame == false && salesCustomer == nullptr && CleanerGame == false)
+		{
+			if (dayData->getDay() == 3 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10) && !escapeanimation)
+			{
+				soundEngine->play2D("audio\\scream.mp3", false);
+				escapeanimation = true;
+			}
+
+			if (dayData->getDay() == 2 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 0)) < 10) && !secondescpaeanimation)
+			{
+				soundEngine->play2D("audio\\scream.mp3", false);
+				secondescpaeanimation = true;
+			}
+
+			if (dayData->getDay() == 1 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-20, 1.5, 15)) < 10) && !thirdescapeanimation)
+			{
+				soundEngine->play2D("audio\\scream.mp3", false);
+				thirdescapeanimation = true;
+			}
+		}
+		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-45, 0.5, -27)) < 20))
+		{
+
+			dialogueTime += 10 * dt;
+			GuardBotInteraction = false;
+
+
+		}
+	}
+
 	for (int i = 0; i < 10; i++)
 	{
 		Vector3 characterPosition = { movePlayerX, 0, movePlayerZ };
@@ -1249,41 +1285,7 @@ void SceneText::Update(double dt)
 		light[0].position.y -= (float)(LSPEED * dt);
 	if (Application::IsKeyPressed('P'))
 		light[0].position.y += (float)(LSPEED * dt);*/
-	if (Application::IsKeyPressed('I')) {
-		//Universal interaction key
-		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(45, 0.5, 45)) < 10)) {
-			MechanicGame = true;
-			FreezeMovement = true;
-		}
-		if (AchievementScene == false && MechanicGame == false && salesCustomer == nullptr && CleanerGame == false)
-	{
-			if (dayData->getDay() == 3 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10) && !escapeanimation)
-		    {
-				soundEngine->play2D("audio\\scream.mp3", false);
-				escapeanimation = true;	
-		    }
-		
-		    if (dayData->getDay() == 2 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 0)) < 10) && !secondescpaeanimation)
-		    {
-				soundEngine->play2D("audio\\scream.mp3", false);
-				secondescpaeanimation = true;	
-		    }
-		
-		    if (dayData->getDay() == 1 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-20, 1.5, 15)) < 10) && !thirdescapeanimation)
-		    {
-				soundEngine->play2D("audio\\scream.mp3", false);
-				thirdescapeanimation = true;	
-		    }
-	}
-			if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-45, 0.5, -27)) < 20))
-	    {
-		
-			dialogueTime += 10 * dt;
-			GuardBotInteraction = false;
-
 	
-	    }
-	}
 	/*if (Application::IsKeyPressed('Q'))
 	{
 		//to do: switch light type to POINT and pass the information to

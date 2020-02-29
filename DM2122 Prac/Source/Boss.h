@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "globalData.h"
 /*
 This class is meant to be a guage of how much your boss likes you
 Once goodwill reaches 0 you are fired
@@ -10,7 +11,7 @@ Refer to getmodifier() for math.
 class Boss
 {
 private:
-	int Goodwill;
+	globalData* data;
 public:
 	Boss();
 	~Boss();

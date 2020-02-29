@@ -14,7 +14,7 @@ private:
 	globalData();
 	bool Loaded;
 	CarSelection* select;
-	
+	int Goodwill;
 	bool car1bought;
 	bool car2bought;
 	bool car3bought;
@@ -26,6 +26,9 @@ public:
 	bool saveFound();
 	void saveGame();
 	void loadGame();
+
+	int getGoodWill();
+	void setGoodWill(int Will);
 
 	std::string getinGameTime();
 	void setinGameTime(float time);

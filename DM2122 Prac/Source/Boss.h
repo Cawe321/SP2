@@ -1,4 +1,5 @@
 #pragma once
+#include <string>
 /*
 This class is meant to be a guage of how much your boss likes you
 Once goodwill reaches 0 you are fired
@@ -17,5 +18,6 @@ public:
 	void LoseGoodwill(int);
 	int GetGoodwill();
 	float getmodifier();
+	std::string PrintGoodwill();
 };
 

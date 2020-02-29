@@ -62,3 +62,11 @@ float Boss::getmodifier()
 	ModifiableValue = ModifiableValue + 1;
 	return ModifiableValue;
 }
+
+std::string Boss::PrintGoodwill()
+{
+	std::string print;
+	print = "Boss's Goodwill: ";
+	print.append(std::to_string(Goodwill));
+	return print;
+}

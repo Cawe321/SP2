@@ -270,9 +270,9 @@ void SceneText::Init()
 	glEnable(GL_DEPTH_TEST);
 	
 		light[0].type = Light::LIGHT_SPOT;
-		light[0].position.Set(30, 30, -30);
+		light[0].position.Set(30, 49, -30);
 		light[0].color.Set(0.5f, 0.5f, 0.5f);
-		light[0].power = 1.f;
+		light[0].power = 2.f;
 		light[0].kC = 1.f;
 		light[0].kL = 0.01f;
 		light[0].kQ = 0.001f;
@@ -282,9 +282,9 @@ void SceneText::Init()
 		light[0].spotDirection.Set(0.f, 1.f, 0.f);
 
 		light[1].type = Light::LIGHT_SPOT;
-		light[1].position.Set(30, 30, 0);
+		light[1].position.Set(30, 49, 0);
 		light[1].color.Set(0.5f, 0.5f, 0.5f);
-		light[1].power = 1.f;
+		light[1].power = 2.f;
 		light[1].kC = 1.f;
 		light[1].kL = 0.01f;
 		light[1].kQ = 0.001f;
@@ -294,9 +294,9 @@ void SceneText::Init()
 		light[1].spotDirection.Set(0.f, 1.f, 0.f);
 
 		light[2].type = Light::LIGHT_SPOT;
-		light[2].position.Set(30, 30, 30);
+		light[2].position.Set(30, 49, 30);
 		light[2].color.Set(0.5f, 0.5f, 0.5f);
-		light[2].power = 1.f;
+		light[2].power = 2.f;
 		light[2].kC = 1.f;
 		light[2].kL = 0.01f;
 		light[2].kQ = 0.001f;
@@ -306,9 +306,9 @@ void SceneText::Init()
 		light[2].spotDirection.Set(0.f, 1.f, 0.f);
 
 		light[3].type = Light::LIGHT_SPOT;
-		light[3].position.Set(0, 30, -30);
+		light[3].position.Set(0, 49, -30);
 		light[3].color.Set(0.5f, 0.5f, 0.5f);
-		light[3].power = 1.f;
+		light[3].power = 2.f;
 		light[3].kC = 1.f;
 		light[3].kL = 0.01f;
 		light[3].kQ = 0.001f;
@@ -318,9 +318,9 @@ void SceneText::Init()
 		light[3].spotDirection.Set(0.f, 1.f, 0.f);
 
 		light[4].type = Light::LIGHT_SPOT;
-		light[4].position.Set(0, 30, 0);
+		light[4].position.Set(0, 49, 0);
 		light[4].color.Set(0.5f, 0.5f, 0.5f);
-		light[4].power = 1.f;
+		light[4].power = 2.f;
 		light[4].kC = 1.f;
 		light[4].kL = 0.01f;
 		light[4].kQ = 0.001f;
@@ -330,9 +330,9 @@ void SceneText::Init()
 		light[4].spotDirection.Set(0.f, 1.f, 0.f);
 
 		light[5].type = Light::LIGHT_SPOT;
-		light[5].position.Set(0, 30, 30);
+		light[5].position.Set(0, 49, 30);
 		light[5].color.Set(0.5f, 0.5f, 0.5f);
-		light[5].power = 1.f;
+		light[5].power = 2.f;
 		light[5].kC = 1.f;
 		light[5].kL = 0.01f;
 		light[5].kQ = 0.001f;
@@ -342,9 +342,9 @@ void SceneText::Init()
 		light[5].spotDirection.Set(0.f, 1.f, 0.f);
 
 		light[6].type = Light::LIGHT_SPOT;
-		light[6].position.Set(-30, 30, -30);
+		light[6].position.Set(-30, 49, -30);
 		light[6].color.Set(0.5f, 0.5f, 0.5f);
-		light[6].power = 1.f;
+		light[6].power = 2.f;
 		light[6].kC = 1.f;
 		light[6].kL = 0.01f;
 		light[6].kQ = 0.001f;
@@ -354,9 +354,9 @@ void SceneText::Init()
 		light[6].spotDirection.Set(0.f, 1.f, 0.f);
 
 		light[7].type = Light::LIGHT_SPOT;
-		light[7].position.Set(-30, 30, 0);
+		light[7].position.Set(-30, 49, 0);
 		light[7].color.Set(0.5f, 0.5f, 0.5f);
-		light[7].power = 1.f;
+		light[7].power = 2.f;
 		light[7].kC = 1.f;
 		light[7].kL = 0.01f;
 		light[7].kQ = 0.001f;
@@ -500,7 +500,7 @@ void SceneText::Init()
 	}
 
 	meshList[GEO_LEFT] = MeshBuilder::GenerateQuad("left", Color(1, 1, 1), 1.f, 1.f);
-	meshList[GEO_LEFT]->textureID = LoadTGA("Image//left.tga");
+	meshList[GEO_LEFT]->textureID = LoadTGA("Image//Wall.tga");
 
 	meshList[GEO_RIGHT] = MeshBuilder::GenerateQuad("right", Color(1, 1, 1), 1.f, 1.f);
 	meshList[GEO_RIGHT]->textureID = LoadTGA("Image//RT.tga");
@@ -512,10 +512,10 @@ void SceneText::Init()
 	meshList[GEO_BOTTOM]->textureID = LoadTGA("Image//bottom.tga");
 
 	meshList[GEO_FRONT] = MeshBuilder::GenerateQuad("front", Color(1, 1, 1), 1.f, 1.f);
-	meshList[GEO_FRONT]->textureID = LoadTGA("Image//front.tga");
+	meshList[GEO_FRONT]->textureID = LoadTGA("Image//Wall.tga");
 
 	meshList[GEO_BACK] = MeshBuilder::GenerateQuad("back", Color(1, 1, 1), 1.f, 1.f);
-	meshList[GEO_BACK]->textureID = LoadTGA("Image//back.tga");
+	meshList[GEO_BACK]->textureID = LoadTGA("Image//Wall.tga");
 
 	meshList[GEO_LIGHTSPHERE] = MeshBuilder::GenerateSphere("lightBall", Color(1.f, 1.f, 1.f), 9, 36, 1.f);
 
@@ -965,6 +965,11 @@ void SceneText::Update(double dt)
 			MechanicGameScore->AddPoints();
 		}
 
+		if (hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
+			MechanicGameScore->AddStrike();
+			hasmissed = true;
+		}
+
 		if (elapsed - debounce > 0.5f)
 		{
 			count++;
@@ -1315,27 +1320,6 @@ void SceneText::Update(double dt)
 		FreezeMovement = true;
 		gameover = true;
 	}
-	
-	
-
-		
-
-	//Code for updating task list for Bouncer game
-	/*Tasklist* temp;
-		BossOpinion->AddGoodwill(5);
-		if (dayData->getDay() == 1) {
-			temp = new Bouncertask(Day1);
-			Day1 = temp->Addscore(Day1);
-		}
-		else if (dayData->getDay() == 2) {
-			temp = new Bouncertask(Day2);
-			Day2 = temp->Addscore(Day2);
-		}
-		else if (dayData->getDay() == 3) {
-			temp = new Bouncertask(Day3);
-			Day3 = temp->Addscore(Day3);
-		}
-	delete temp;*/
 }
 
 void SceneText::Render()
@@ -1557,7 +1541,7 @@ void SceneText::Render()
 		
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
 		
-                if (dayData->getDay() == 1)
+        if (dayData->getDay() == 1)
 		{
 
 			std::string TrackedTask;
@@ -1621,7 +1605,10 @@ void SceneText::Render()
 			TrackedTask = Task->Taskstatus(Day3);
 			RenderTextOnScreen(meshList[GEO_TEXT], TrackedTask, Color(0, 1, 0), 2, 3.5f, 14);
 		}
-		
+
+		std::string bossgoodwill;
+		bossgoodwill = BossOpinion->PrintGoodwill();
+		RenderTextOnScreen(meshList[GEO_TEXT], bossgoodwill, Color(0, 1, 0), 2, 3.5f, 9);
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], CarAchievements, Color(1, 0, 0), 3.f, 3.5f, 10);
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], BouncerAchievements, Color(1, 0, 0), 3, 3.5f, 11);
 		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], SalesAchievements, Color(1, 0, 0), 3, 3.5f, 12);
@@ -1737,42 +1724,42 @@ void SceneText::Render()
 		modelStack.PopMatrix();*/
 
 		modelStack.PushMatrix();
-		modelStack.Translate(30, 30, -30);
+		modelStack.Translate(30, 49, -30);
 		RenderMesh(meshList[ITEM_LIGHTBULB], false);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(30, 30, 0);
+		modelStack.Translate(30, 49, 0);
 		RenderMesh(meshList[ITEM_LIGHTBULB], false);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(30, 30, 30);
+		modelStack.Translate(30, 49, 30);
 		RenderMesh(meshList[ITEM_LIGHTBULB], false);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(0, 30, -30);
+		modelStack.Translate(0, 49, -30);
 		RenderMesh(meshList[ITEM_LIGHTBULB], false);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(0, 30, 0);
+		modelStack.Translate(0, 49, 0);
 		RenderMesh(meshList[ITEM_LIGHTBULB], false);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(0, 30, 30);
+		modelStack.Translate(0, 49, 30);
 		RenderMesh(meshList[ITEM_LIGHTBULB], false);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(-30, 30, -30);
+		modelStack.Translate(-30, 49, -30);
 		RenderMesh(meshList[ITEM_LIGHTBULB], false);
 		modelStack.PopMatrix();
 
 		modelStack.PushMatrix();
-		modelStack.Translate(-30, 30, 0);
+		modelStack.Translate(-30, 49, 0);
 		RenderMesh(meshList[ITEM_LIGHTBULB], false);
 		modelStack.PopMatrix();
 
@@ -2010,7 +1997,7 @@ void SceneText::Render()
 		if (elapsedTime > 5 && elapsedTime <= 9 || passedTime > 7 && passedTime <= 10 || timeDisappeared > 6 && timeDisappeared <= 9) //if within 15 seconds
 		{
 				RenderBouncerTextBox();
-
+				BossOpinion->AddGoodwill(5);
 				if (dayData->getDay() == 1)
 				{
 					Tasklist* temp;
@@ -2914,6 +2901,12 @@ void SceneText::Renderlevel()
 
 	modelStack.PushMatrix();
 	modelStack.Translate(0, -1, 0);
+	modelStack.Scale(100, 1, 100);
+	RenderMesh(meshList[ITEM_FLOOR], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
+	modelStack.Translate(0, 50, 0);
 	modelStack.Scale(100, 1, 100);
 	RenderMesh(meshList[ITEM_FLOOR], true);
 	modelStack.PopMatrix();

@@ -84,7 +84,7 @@ SceneText::SceneText()
 	thirdescapeanimation = false;
 	AchievementScene = false;
 	GameScene = true;
-	GuardBotInteraction = true
+	GuardBotInteraction = true;
 	
 	no = 1;
 	SalesPersonSalary = 1000;

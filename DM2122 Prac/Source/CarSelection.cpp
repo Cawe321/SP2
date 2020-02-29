@@ -4,7 +4,7 @@
 CarSelection::CarSelection()
 {
 	first = last = indicator = nullptr;
-	noOfCars = 12;
+	noOfCars = 6;
 	count = 0;
 }
 

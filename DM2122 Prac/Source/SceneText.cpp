@@ -1001,7 +1001,7 @@ void SceneText::Update(double dt)
 
 	
 	if (Application::IsKeyPressed('F'))
-		CleanerGame = true;
+		CleanerGame = !CleanerGame; // swap
 	if (CleanerGame == true)
 	{
 		if (Application::IsKeyPressed(VK_LEFT))
@@ -1791,7 +1791,7 @@ void SceneText::Render()
 		for (int i = 0; i < 10; i++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(customerLocations[i].position.x, customerLocations[i].position.y, customerLocations[i].position.z);
+			modelStack.Translate(customerLocations[i].position.x-2.5, customerLocations[i].position.y, customerLocations[i].position.z);
 			modelStack.PushMatrix();
 			modelStack.Rotate(customerLocations[i].angle, 0.f, 1.f, 0.f);
 			if (customerLocations[i].customerType == 0)
@@ -1828,8 +1828,8 @@ void SceneText::Render()
 					modelStack.Translate(-20.f, 5, 15);
 					modelStack.Scale(1.5f, 1.5f, 1.5f);
 					
-				
-					modelStack.Translate(-4, 0, 0);
+					modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
+					modelStack.Translate(-3.5, 0, 0);
 					RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
 					modelStack.PopMatrix();
 				}
@@ -2998,9 +2998,16 @@ void SceneText::Renderlevel()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
+	modelStack.Translate(0, -2, 50);
+	modelStack.Rotate(270, 0, 1, 0);
+	modelStack.Scale(5, 5, 5);
+	RenderMesh(meshList[GEO_ENTRANCE], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
 	//Scale, Translate, Rotate
 	modelStack.Translate(45, 5, 40);
-	modelStack.Rotate(-90, 0, 1, 0);
+	modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
 	RenderText(meshList[GEO_TEXT], "Mechanic Bay", Color(0, 1, 0));
 	modelStack.PopMatrix();
 
@@ -3043,23 +3050,18 @@ void SceneText::Renderlevel()
 		modelStack.PushMatrix();
 		//Scale, Translate, Rotate
 		modelStack.Translate(45, 3, 38);
-		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
 		RenderText(meshList[GEO_TEXT], "Press I to play", Color(0, 1, 0));
 		modelStack.PopMatrix();
 		modelStack.PushMatrix();
 		//Scale, Translate, Rotate
 		modelStack.Translate(45, 2, 38);
-		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
 		RenderText(meshList[GEO_TEXT], "the Mechanic Game", Color(0, 1, 0));
 		modelStack.PopMatrix();
 
 	}
-	modelStack.PushMatrix();
-	modelStack.Translate(0, -2, 50);
-	modelStack.Rotate(270, 0, 1, 0);
-	modelStack.Scale(5, 5, 5);
-	RenderMesh(meshList[GEO_ENTRANCE], true);
-	modelStack.PopMatrix();
+
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-7, 0.5, 20);

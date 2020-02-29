@@ -75,7 +75,8 @@ bool CollisionCheck::NonCharacterCollisionCheck(Vector3 obj1, float obj1SizeX, f
 {
 	if (!TrueCollisionCheck(obj1, obj1SizeX, obj1SizeZ))
 		return false;
-	if (DistanceCheck(obj1, Vector3(45, 0, 45)) < 10) 
+	obj1.x += 2.5f;
+	if (DistanceCheck(obj1, Vector3(45, 0, 45)) < 20) 
 		return false;
 	if (DistanceCheck(obj1, Vector3(-45, 0, -40)) < 20)
 		return false;

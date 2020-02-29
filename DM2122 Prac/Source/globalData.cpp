@@ -436,7 +436,7 @@ void globalData::NextDay()
 	
 }
 
-float globalData::getMoney()
+int globalData::getMoney()
 {
 	return money;
 }

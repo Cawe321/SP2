@@ -1653,9 +1653,12 @@ void SceneText::Render()
 		std::string bossgoodwill;
 		bossgoodwill = BossOpinion->PrintGoodwill();
 		RenderTextOnScreen(meshList[GEO_TEXT], bossgoodwill, Color(0, 1, 0), 2, 3.5f, 9);
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], CarAchievements, Color(1, 0, 0), 3.f, 3.5f, 10);
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], BouncerAchievements, Color(1, 0, 0), 3, 3.5f, 11);
-		RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], SalesAchievements, Color(1, 0, 0), 3, 3.5f, 12);
+		if (dayData->getDay() == 3)
+		{
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], CarAchievements, Color(1, 0, 0), 3.f, 3.5f, 10);
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], BouncerAchievements, Color(1, 0, 0), 3, 3.5f, 11);
+			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], SalesAchievements, Color(1, 0, 0), 3, 3.5f, 12);
+		}
 		
 	           delete Task;
 	}

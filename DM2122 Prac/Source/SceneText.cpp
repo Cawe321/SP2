@@ -964,11 +964,6 @@ void SceneText::Update(double dt)
 			MechanicGameScore->AddPoints();
 		}
 
-		if (hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
-			MechanicGameScore->AddStrike();
-			hasmissed = true;
-		}
-
 		if (elapsed - debounce > 0.5f)
 		{
 			count++;
@@ -981,6 +976,10 @@ void SceneText::Update(double dt)
 				game[i - 1] = game[i];
 				
 			}
+		if (hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
+			MechanicGameScore->AddStrike();
+			hasmissed = true;
+		}
 			if (game[1] != '-' && hasmissed == false) {
 				MechanicGameScore->AddStrike();
 				hasmissed = true;
@@ -1988,10 +1987,7 @@ void SceneText::Render()
 		}
         }
 
-		modelStack.PushMatrix();
-		//scale, translate, rotate
-		RenderText(meshList[GEO_TEXT], "HELLO WORLD", Color(0, 1, 0));
-		modelStack.PopMatrix();
+		
 		
 		if (elapsedTime > 5 && elapsedTime <= 9 || passedTime > 7 && passedTime <= 10 || timeDisappeared > 6 && timeDisappeared <= 9) //if within 15 seconds
 		{

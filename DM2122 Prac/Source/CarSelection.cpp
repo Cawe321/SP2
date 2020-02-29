@@ -25,7 +25,7 @@ void CarSelection::Down()
 		indicator = indicator->GetNext();
 }
 
-void CarSelection::AddCar(std::string name, float price)
+void CarSelection::AddCar(std::string name, int price)
 {
 	Car* newNode = new Car();
 	if (count < noOfCars)

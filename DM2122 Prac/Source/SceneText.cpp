@@ -1933,7 +1933,7 @@ void SceneText::Render()
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(15, 5, 30);
-			modelStack.Scale(4, 4, 4);
+			modelStack.Scale(1, 1, 1);
 
 
 			//modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90 - 0, 0.f, 1.f, 0.f);

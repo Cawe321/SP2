@@ -314,6 +314,7 @@ private:
 	bool NotEnough;
 	bool HasCars;
 	bool IsReserved;
+	bool IsOwned;
 	CarSelection* Selection;
 
 	float RSPEED = 45.f;

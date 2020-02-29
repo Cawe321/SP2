@@ -39,7 +39,7 @@ public:
 	int getDay();
 	void NextDay();
 
-	float getMoney();
+	int getMoney();
 	void setMoney(int cash);
 	void buycar(int);
 	bool owncar(int car);

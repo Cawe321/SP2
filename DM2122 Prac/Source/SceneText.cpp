@@ -943,7 +943,13 @@ void SceneText::Update(double dt)
 			}
 			hasreset = true;
 		}
-		if (Application::IsKeyPressed('W') && game[2] == 'W')
+
+
+		if ((elapsed - debounce > 0.4f) && hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
+			MechanicGameScore->AddStrike();
+			hasmissed = true;
+		}
+		else if (Application::IsKeyPressed('W') && game[2] == 'W')
 		{
 			game[2] = '-';
 			MechanicGameScore->AddPoints();
@@ -976,10 +982,6 @@ void SceneText::Update(double dt)
 				game[i - 1] = game[i];
 				
 			}
-		if (hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
-			MechanicGameScore->AddStrike();
-			hasmissed = true;
-		}
 			if (game[1] != '-' && hasmissed == false) {
 				MechanicGameScore->AddStrike();
 				hasmissed = true;
@@ -1000,6 +1002,7 @@ void SceneText::Update(double dt)
 				else game[9] = 'D';
 			}
 		}
+		
 	}
 	// end for keypress game
 

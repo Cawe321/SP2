@@ -59,7 +59,7 @@ SceneText::SceneText()
 	hasmissed = false;
 	hasreset = false;
 
-	BankOpen = true;
+	BankOpen = false;
 	NotEnough = false;
 	HasCars = false;
 	gameover = false;
@@ -809,8 +809,7 @@ void SceneText::Update(double dt)
 
 	if (!FreezeMovement)
 	{
-		if (cameraLockToPlayer);
-		{
+		camera.cameraLock = true;
 			Vector3 playerPos = { movePlayerX-2.5f, 5, movePlayerZ };
 			Mtx44 rotation;
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
@@ -818,14 +817,14 @@ void SceneText::Update(double dt)
 			translation = rotation * translation;
 			camera.target = playerPos;
 			camera.position = playerPos + translation;
-		}
+		
 		if (Application::IsKeyPressed('W'))
 		{
 			Mtx44 rotation;
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { (float)(10.f * dt), 0, 0 };
 			Movement = rotation * Movement;
-			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			Vector3 playerPos = { movePlayerX-2.5f, 0, movePlayerZ };
 			if (CollisionCheck::TrueCollisionCheck(playerPos + Movement, 1, 1))
 			{
 				movePlayerX += Movement.x;
@@ -843,7 +842,7 @@ void SceneText::Update(double dt)
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { (float)(10.f * dt), 0, 0 };
 			Movement = rotation * Movement;
-			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			Vector3 playerPos = { movePlayerX-2.5f, 0, movePlayerZ };
 			if (CollisionCheck::TrueCollisionCheck(playerPos - Movement, 1, 1))
 			{
 				movePlayerX -= Movement.x;
@@ -861,7 +860,7 @@ void SceneText::Update(double dt)
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { 0, 0, (float)(10.f * dt) };
 			Movement = rotation * Movement;
-			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			Vector3 playerPos = { movePlayerX-2.5f, 0, movePlayerZ };
 			if (CollisionCheck::TrueCollisionCheck(playerPos - Movement, 1, 1))
 			{
 				movePlayerX -= Movement.x;
@@ -880,7 +879,7 @@ void SceneText::Update(double dt)
 			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
 			Vector3 Movement = { 0, 0, (float)(10.f * dt) };
 			Movement = rotation * Movement;
-			Vector3 playerPos = { movePlayerX, 0, movePlayerZ };
+			Vector3 playerPos = { movePlayerX-2.5f, 0, movePlayerZ };
 			if (CollisionCheck::TrueCollisionCheck(playerPos + Movement, 1, 1))
 			{
 				
@@ -910,7 +909,7 @@ void SceneText::Update(double dt)
 		}
 		if (Application::IsKeyPressed('N'))
 		{
-			if (cameraZ != 0)
+			if (cameraZ < -1)
 				cameraZ += (float)(RSPEED / 4 * dt);
 		}
 		if (Application::IsKeyPressed('M'))
@@ -1007,7 +1006,7 @@ void SceneText::Update(double dt)
 
 	
 	if (Application::IsKeyPressed('F'))
-		CleanerGame = true;
+		CleanerGame = !CleanerGame; // swap
 	if (CleanerGame == true)
 	{
 		if (Application::IsKeyPressed(VK_LEFT))
@@ -1046,8 +1045,8 @@ void SceneText::Update(double dt)
 			LitterX = Day1Litter[i].x;
 			LitterY = Day1Litter[i].y;
 			LitterZ = Day1Litter[i].z;
-			if (camera.position.x + 20 > Day1Litter[i].x - 2 && camera.position.x + 20 < Day1Litter[i].x + 2
-				&& camera.position.z > Day1Litter[i].z - 2 && camera.position.z < Day1Litter[i].z + 2)
+			if (movePlayerX - 2.5 > Day1Litter[i].x - 2 && movePlayerX - 2.5 < Day1Litter[i].x + 2
+				&& movePlayerZ > Day1Litter[i].z - 2 && movePlayerZ < Day1Litter[i].z + 2)
 			{
 				Day1Litter[i].x = 55;
 				Day1Litter[i].y = 0;
@@ -1076,7 +1075,7 @@ void SceneText::Update(double dt)
 				Day1Litter[i].z = Day1Litter[i].z;
 			}
 			std::cout << LitterX << " " << LitterZ << std::endl;
-			std::cout << camera.position.x + 20<< " " << camera.position.z << std::endl;
+			std::cout << movePlayerX-2.5 << " " << movePlayerZ << std::endl;
 
 			//code for updating task lisk
 		}
@@ -1176,35 +1175,31 @@ void SceneText::Update(double dt)
 			MechanicGame = true;
 			FreezeMovement = true;
 		}
-		if (AchievementScene == false)
+		if (AchievementScene == false && MechanicGame == false && salesCustomer == nullptr && CleanerGame == false)
 	{
-			if (dayData->getDay() == 3)
-		{
+			if (dayData->getDay() == 3 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10))
+		    {
 				escapeanimation = true;	
-		}
+		    }
 		
-		if (dayData->getDay() == 2)
-		{
+		    if (dayData->getDay() == 2 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 0)) < 10))
+		    {
 				secondescpaeanimation = true;	
-		}
+		    }
 		
-		if (dayData->getDay() == 1)
-		{
+		    if (dayData->getDay() == 1 && (distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-20, 1.5, 15)) < 10))
+		    {
 				thirdescapeanimation = true;	
-		}
+		    }
 	}
-		if (movePlayerX - distanceCheckX < 5 )
-	{
-		RenderTextOnScreen(meshList[GEO_TEXT], "press V", Color(1, 0, 0), 5, 10, 5);
-
+			if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-45, 0.5, -27)) < 20))
+	    {
 		
 			dialogueTime += 10 * dt;
-			if (std::stoi(timeData->getinGameTime()) == 0)
-			{
-				dialogueTime = 0;
-			}
-		
-	}
+			GuardBotInteraction = false;
+
+	
+	    }
 	}
 	/*if (Application::IsKeyPressed('Q'))
 	{
@@ -1774,11 +1769,16 @@ void SceneText::Render()
 		RenderGuardBot();
 		modelStack.PopMatrix();
 		
+		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-45, 0.5, -27)) < 20) && GuardBotInteraction == true)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "press I", Color(1, 0, 0), 5, 5, 5);
+		}
+		
 		// Render Customer
 		for (int i = 0; i < 10; i++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(customerLocations[i].position.x, customerLocations[i].position.y, customerLocations[i].position.z);
+			modelStack.Translate(customerLocations[i].position.x-2.5, customerLocations[i].position.y, customerLocations[i].position.z);
 			modelStack.PushMatrix();
 			modelStack.Rotate(customerLocations[i].angle, 0.f, 1.f, 0.f);
 			if (customerLocations[i].customerType == 0)
@@ -1806,17 +1806,17 @@ void SceneText::Render()
 
 		if (dayData->getDay() == 1)
 		{
-		       suspectCheck = -20;
+		       
 			if (Day1[2].currentNumber == 0)
 			{
-				if (movePlayerX - suspectCheck < 5 && thirdescapeanimation == false)
+				if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-20, 1.5, 15)) < 10) && thirdescapeanimation == false)
 				{
 					modelStack.PushMatrix();
 					modelStack.Translate(-20.f, 5, 15);
-					modelStack.Scale(4, 4, 4);
+					modelStack.Scale(1.5f, 1.5f, 1.5f);
 					
-				
-					modelStack.Translate(-4, 0, 0);
+					modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
+					modelStack.Translate(-3.5, 0, 0);
 					RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
 					modelStack.PopMatrix();
 				}
@@ -1857,7 +1857,7 @@ void SceneText::Render()
 
 			
 			
-			if (dialogueTime > 1 && dialogueTime <= 3)
+			if (dialogueTime > 1 && dialogueTime <= 2)
 			{
 
 				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
@@ -1868,16 +1868,16 @@ void SceneText::Render()
 
 		else if(dayData->getDay() == 2)
 		{
-			suspectCheck = 15;
 			
-			if (movePlayerX - suspectCheck < 5 && secondescpaeanimation == false)
+			
+			if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 0)) < 10) && secondescpaeanimation == false)
 			{
 				modelStack.PushMatrix();
 				modelStack.Translate(15.f, 5, 0);
-				modelStack.Scale(4, 4, 4);
+				modelStack.Scale(1, 1, 1);
 
 
-				//modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90 - 0, 0.f, 1.f, 0.f);
+				
 				modelStack.Translate(-4, 0, 0);
 				RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
 				modelStack.PopMatrix();
@@ -1916,21 +1916,20 @@ void SceneText::Render()
 				modelStack.PopMatrix();
 			}
 			
-            if (dialogueTime > 1 && dialogueTime <= 3)
+                        if (dialogueTime > 1 && dialogueTime <= 2)
 			{
 
 				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
 				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "I heard that some rogue robot is around. Watch out", Color(1, 0, 0), 3, 1, 4, 25, false);
 
 			}
-
 			
 		}
 		else if (dayData->getDay() == 3)
 		{
-		suspectCheck = 15;
+		
 			
-		if (movePlayerX - suspectCheck < 5 && escapeanimation == false)
+		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10) && escapeanimation == false)
 		{
 			modelStack.PushMatrix();
 			modelStack.Translate(15, 5, 30);
@@ -1980,11 +1979,11 @@ void SceneText::Render()
 
 		
 			
-			if (dialogueTime > 1 && dialogueTime <= 3)
+			if (dialogueTime > 1 && dialogueTime <= 2)
 		{
 
 			RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "This is bad, I heard from the boss that this dude disguised himself! I can't tell where he is", Color(1, 0, 0), 3, 1, 4, 25, false);
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "This time the dude is wearing a purple shirt", Color(1, 0, 0), 3, 1, 4, 25, false);
 
 		}
         }
@@ -2031,14 +2030,16 @@ void SceneText::Render()
 		if (CleanerGame == true)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(camera.position.x + 20, 0, camera.position.z);
-			modelStack.Translate(moveX, 0, moveZ);
+			modelStack.Translate(movePlayerX-2.5, 0, movePlayerZ);
+			modelStack.Rotate(rotatePlayer, 0.f, 1.f, 0.f);
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
 			for (int i = 0; i < Day1Litter.size(); ++i)
 			{
-				modelStack.Translate(Day1Litter[i].x, Day1Litter[i].y, Day1Litter[i].z);
-				RenderLitter();
+				modelStack.PushMatrix();
+					modelStack.Translate(Day1Litter[i].x, Day1Litter[i].y, Day1Litter[i].z);
+					RenderLitter();
+				modelStack.PopMatrix();
 			}
 		}
 	}
@@ -2990,9 +2991,16 @@ void SceneText::Renderlevel()
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();
+	modelStack.Translate(0, -2, 50);
+	modelStack.Rotate(270, 0, 1, 0);
+	modelStack.Scale(5, 5, 5);
+	RenderMesh(meshList[GEO_ENTRANCE], true);
+	modelStack.PopMatrix();
+
+	modelStack.PushMatrix();
 	//Scale, Translate, Rotate
 	modelStack.Translate(45, 5, 40);
-	modelStack.Rotate(-90, 0, 1, 0);
+	modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
 	RenderText(meshList[GEO_TEXT], "Mechanic Bay", Color(0, 1, 0));
 	modelStack.PopMatrix();
 
@@ -3035,23 +3043,18 @@ void SceneText::Renderlevel()
 		modelStack.PushMatrix();
 		//Scale, Translate, Rotate
 		modelStack.Translate(45, 3, 38);
-		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
 		RenderText(meshList[GEO_TEXT], "Press I to play", Color(0, 1, 0));
 		modelStack.PopMatrix();
 		modelStack.PushMatrix();
 		//Scale, Translate, Rotate
 		modelStack.Translate(45, 2, 38);
-		modelStack.Rotate(-90, 0, 1, 0);
+		modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
 		RenderText(meshList[GEO_TEXT], "the Mechanic Game", Color(0, 1, 0));
 		modelStack.PopMatrix();
 
 	}
-	modelStack.PushMatrix();
-	modelStack.Translate(0, -2, 50);
-	modelStack.Rotate(270, 0, 1, 0);
-	modelStack.Scale(5, 5, 5);
-	RenderMesh(meshList[GEO_ENTRANCE], true);
-	modelStack.PopMatrix();
+
 
 	modelStack.PushMatrix();
 	modelStack.Translate(-7, 0.5, 20);

@@ -91,10 +91,11 @@ SceneText::SceneText()
 	CarAchievement3 = false;
 	
 	no = 1;
-	SalesPersonSalary = 1000;
-	CleanerSalary = 500;
-	BouncerSalary = 1000;
-	MechanicSalary = 1000;
+	BaseSalary = 1800;
+	SalesPersonSalary = 500;
+	CleanerSalary = 200;
+	BouncerSalary = 600;
+	MechanicSalary = 600;
 
 	// init values for customer
 	salesCustomer = nullptr; //new CSalesCustomer
@@ -1395,7 +1396,7 @@ void SceneText::Update(double dt)
 		if (Application::IsKeyPressed(VK_RIGHT) && debounceTime > 0.2f) {
 			debounceTime = 0;
 			Selection->Down();
-			if (no != 6 )
+			if (no != 6)
 				no++;
 		}
 		if (Application::IsKeyPressed(VK_SPACE) && debounceTime > 0.2f) {
@@ -1412,7 +1413,7 @@ void SceneText::Update(double dt)
 			}
 			else
 			{
-				NotEnough = true; 
+				NotEnough = true;
 			}
 		}
 	}
@@ -1431,7 +1432,7 @@ void SceneText::Render()
 
 	viewStack.LoadIdentity();
 	viewStack.LookAt(camera.position.x, camera.position.y, camera.position.z, camera.target.x, camera.target.y, camera.target.z, camera.up.x, camera.up.y, camera.up.z);
-	modelStack.LoadIdentity();	
+	modelStack.LoadIdentity();
 	if (light[0].type == Light::LIGHT_DIRECTIONAL)
 	{
 		Vector3 lightDir(light[0].position.x, light[0].position.y, light[0].position.z);
@@ -1568,7 +1569,7 @@ void SceneText::Render()
 		Vector3 lightDir(light[7].position.x, light[7].position.y, light[7].position.z);
 		Vector3 lightDirection_cameraspace = viewStack.Top() * lightDir;
 		glUniform3fv(m_parameters[U_LIGHT7_POSITION], 1, &lightDirection_cameraspace.x);
-	} 
+	}
 	else if (light[7].type == Light::LIGHT_SPOT)
 	{
 		Position lightPosition_cameraspace = viewStack.Top() * light[7].position;
@@ -1604,16 +1605,16 @@ void SceneText::Render()
 	//}
 	if (AchievementScene == true)
 	{
-                Tasklist* Task = nullptr;
-		TotalBouncerTask = Day1[2].maxNumber + Day2[2].maxNumber + Day2[2].maxNumber; 
+		Tasklist* Task = nullptr;
+		TotalBouncerTask = Day1[2].maxNumber + Day2[2].maxNumber + Day2[2].maxNumber;
 		CurrentBouncerTask = Day1[2].currentNumber + Day2[2].currentNumber + Day2[2].currentNumber;
 
-		CurrentSalespersonTask = Day1[0].currentNumber + Day2[0].currentNumber + Day3[0].currentNumber; 
-		
+		CurrentSalespersonTask = Day1[0].currentNumber + Day2[0].currentNumber + Day3[0].currentNumber;
+
 		std::string CarAchievements;
 		Achievements* Cartext = new Achievements();
 		CarAchievements = Cartext->carAchievements(Price);
-		
+
 		if (CarAchievements == "CheapSkate Achieved!" && CarAchievement2 == false && CarAchievement3 == false)
 		{
 			CarAchievement1 = true;
@@ -1636,14 +1637,14 @@ void SceneText::Render()
 		std::string BouncerAchievements;
 		Achievements* Bouncertext = new Achievements();
 		BouncerAchievements = Bouncertext->bouncerAchievements(CurrentBouncerTask, TotalBouncerTask);
-		
+
 		std::string SalesAchievements;
 		Achievements* Salestext = new Achievements();
 		SalesAchievements = Salestext->salespersonAchievements(CurrentSalespersonTask);
-		
+
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
-		
-        if (dayData->getDay() == 1)
+
+		if (dayData->getDay() == 1)
 		{
 
 			std::string TrackedTask;
@@ -1717,8 +1718,8 @@ void SceneText::Render()
 			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], BouncerAchievements, Color(1, 0, 0), 3, 3.5f, 11);
 			RenderTextOnScreen(meshList[GEO_ACHIEVEMENTS], SalesAchievements, Color(1, 0, 0), 3, 3.5f, 12);
 		}
-		
-	           delete Task;
+
+		delete Task;
 	}
 	else if (gameover == true) {
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
@@ -1804,27 +1805,27 @@ void SceneText::Render()
 				Day3 = Temp->Addscore(Day3);
 			}
 			else {
-				std::cout << "Error Updating Score" ;
+				std::cout << "Error Updating Score";
 			}
 			delete Temp;
 			FreezeMovement = false;
 			MechanicGame = false;
-			timeData->setMoney(MechanicSalary* BossOpinion->getmodifier());
+			timeData->setMoney(MechanicSalary * BossOpinion->getmodifier());
 			std::cout << timeData->getMoney();
 			delete MechanicGameScore;
 			MechanicGameScore = new Mechanictask();
 			hasreset = false;
 		}
 	}
-	
-	else if(GameScene == true)
+
+	else if (GameScene == true)
 	{
-		
+
 		RenderSkybox();
 		Renderlevel();
 		if (!CleanerGame)
 			RenderPlayer();
-		
+
 		//RenderCar1();
 		//RenderCar2();
 		//RenderCar3();
@@ -1836,9 +1837,9 @@ void SceneText::Render()
 		//RenderCar9();
 		//RenderCar10(); // need wheels
 		//RenderCar11(); // need wheels
-		
-                
-		
+
+
+
 		/*modelStack.PushMatrix();
 		modelStack.Translate(light[0].position.x, light[0].position.y, light[0].position.z);
 		RenderMesh(meshList[GEO_LIGHTSPHERE], false);
@@ -1894,17 +1895,17 @@ void SceneText::Render()
 		modelStack.Rotate(90.f, 0, 1, 0);
 		RenderGuardBot();
 		modelStack.PopMatrix();
-		
+
 		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-45, 0.5, -27)) < 20) && GuardBotInteraction == true)
 		{
 			RenderTextOnScreen(meshList[GEO_TEXT], "press I", Color(1, 0, 0), 5, 5, 5);
 		}
-		
+
 		// Render Customer
 		for (int i = 0; i < 10; i++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(customerLocations[i].position.x+2.5, customerLocations[i].position.y, customerLocations[i].position.z);
+			modelStack.Translate(customerLocations[i].position.x + 2.5, customerLocations[i].position.y, customerLocations[i].position.z);
 			modelStack.PushMatrix();
 			modelStack.Rotate(customerLocations[i].angle, 0.f, 1.f, 0.f);
 			if (customerLocations[i].customerType == 0)
@@ -1932,7 +1933,7 @@ void SceneText::Render()
 
 		if (dayData->getDay() == 1)
 		{
-		       
+
 			if (Day1[2].currentNumber == 0)
 			{
 				if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-20, 1.5, 15)) < 10) && thirdescapeanimation == false)
@@ -1940,7 +1941,7 @@ void SceneText::Render()
 					modelStack.PushMatrix();
 					modelStack.Translate(-20.f, 5, 15);
 					modelStack.Scale(1.5f, 1.5f, 1.5f);
-					
+
 					modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
 					modelStack.Translate(-3.5, 0, 0);
 					RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
@@ -1981,8 +1982,8 @@ void SceneText::Render()
 				}
 			}
 
-			
-			
+
+
 			if (dialogueTime > 1 && dialogueTime <= 2)
 			{
 
@@ -1992,10 +1993,10 @@ void SceneText::Render()
 			}
 		}
 
-		else if(dayData->getDay() == 2)
+		else if (dayData->getDay() == 2)
 		{
-			
-			
+
+
 			if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 0)) < 10) && secondescpaeanimation == false)
 			{
 				modelStack.PushMatrix();
@@ -2003,13 +2004,13 @@ void SceneText::Render()
 				modelStack.Scale(1, 1, 1);
 
 
-				
+
 				modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
 				modelStack.Translate(-3.5, 0, 0);
 				RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
 				modelStack.PopMatrix();
 			}
-			
+
 			if (secondescpaeanimation == false) //Day2
 			{
 				RenderSuspect2();
@@ -2042,132 +2043,132 @@ void SceneText::Render()
 				RenderSuspect2();
 				modelStack.PopMatrix();
 			}
-			
-            if (dialogueTime > 1 && dialogueTime <= 2)
+
+			if (dialogueTime > 1 && dialogueTime <= 2)
 			{
 
 				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
 				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "I heard that some rogue robot is around. Watch out", Color(1, 0, 0), 3, 1, 4, 25, false);
 
 			}
-			
+
 		}
 		else if (dayData->getDay() == 3)
 		{
-		
-			
-		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10) && escapeanimation == false)
-		{
-			modelStack.PushMatrix();
-			modelStack.Translate(15, 5, 30);
-			modelStack.Scale(1, 1, 1);
 
 
-			modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
-			modelStack.Translate(-3.5, 0, 0);
-			RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
-			modelStack.PopMatrix();
-		}	
-			
-		if (escapeanimation == false)
-		{
-			RenderSuspect();
+			if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(15, 1.5, 30)) < 10) && escapeanimation == false)
+			{
+				modelStack.PushMatrix();
+				modelStack.Translate(15, 5, 30);
+				modelStack.Scale(1, 1, 1);
+
+
+				modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
+				modelStack.Translate(-3.5, 0, 0);
+				RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
+				modelStack.PopMatrix();
+			}
+
+			if (escapeanimation == false)
+			{
+				RenderSuspect();
+			}
+
+			if (elapsedTime <= 1 && escapeanimation == true) //Day3
+			{
+				startingPosition = 30;
+
+				modelStack.PushMatrix();
+				modelStack.Translate(15, 1, startingPosition + elapsedTime * 15);
+				RenderSuspect();
+				modelStack.PopMatrix();
+			}
+			else if (elapsedTime > 1 && elapsedTime <= 3 && escapeanimation == true) // move foward
+			{
+				middlePosition = 15;
+
+				modelStack.PushMatrix();
+				modelStack.Translate(middlePosition - (elapsedTime - 1) * 15 / 3, 1, 45); //moving to the right
+				RenderSuspect();
+				modelStack.PopMatrix();
+
+			}
+			else if (elapsedTime > 3 && elapsedTime <= 6 && escapeanimation == true)
+			{
+				finalPosition = 45;
+
+				modelStack.PushMatrix();
+				modelStack.Translate(5, 1, finalPosition + (elapsedTime - 3) * 15 / 3); // moving foward
+				RenderSuspect();
+				modelStack.PopMatrix();
+			}
+
+
+
+
+			if (dialogueTime > 1 && dialogueTime <= 2)
+			{
+
+				RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
+				RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "This time the dude is wearing a purple shirt, that's what I hear", Color(1, 0, 0), 3, 1, 4, 25, false);
+
+			}
 		}
 
-		if (elapsedTime <= 1 && escapeanimation == true) //Day3
-		{
-			startingPosition = 30;
-
-			modelStack.PushMatrix();
-			modelStack.Translate(15, 1, startingPosition + elapsedTime * 15);
-			RenderSuspect();
-			modelStack.PopMatrix();
-		}
-		else if (elapsedTime > 1 && elapsedTime <= 3 && escapeanimation == true) // move foward
-		{
-			middlePosition = 15;
-
-			modelStack.PushMatrix();
-			modelStack.Translate(middlePosition - (elapsedTime - 1) * 15 / 3, 1, 45); //moving to the right
-			RenderSuspect();
-			modelStack.PopMatrix();
-
-		}
-		else if (elapsedTime > 3 && elapsedTime <= 6 && escapeanimation == true)
-		{
-			finalPosition = 45;
-
-			modelStack.PushMatrix();
-			modelStack.Translate(5, 1, finalPosition + (elapsedTime - 3) * 15 / 3); // moving foward
-			RenderSuspect();
-			modelStack.PopMatrix();
-		}
 
 
-		
-			
-		if (dialogueTime > 1 && dialogueTime <= 2)
-		{
-
-			RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "This time the dude is wearing a purple shirt, that's what I hear", Color(1, 0, 0), 3, 1, 4, 25, false);
-
-		}
-        }
-
-		
-		
 		if (elapsedTime > 5 && elapsedTime <= 9 || passedTime > 7 && passedTime <= 10 || timeDisappeared > 6 && timeDisappeared <= 9) //if within 15 seconds
 		{
-				RenderBouncerTextBox();
-				if (dayData->getDay() == 1 && Day1[2].currentNumber != 1)
-				{
-					Tasklist* temp;
-					temp = new Bouncertask(Day1);
-					Day1 = temp->Addscore(Day1);
-					timeData->setMoney(BouncerSalary);
-					delete temp;
-					BossOpinion->AddGoodwill(5);
-			    }
-				else if (dayData->getDay() == 2 && Day2[2].currentNumber != 1)
-				{
-					Tasklist* temp;
-					temp = new Bouncertask(Day2);
-					Day2 = temp->Addscore(Day2);
-					timeData->setMoney(BouncerSalary);
-					delete temp;
-					BossOpinion->AddGoodwill(5);
-				}
-				else if (dayData->getDay() == 3 && Day3[2].currentNumber != 1)
-				{
-					Tasklist* temp;
-					temp = new Bouncertask(Day3);
-					Day3 = temp->Addscore(Day3);
-					timeData->setMoney(BouncerSalary);
-					delete temp;
-					BossOpinion->AddGoodwill(5);
-				}
+			RenderBouncerTextBox();
+			if (dayData->getDay() == 1 && Day1[2].currentNumber != 1)
+			{
+				Tasklist* temp;
+				temp = new Bouncertask(Day1);
+				Day1 = temp->Addscore(Day1);
+				timeData->setMoney(BouncerSalary);
+				delete temp;
+				BossOpinion->AddGoodwill(5);
+			}
+			else if (dayData->getDay() == 2 && Day2[2].currentNumber != 1)
+			{
+				Tasklist* temp;
+				temp = new Bouncertask(Day2);
+				Day2 = temp->Addscore(Day2);
+				timeData->setMoney(BouncerSalary);
+				delete temp;
+				BossOpinion->AddGoodwill(5);
+			}
+			else if (dayData->getDay() == 3 && Day3[2].currentNumber != 1)
+			{
+				Tasklist* temp;
+				temp = new Bouncertask(Day3);
+				Day3 = temp->Addscore(Day3);
+				timeData->setMoney(BouncerSalary);
+				delete temp;
+				BossOpinion->AddGoodwill(5);
+			}
 
-				
+
 		}
 		std::string time = std::to_string((int)std::stof(timeData->getinGameTime()));
 
-		RenderTextOnScreen(meshList[GEO_TEXT], time , Color(1, 0, 0), 2, 0, 29);
-		
+		RenderTextOnScreen(meshList[GEO_TEXT], time, Color(1, 0, 0), 2, 0, 29);
+
 		std::string day = std::to_string(dayData->getDay());
 		RenderTextOnScreen(meshList[GEO_TEXT], day, Color(1, 0, 0), 2, 3, 29);
 		if (CleanerGame == true)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(movePlayerX-2.5, 0, movePlayerZ);
+			modelStack.Translate(movePlayerX, 0, movePlayerZ);
 			modelStack.Rotate(rotatePlayer, 0.f, 1.f, 0.f);
 			RenderCleanerRobot();
 			modelStack.PopMatrix();
 			for (int i = 0; i < Day1Litter.size(); ++i)
 			{
 				modelStack.PushMatrix();
-					modelStack.Translate(Day1Litter[i].x, Day1Litter[i].y, Day1Litter[i].z);
-					RenderLitter();
+				modelStack.Translate(Day1Litter[i].x, Day1Litter[i].y, Day1Litter[i].z);
+				RenderLitter();
 				modelStack.PopMatrix();
 			}
 		}
@@ -2175,7 +2176,7 @@ void SceneText::Render()
 	else if (DayEnds == true)
 	{
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
-		if(dayData->getDay() == 1 || 2 || 3)
+		if (dayData->getDay() == 1 || 2 || 3)
 		{
 			RenderTextOnScreen(meshList[GEO_TEXT], "Day " + std::to_string(dayData->getDay()) + " completed", Color(0, 1, 0), 3, 9, 10);
 		}
@@ -2183,7 +2184,65 @@ void SceneText::Render()
 		{
 			RenderTextOnScreen(meshList[GEO_TEXT], "You have completed the game! press esc to exit", Color(0, 1, 0), 3, 5, 10);
 		}
-    }
+
+		if (dayData->getDay() == 1)
+		{
+			if (Day1Unpaid == false)
+			{
+				Day1Unpaid = true;
+				int num = 0;
+				for (int i = 0; i < Day1.size(); ++i)
+				{
+					if (Day1[i].currentNumber < Day1[i].maxNumber)
+					{
+						num++;
+					}
+				}
+				if (num >= 4)
+					timeData->setMoney(BaseSalary * 0.9);
+				else
+					timeData->setMoney(BaseSalary);
+			}
+		}
+		if (dayData->getDay() == 2)
+		{
+			if (Day2Unpaid == false)
+			{
+				Day2Unpaid = true;
+				int num = 0;
+				for (int i = 0; i < Day2.size(); ++i)
+				{
+					if (Day2[i].currentNumber < Day2[i].maxNumber)
+					{
+						num++;
+					}
+				}
+				if (num >= 4)
+					timeData->setMoney(BaseSalary * 0.9);
+				else
+					timeData->setMoney(BaseSalary);
+			}
+		}
+		if (dayData->getDay() == 3)
+		{
+			if (Day3Unpaid == false)
+			{
+				Day3Unpaid = true;
+				int num = 0;
+				for (int i = 0; i < Day3.size(); ++i)
+				{
+					if (Day3[i].currentNumber < Day3[i].maxNumber)
+					{
+						num++;
+					}
+				}
+				if (num >= 4)
+					timeData->setMoney(BaseSalary * 0.9);
+				else
+					timeData->setMoney(BaseSalary);
+			}
+		}
+	}
 
 
 	if (salesCustomer != nullptr && salesCustomer->answered == false)
@@ -2195,18 +2254,18 @@ void SceneText::Render()
 		RenderObjectOnScreen(meshList[GEO_FRAME], 10, 4, 3.5);
 		RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], toPrint, Color(0, 0, 0), 3, 4, 12.5, 28, false);
 		RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "[Q: Up | E: Down | Enter: Select]", Color(0, 0, 0), 2, 8.5, 15, 50, false);
-		
+
 		RenderObjectOnScreen(meshList[GEO_FRAME3], 10, 4, 5.1);
 		RenderObjectOnScreen(meshList[GEO_CUSTOMERLOGO], 15, 1, 3.4);
-		RenderTextOnScreen(meshList[GEO_TEXT], salesCustomer->getName(), Color(0,0,1), 3, 8, 18.25);
-		RenderTextOnScreen(meshList[GEO_TEXT], "Satisfaction:", Color(0,2,0), 3, 8, 17.25);
+		RenderTextOnScreen(meshList[GEO_TEXT], salesCustomer->getName(), Color(0, 0, 1), 3, 8, 18.25);
+		RenderTextOnScreen(meshList[GEO_TEXT], "Satisfaction:", Color(0, 2, 0), 3, 8, 17.25);
 
 		RenderObjectOnScreen(meshList[GEO_FRAME2], 10, 4, 1.3);
 		if (salesCustomer->count > salesCustomer->getQuestion().length())
 		{
 			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 5, 10, 40, true);
 			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getPrevious()->getText(), Color(0, 0, 0), 2.25, 3.5, 8, 40, true);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getText(), Color(0,0,0), 2.25, 2.2, 6, 40, true);
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getText(), Color(0, 0, 0), 2.25, 2.2, 6, 40, true);
 			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getNext()->getText(), Color(0, 0, 0), 2.25, 3.5, 4, 40, true);
 			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], " > " + salesCustomer->getPlayerChoice()->getNext()->getNext()->getText(), Color(0, 0, 0), 2.25, 5, 2, 40, true);
 		}
@@ -2278,12 +2337,6 @@ void SceneText::Render()
 			RenderTextOnScreen(meshList[GEO_TEXT], "Not enough money", Color(0, 1, 1), 2.5, 3, 5);
 			if (Application::IsKeyPressed(VK_LEFT) || Application::IsKeyPressed(VK_RIGHT))
 				NotEnough = false;
-		}
-		//Selection->Printing(); // for checking
-		if (Application::IsKeyPressed('B'))
-		{
-			BankOpen = false;
-			FreezeMovement = false;
 		}
 	}
 }

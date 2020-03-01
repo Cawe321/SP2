@@ -363,11 +363,15 @@ private:
 	bool thirdescapeanimation;
 	bool textbox;
 	
+	int BaseSalary;
 	int SalesPersonSalary;
 	int CleanerSalary;
 	int BouncerSalary;
 	int MechanicSalary;
-	
+	bool Day1Unpaid;
+	bool Day2Unpaid;
+	bool Day3Unpaid;
+
 	bool GuardBotInteraction;
 	
 

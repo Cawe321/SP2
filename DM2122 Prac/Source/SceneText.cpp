@@ -1108,7 +1108,7 @@ void SceneText::Update(double dt)
 					BossOpinion->AddGoodwill(5);
 					temp = new Cleanertask(Day1);
 					Day1 = temp->Addscore(Day1);
-					timeData->setMoney(CleanerSalary);
+					timeData->setMoney(CleanerSalary* BossOpinion->getmodifier());
 					delete temp;
 				}
 				else
@@ -1135,7 +1135,7 @@ void SceneText::Update(double dt)
 					BossOpinion->AddGoodwill(5);
 					temp = new Cleanertask(Day2);
 					Day2 = temp->Addscore(Day2);
-					timeData->setMoney(CleanerSalary);
+					timeData->setMoney(CleanerSalary * BossOpinion->getmodifier());
 					delete temp;
 				}
 				else
@@ -1162,7 +1162,7 @@ void SceneText::Update(double dt)
 					BossOpinion->AddGoodwill(5);
 					temp = new Cleanertask(Day3);
 					Day3 = temp->Addscore(Day3);
-					timeData->setMoney(CleanerSalary);
+					timeData->setMoney(CleanerSalary * BossOpinion->getmodifier());
 					delete temp;
 				}
 				else
@@ -1241,17 +1241,17 @@ void SceneText::Update(double dt)
 				if (dayData->getDay() == 1) {
 					temp = new Salesmantask(Day1);
 					Day1 = temp->Addscore(Day1);
-					timeData->setMoney(SalesPersonSalary);
+					timeData->setMoney(SalesPersonSalary* BossOpinion->getmodifier());
 				}
 				else if (dayData->getDay() == 2) {
 					temp = new Salesmantask(Day2);
 					Day2 = temp->Addscore(Day2);
-					timeData->setMoney(SalesPersonSalary);
+					timeData->setMoney(SalesPersonSalary* BossOpinion->getmodifier());
 				}
 				else if (dayData->getDay() == 3) {
 					temp = new Salesmantask(Day3);
 					Day3 = temp->Addscore(Day3);
-					timeData->setMoney(SalesPersonSalary);
+					timeData->setMoney(SalesPersonSalary* BossOpinion->getmodifier());
 				}
 				delete temp;
 			}
@@ -2126,7 +2126,7 @@ void SceneText::Render()
 				Tasklist* temp;
 				temp = new Bouncertask(Day1);
 				Day1 = temp->Addscore(Day1);
-				timeData->setMoney(BouncerSalary);
+				timeData->setMoney(BouncerSalary* BossOpinion->getmodifier());
 				delete temp;
 				BossOpinion->AddGoodwill(5);
 			}
@@ -2135,7 +2135,7 @@ void SceneText::Render()
 				Tasklist* temp;
 				temp = new Bouncertask(Day2);
 				Day2 = temp->Addscore(Day2);
-				timeData->setMoney(BouncerSalary);
+				timeData->setMoney(BouncerSalary * BossOpinion->getmodifier());
 				delete temp;
 				BossOpinion->AddGoodwill(5);
 			}
@@ -2144,7 +2144,7 @@ void SceneText::Render()
 				Tasklist* temp;
 				temp = new Bouncertask(Day3);
 				Day3 = temp->Addscore(Day3);
-				timeData->setMoney(BouncerSalary);
+				timeData->setMoney(BouncerSalary* BossOpinion->getmodifier());
 				delete temp;
 				BossOpinion->AddGoodwill(5);
 			}

@@ -77,7 +77,7 @@ SceneText::SceneText()
 		game[i] = '-';
 	}
 	
-	Price = 0; //for me to render out the achievements
+	Price = 0; //for me to render out the achievementsf
 	
 	escapeanimation = false;
 	secondescpaeanimation = false;
@@ -2176,7 +2176,7 @@ void SceneText::Render()
 	else if (DayEnds == true)
 	{
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
-		if (dayData->getDay() == 1 || 2 || 3)
+		if (dayData->getDay() == 1 || dayData->getDay() == 2 || dayData->getDay() == 3)
 		{
 			RenderTextOnScreen(meshList[GEO_TEXT], "Day " + std::to_string(dayData->getDay()) + " completed", Color(0, 1, 0), 3, 9, 10);
 		}
@@ -3264,7 +3264,7 @@ void SceneText::Renderlevel()
 	modelStack.Translate(0, -2, 50);
 	modelStack.Rotate(270, 0, 1, 0);
 	modelStack.Scale(5, 5, 5);
-	RenderMesh(meshList[GEO_ENTRANCE], true);
+	RenderMesh(meshList[GEO_ENTRANCE], !true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();

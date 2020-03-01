@@ -22,7 +22,7 @@ bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float sizeX, float sizeZ)
 	
 	if (obj1.x + sizeX >= 50 || obj1.x - sizeX <= -50 || obj1.z + sizeX >= 50 || obj1.z - sizeX <= -50)
 		return false;
-	if (obj1.z + sizeZ >= 46 || obj1.z - sizeZ <= -50 || obj1.x + sizeZ >= 46 || obj1.x - sizeZ <= -50)
+	if (obj1.z + sizeZ >= 50 || obj1.z - sizeZ <= -50 || obj1.x + sizeZ >= 50 || obj1.x - sizeZ <= -50)
 		return false;
 	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(-41, 1, -14), 4, 49)) // item booths
 		return false;
@@ -75,6 +75,8 @@ bool CollisionCheck::NonCharacterCollisionCheck(Vector3 obj1, float obj1SizeX, f
 {
 	if (!TrueCollisionCheck(obj1, obj1SizeX, obj1SizeZ))
 		return false;
+
+	obj1.x += 2.5; // center
 	if (DistanceCheck(obj1, Vector3(45, 0, 45)) < 20) 
 		return false;
 	if (DistanceCheck(obj1, Vector3(-45, 0, -40)) < 20)

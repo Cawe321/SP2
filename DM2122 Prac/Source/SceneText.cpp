@@ -825,13 +825,7 @@ void SceneText::Update(double dt)
 	if (!FreezeMovement)
 	{
 		camera.cameraLock = true;
-			Vector3 playerPos = { movePlayerX-2.5f, 5, movePlayerZ };
-			Mtx44 rotation;
-			rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
-			Vector3 translation = { cameraZ, cameraY, 0 };
-			translation = rotation * translation;
-			camera.target = playerPos;
-			camera.position = playerPos + translation;
+			
 		
 		if (Application::IsKeyPressed('W'))
 		{
@@ -931,6 +925,14 @@ void SceneText::Update(double dt)
 		{
 			cameraZ -= (float)(RSPEED / 4 * dt);
 		}
+
+		Vector3 playerPos = { movePlayerX - 2.5f, 5, movePlayerZ };
+		Mtx44 rotation;
+		rotation.SetToRotation(rotatePlayer, 0.f, 1.f, 0.f);
+		Vector3 translation = { cameraZ, cameraY, 0 };
+		translation = rotation * translation;
+		camera.target = playerPos;
+		camera.position = playerPos + translation;
 	}
 
 	//for bouncer

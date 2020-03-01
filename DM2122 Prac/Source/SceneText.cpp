@@ -578,22 +578,22 @@ void SceneText::Init()
 	
 	// Player
 	meshList[PLAYER_BODY] = MeshBuilder::GenerateOBJ("PlayerBody", "OBJ//Customer//CustomerBody.obj");
-	meshList[PLAYER_BODY]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[PLAYER_BODY]->textureID = LoadTGA("Image//Player.tga");
 			 
 	meshList[PLAYER_HEAD] = MeshBuilder::GenerateOBJ("PlayerHead", "OBJ//Customer//CustomerHead.obj");
-	meshList[PLAYER_HEAD]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[PLAYER_HEAD]->textureID = LoadTGA("Image//Player.tga");
 			 
 	meshList[PLAYER_SHOULDER] = MeshBuilder::GenerateOBJ("PlayerShoulder", "OBJ//Customer//CustomerShoulder.obj");
-	meshList[PLAYER_SHOULDER]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[PLAYER_SHOULDER]->textureID = LoadTGA("Image//Player.tga");
 			
 	meshList[PLAYER_ARM] = MeshBuilder::GenerateOBJ("PlayerArm", "OBJ//Customer//CustomerArm.obj");
-	meshList[PLAYER_ARM]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[PLAYER_ARM]->textureID = LoadTGA("Image//Player.tga");
 			
 	meshList[PLAYER_HAND] = MeshBuilder::GenerateOBJ("PlayerHand", "OBJ//Customer//CustomerHand.obj");
-	meshList[PLAYER_HAND]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[PLAYER_HAND]->textureID = LoadTGA("Image//Player.tga");
 			
 	meshList[PLAYER_LEG] = MeshBuilder::GenerateOBJ("PlayerLeg", "OBJ//Customer//CustomerLeg.obj");
-	meshList[PLAYER_LEG]->textureID = LoadTGA("Image//Customer.tga");
+	meshList[PLAYER_LEG]->textureID = LoadTGA("Image//Player.tga");
 
 	// Customer
 	meshList[CUSTOMER_BODY] = MeshBuilder::GenerateOBJ("CustomerBody", "OBJ//Customer//CustomerBody.obj");

@@ -1207,7 +1207,7 @@ void SceneText::Update(double dt)
 	for (int i = 0; i < 10; i++)
 	{
 		Vector3 characterPosition = { movePlayerX, 0, movePlayerZ };
-		if (CollisionCheck::DistanceCheck(characterPosition, customerLocations[i].position) < 15 && salesCustomer == nullptr && !FreezeMovement && (customerLocations[i].isCurious == true || Vocation::isCustomerCurious() == true))
+		if (CollisionCheck::DistanceCheck(characterPosition, customerLocations[i].position) < 7.5f && salesCustomer == nullptr && !FreezeMovement && (customerLocations[i].isCurious == true || Vocation::isCustomerCurious() == true))
 		{
 
 			customerLocations[i].isCurious = true;
@@ -1902,7 +1902,7 @@ void SceneText::Render()
 		for (int i = 0; i < 10; i++)
 		{
 			modelStack.PushMatrix();
-			modelStack.Translate(customerLocations[i].position.x-2.5, customerLocations[i].position.y, customerLocations[i].position.z);
+			modelStack.Translate(customerLocations[i].position.x+2.5, customerLocations[i].position.y, customerLocations[i].position.z);
 			modelStack.PushMatrix();
 			modelStack.Rotate(customerLocations[i].angle, 0.f, 1.f, 0.f);
 			if (customerLocations[i].customerType == 0)

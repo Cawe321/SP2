@@ -443,7 +443,7 @@ int globalData::getMoney()
 
 void globalData::setMoney(int cash)
 {
-	money = cash;
+	money += cash;
 }
 
 bool globalData::Deposit(CarSelection* input)

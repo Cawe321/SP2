@@ -20,9 +20,9 @@ bool CollisionCheck::TrueCollisionCheck(Vector3 obj1, float sizeX, float sizeZ)
 	obj1.x += 2.5; // center
 	// boundary check
 	
-	if (obj1.x + sizeX >= 50 || obj1.x - sizeX <= -50 || obj1.z + sizeX >= 50 || obj1.z - sizeX <= -50)
+	if (obj1.x + sizeX >= 50 || obj1.x - sizeX <= -50 || obj1.z + sizeX >= 47 || obj1.z - sizeX <= -50)
 		return false;
-	if (obj1.z + sizeZ >= 50 || obj1.z - sizeZ <= -50 || obj1.x + sizeZ >= 50 || obj1.x - sizeZ <= -50)
+	if (obj1.z + sizeZ >= 47 || obj1.z - sizeZ <= -50 || obj1.x + sizeZ >= 50 || obj1.x - sizeZ <= -50)
 		return false;
 	if (SquareCollisionCheck(obj1, sizeX, sizeZ, Vector3(-41, 1, -14), 4, 49)) // item booths
 		return false;

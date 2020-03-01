@@ -77,7 +77,7 @@ SceneText::SceneText()
 		game[i] = '-';
 	}
 	
-	Price = 0; //for me to render out the achievements
+	Price = 0; //for me to render out the achievementsf
 	
 	escapeanimation = false;
 	secondescpaeanimation = false;
@@ -3264,7 +3264,7 @@ void SceneText::Renderlevel()
 	modelStack.Translate(0, -2, 50);
 	modelStack.Rotate(270, 0, 1, 0);
 	modelStack.Scale(5, 5, 5);
-	RenderMesh(meshList[GEO_ENTRANCE], true);
+	RenderMesh(meshList[GEO_ENTRANCE], !true);
 	modelStack.PopMatrix();
 
 	modelStack.PushMatrix();

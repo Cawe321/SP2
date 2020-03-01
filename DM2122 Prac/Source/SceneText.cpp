@@ -2176,7 +2176,7 @@ void SceneText::Render()
 	else if (DayEnds == true)
 	{
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
-		if (dayData->getDay() == 1 || 2 || 3)
+		if (dayData->getDay() == 1 || dayData->getDay() == 2 || dayData->getDay() == 3)
 		{
 			RenderTextOnScreen(meshList[GEO_TEXT], "Day " + std::to_string(dayData->getDay()) + " completed", Color(0, 1, 0), 3, 9, 10);
 		}

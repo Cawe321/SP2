@@ -998,7 +998,7 @@ void SceneText::Update(double dt)
 			MechanicGameScore->AddPoints();
 			keyhit = true;
 		}
-		else if ((elapsed - debounce > 0.4125f && elapsed - debounce < 0.445)&& keyhit == false && hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
+		else if ((elapsed - debounce > 0.425f && elapsed - debounce < 0.445)&& keyhit == false && hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
 			MechanicGameScore->AddStrike();
 			hasmissed = true;
 		}

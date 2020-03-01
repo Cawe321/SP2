@@ -1377,10 +1377,11 @@ void SceneText::Update(double dt)
 	}
 
 	debounceTime += dt;
-	if (Application::IsKeyPressed('B') && salesCustomer == nullptr)
+	if (Application::IsKeyPressed('B') && debounceTime > 0.2f)
 	{
-		FreezeMovement = true;
-		BankOpen = true;
+		debounceTime = 0;
+		FreezeMovement = !FreezeMovement;
+		BankOpen = !BankOpen;
 	}
 	if (BankOpen == true)
 	{
@@ -1413,7 +1414,6 @@ void SceneText::Update(double dt)
 			{
 				NotEnough = true; 
 			}
-			
 		}
 	}
 	CalculateFrameRate();

@@ -235,6 +235,7 @@ void StarterScene::Update(double dt)
 				IntroScene = false;
 				VocationScene = true;
 				animationTime = globalTime;
+				debounceTime = globalTime;
 			}
 			
 		}

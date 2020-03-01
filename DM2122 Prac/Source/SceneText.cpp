@@ -132,7 +132,7 @@ void SceneText::Init()
 	// Generate a default VAO for now
 	glGenVertexArrays(1, &m_vertexArrayID);
 	glBindVertexArray(m_vertexArrayID);
-	glEnable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -1001,7 +1001,7 @@ void SceneText::Update(double dt)
 			MechanicGameScore->AddPoints();
 			keyhit = true;
 		}
-		else if ((elapsed - debounce > 0.425f && elapsed - debounce < 0.445)&& keyhit == false && hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
+		else if ((elapsed - debounce > 0.425f && elapsed - debounce < 0.43)&& keyhit == false && hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
 			MechanicGameScore->AddStrike();
 			hasmissed = true;
 		}

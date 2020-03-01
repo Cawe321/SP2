@@ -86,6 +86,10 @@ SceneText::SceneText()
 	GameScene = true;
 	GuardBotInteraction = true;
 	
+	CarAchievement1 = false;
+	CarAchievement2 = false;
+	CarAchievement3 = false;
+	
 	no = 1;
 	SalesPersonSalary = 1000;
 	CleanerSalary = 500;
@@ -944,6 +948,11 @@ void SceneText::Update(double dt)
 	{
 		timeDisappeared += dt;
 	}
+	
+	if (GuardBotInteraction == false)
+	{
+		dialogueTime += dt;
+	}
 
 	if (MechanicGame == true) {
 		// to make the keypress game
@@ -1185,10 +1194,7 @@ void SceneText::Update(double dt)
 		if ((distancecalculator(Vector3(movePlayerX, 0, movePlayerZ), Vector3(-45, 0.5, -27)) < 20))
 		{
 
-			dialogueTime += 10 * dt;
 			GuardBotInteraction = false;
-
-
 		}
 	}
 
@@ -1353,7 +1359,8 @@ void SceneText::Update(double dt)
 			GameScene = true;
 			dayData->NextDay();
 			timeData->setinGameTime(600);
-
+                        GuardBotInteraction = true;
+			dialogueTime = 0;
 			
 		}
 	}
@@ -1590,10 +1597,10 @@ void SceneText::Render()
 	if (AchievementScene == true)
 	{
                 Tasklist* Task = nullptr;
-		TotalBouncerTask = Day1[2].maxNumber + Day2[2].maxNumber + Day2[2].maxNumber; //algo for this needs to be tested once the minigame is done
+		TotalBouncerTask = Day1[2].maxNumber + Day2[2].maxNumber + Day2[2].maxNumber; 
 		CurrentBouncerTask = Day1[2].currentNumber + Day2[2].currentNumber + Day2[2].currentNumber;
 
-		CurrentSalespersonTask = Day1[0].currentNumber + Day2[0].currentNumber + Day3[0].currentNumber; //just leave like this for now, same reason as bouncer
+		CurrentSalespersonTask = Day1[0].currentNumber + Day2[0].currentNumber + Day3[0].currentNumber; 
 		
 		std::string CarAchievements;
 		Achievements* Cartext = new Achievements();
@@ -1989,7 +1996,8 @@ void SceneText::Render()
 
 
 				
-				modelStack.Translate(-4, 0, 0);
+				modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
+				modelStack.Translate(-3.5, 0, 0);
 				RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
 				modelStack.PopMatrix();
 			}
@@ -2047,8 +2055,8 @@ void SceneText::Render()
 			modelStack.Scale(1, 1, 1);
 
 
-			//modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90 - 0, 0.f, 1.f, 0.f);
-			modelStack.Translate(-4, 0, 0);
+			modelStack.Rotate(-CollisionCheck::angleBetween2Coords(camera.target, camera.position) + 90, 0.f, 1.f, 0.f);
+			modelStack.Translate(-3.5, 0, 0);
 			RenderText(meshList[GEO_TEXT], "Press I", Color(1, 0, 0));
 			modelStack.PopMatrix();
 		}	
@@ -2159,7 +2167,14 @@ void SceneText::Render()
 	else if (DayEnds == true)
 	{
 		RenderObjectOnScreen(meshList[GEO_ACHIEVEMENTSBG], 50, 0.8, 0.5);
-		RenderTextOnScreen(meshList[GEO_TEXT], "Day " + std::to_string(dayData->getDay()) + " completed", Color(0, 1, 0), 3, 9, 10);
+		if(dayData->getDay() == 1 || 2 || 3)
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "Day " + std::to_string(dayData->getDay()) + " completed", Color(0, 1, 0), 3, 9, 10);
+		}
+		else
+		{
+			RenderTextOnScreen(meshList[GEO_TEXT], "You have completed the game! press esc to exit", Color(0, 1, 0), 3, 5, 10);
+		}
     }
 
 

@@ -2110,7 +2110,7 @@ void SceneText::Render()
 		{
 
 			RenderObjectOnScreen(meshList[GEO_TEXTBOX], 9, 3.f, 1.f);
-			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "This time the dude is wearing a purple shirt", Color(1, 0, 0), 3, 1, 4, 25, false);
+			RenderTextOnScreenWithNewLine(meshList[GEO_TEXT], "This time the dude is wearing a purple shirt, that's what I hear", Color(1, 0, 0), 3, 1, 4, 25, false);
 
 		}
         }

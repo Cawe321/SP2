@@ -968,34 +968,39 @@ void SceneText::Update(double dt)
 			hasreset = true;
 		}
 
-
-		if ((elapsed - debounce > 0.4f) && hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
-			MechanicGameScore->AddStrike();
-			hasmissed = true;
-		}
-		else if (Application::IsKeyPressed('W') && game[2] == 'W')
+		bool keyhit = false;
+		
+		if (Application::IsKeyPressed('W') && game[2] == 'W')
 		{
 			game[2] = '-';
 			soundEngine->play2D("audio\\bleep.mp3", false);
 			MechanicGameScore->AddPoints();
+			keyhit = true;
 		}
 		else if (Application::IsKeyPressed('A') && game[2] == 'A')
 		{
 			game[2] = '-';
 			soundEngine->play2D("audio\\bleep.mp3", false);
 			MechanicGameScore->AddPoints();
+			keyhit = true;
 		}
 		else if (Application::IsKeyPressed('S') && game[2] == 'S')
 		{
 			game[2] = '-';
 			soundEngine->play2D("audio\\bleep.mp3", false);
 			MechanicGameScore->AddPoints();
+			keyhit = true;
 		}
 		else if (Application::IsKeyPressed('D') && game[2] == 'D')
 		{
 			game[2] = '-';
 			soundEngine->play2D("audio\\bleep.mp3", false);
 			MechanicGameScore->AddPoints();
+			keyhit = true;
+		}
+		else if ((elapsed - debounce > 0.4125f)&& keyhit == false && hasmissed == false && game[2] == '-' && (Application::IsKeyPressed('D') || Application::IsKeyPressed('S') || Application::IsKeyPressed('A') || Application::IsKeyPressed('W'))) {
+			MechanicGameScore->AddStrike();
+			hasmissed = true;
 		}
 
 		if (elapsed - debounce > 0.5f)
@@ -1029,8 +1034,9 @@ void SceneText::Update(double dt)
 					game[9] = 'S';
 				else game[9] = 'D';
 			}
+			
 		}
-		
+		keyhit = false;
 	}
 	// end for keypress game
 
@@ -1369,7 +1375,7 @@ void SceneText::Update(double dt)
 	}
 
 	debounceTime += dt;
-		if (Application::IsKeyPressed('I') && salesCustomer == nullptr)
+	if (Application::IsKeyPressed('B') && salesCustomer == nullptr)
 	{
 		FreezeMovement = true;
 		BankOpen = true;
@@ -2272,7 +2278,7 @@ void SceneText::Render()
 				NotEnough = false;
 		}
 		//Selection->Printing(); // for checking
-		if (Application::IsKeyPressed('I'))
+		if (Application::IsKeyPressed('B'))
 		{
 			BankOpen = false;
 			FreezeMovement = false;
